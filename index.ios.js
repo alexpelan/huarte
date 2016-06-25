@@ -122,7 +122,8 @@ let defaultState = {
         question: "In a song, Weird Al says, \"I know a guy who knows a guy who knows a guy who knows a guy who knows a guy who knows\" him",
         answer: "Kevin Bacon"
     },
-    score: 0
+    score: 0,
+    currentGame: "jeopardy"
 };
 
 //*************************
@@ -142,6 +143,20 @@ function updateScore(delta) {
     type: "UPDATE_SCORE",
     delta: delta
   }
+};
+
+function nextGame(currentGame) {
+  var nextGame;
+  if (currentGame === "jeopardy") {
+    nextGame = "double_jeopardy";
+  } else if (currentGame === "double_jeopardy") {
+    nextGame = "final_jeopardy";
+  }
+
+  return {
+    type: "NEXT_GAME",
+    nextGame: nextGame
+  };
 }
 
 
@@ -160,6 +175,10 @@ function huarteApp(state, action) {
     case "UPDATE_SCORE":
       newState = Object.assign({}, state);
       newState.score = newState.score + action.delta;
+      return newState;
+    case "NEXT_GAME":
+      newState = Object.assign({}, state);
+      newState.currentGame = action.nextGame;
       return newState;
     default:
       return state;
@@ -186,14 +205,49 @@ var Question = React.createClass({
       text: ""
     };
   },
+
+  getDelta: function(wasCorrect) {
+    var numberWithoutDollarSign = parseInt(this.props.clue.value.slice(1));
+    if (wasCorrect) {
+      return numberWithoutDollarSign;
+    } else {
+      return -1 * numberWithoutDollarSign;
+    }
+  },
+
+  checkIfAllQuestionsAnswered: function() {
+    var state = store.getState();
+    var game = state.currentGame;
+    var returnValue = true;
+
+    _.each(state[game].categories, function(category){
+      _.each(category.clues, function(clue){
+        if(!clue.isCompleted) {
+          returnValue = false;
+        }
+      })
+
+    });
+
+    return returnValue;
+
+  },
+
   setAnswerStatus: function(wasCorrect, wasntQuiteCorrect){
     var answeredQuestion = true;
     this.setState({wasCorrect, wasntQuiteCorrect, answeredQuestion})
+    var delta = this.getDelta(wasCorrect || wasntQuiteCorrect);
+    store.dispatch(updateScore(delta));
+   
+    if (this.checkIfAllQuestionsAnswered()) {
+      store.dispatch(nextGame(store.getState().currentGame));
+    }
 
     setTimeout(() => {
       this.props.navigator.popN(2); // not ideal, but popToRoute is undocumented / doesn't seem to work right
     }, 3000);
   },
+
   checkAnswer: function(text) {
     var text = this.state.text.toLowerCase();
     var answer = this.props.clue.answer.toLowerCase();
@@ -309,8 +363,9 @@ var CategoryList = React.createClass({
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
     });
+    var state = store.getState()
     return {
-      dataSource: dataSource.cloneWithRows(store.getState().jeopardy.categories),
+      dataSource: dataSource.cloneWithRows(state[state.currentGame].categories),
       loaded: true
     };
   },
@@ -319,17 +374,18 @@ var CategoryList = React.createClass({
     store.subscribe(() => {
       var state = store.getState();
       this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(state.jeopardy.categories)
+        dataSource: this.state.dataSource.cloneWithRows(state[state.currentGame].categories)
       });
     });
   },
 
   fetchData: function() {
+    var state = store.getState()
     fetch(REQUEST_URL)
       .then((response) => response.json())
       .then((responseData) => {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(defaultState.jeopardy.categories), //FIXFIX: Should eventually use actual response data
+          dataSource: this.state.dataSource.cloneWithRows(state[state.currentGame].categories), //FIXFIX: Should eventually use actual response data
           loaded: true
         });
       })
@@ -355,6 +411,7 @@ var CategoryList = React.createClass({
       <ListView
         dataSource={this.state.dataSource}
         renderRow={(category, sectionID, categoryIndex) => this.renderCategory(category, categoryIndex)}
+        renderFooter={() => this.renderFooter()}
         style={styles.listView}/>
     )
   },
@@ -366,6 +423,12 @@ var CategoryList = React.createClass({
         {category.name}
       </Text>
     );
+  },
+
+  renderFooter: function() {
+    return (
+      <Text>Current Score: {store.getState().score}</Text>
+    )
   },
 
   renderLoadingView: function() {
