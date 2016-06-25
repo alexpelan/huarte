@@ -128,9 +128,9 @@ let defaultState = {
 //*************************
 // ACTIONS
 //*************************
-function completeQuestion(game, categoryIndex, clueIndex){
+function selectQuestion(game, categoryIndex, clueIndex){
   return {
-    type: "COMPLETE_QUESTION",
+    type: "SELECT_QUESTION",
     game: game,
     categoryIndex: categoryIndex,
     clueIndex: clueIndex
@@ -153,9 +153,9 @@ function updateScore(delta) {
 function huarteApp(state, action) {
   var newState;
   switch(action.type) {
-    case "COMPLETE_QUESTION":
+    case "SELECT_QUESTION":
       newState = Object.assign({}, state);
-      newState[action.game][categories][action.categoryIndex][clues][clueIndex].completed = true;
+      newState[action.game].categories[action.categoryIndex].clues[action.clueIndex].isCompleted = true;
       return newState;
     case "UPDATE_SCORE":
       newState = Object.assign({}, state);
@@ -189,7 +189,7 @@ var Question = React.createClass({
   setAnswerStatus: function(wasCorrect, wasntQuiteCorrect){
     var answeredQuestion = true;
     this.setState({wasCorrect, wasntQuiteCorrect, answeredQuestion})
-    
+
     setTimeout(() => {
       this.props.navigator.popN(2); // not ideal, but popToRoute is undocumented / doesn't seem to work right
     }, 3000);
@@ -267,7 +267,8 @@ var DollarAmountList = React.createClass({
     };
   },
 
-  selectClue: function(clue) {
+  selectClue: function(clue, clueIndex) {
+    store.dispatch(selectQuestion("jeopardy", this.props.categoryIndex, clueIndex));
     this.props.navigator.push({
       title: clue.value,
       navigationBarHidden: true,
@@ -282,15 +283,20 @@ var DollarAmountList = React.createClass({
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(clue) => this.renderClue(clue)}
+        renderRow={(clue, sectionId, clueIndex) => this.renderClue(clue, clueIndex)}
         style={styles.listView}/>
     )
   },
 
-  renderClue: function(clue){
+  renderClue: function(clue, clueIndex){
     return (
-      <Text style={styles.listItem}
-        onPress={() => this.selectClue(clue)}>
+      <Text style={[styles.listItem, clue.isCompleted && styles.listItemDisabled]}
+        onPress={() => {
+            if(!clue.isCompleted) {
+              this.selectClue(clue, clueIndex)
+            }
+          }
+        }>
         {clue.value}
       </Text>
     );
@@ -313,7 +319,7 @@ var CategoryList = React.createClass({
     store.subscribe(() => {
       var state = store.getState();
       this.setState({
-        dataSource: state.jeopardy.categories
+        dataSource: this.state.dataSource.cloneWithRows(state.jeopardy.categories)
       });
     });
   },
@@ -330,12 +336,13 @@ var CategoryList = React.createClass({
       .done();
   },
 
-  selectCategory: function(category) {
+  selectCategory: function(category, categoryIndex) {
     this.props.navigator.push({
       title: category.name,
       component: DollarAmountList,
       passProps: {
-        category
+        category,
+        categoryIndex
       },
     });
   },
@@ -347,15 +354,15 @@ var CategoryList = React.createClass({
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(category) => this.renderCategory(category)}
+        renderRow={(category, sectionID, categoryIndex) => this.renderCategory(category, categoryIndex)}
         style={styles.listView}/>
     )
   },
 
-  renderCategory: function(category) {
+  renderCategory: function(category, categoryIndex) {
     return (
       <Text style={styles.listItem}
-        onPress={() => this.selectCategory(category)}>
+        onPress={() => this.selectCategory(category, categoryIndex)}>
         {category.name}
       </Text>
     );
@@ -394,6 +401,9 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 8,
     textAlign: 'center'
+  },
+  listItemDisabled: {
+    color: '#ececec'
   },
   listView: {
     paddingTop: 35,
