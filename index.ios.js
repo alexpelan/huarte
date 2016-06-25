@@ -116,15 +116,23 @@ let defaultState = {
         },
       ]
     },
-    final_jeopardy:
-      {
-        category: "CELEBRITIES IN SONG LYRICS",
-        question: "In a song, Weird Al says, \"I know a guy who knows a guy who knows a guy who knows a guy who knows a guy who knows\" him",
-        answer: "Kevin Bacon"
+    final_jeopardy: {
+      categories: [
+        {
+          name: "CELEBRITIES IN SONG LYRICS",
+          question: "In a song, Weird Al says, \"I know a guy who knows a guy who knows a guy who knows a guy who knows a guy who knows\" him",
+          answer: "Kevin Bacon"
+      }]
     },
     score: 0,
     currentGame: "jeopardy"
 };
+//*************************
+// CONSTS
+//*************************
+const JEOPARDY = "jeopardy";
+const DOUBLE_JEOPARDY = "double_jeopardy";
+const FINAL_JEOPARDY = "final_jeopardy";
 
 //*************************
 // ACTIONS
@@ -159,6 +167,13 @@ function nextGame(currentGame) {
   };
 }
 
+function bidFinalJeopardy(bid) {
+  return {
+     type: "BID_FINAL_JEOPARDY",
+     bid: bid
+  };
+}
+
 
 //*************************
 // REDUCERS
@@ -180,6 +195,10 @@ function huarteApp(state, action) {
       newState = Object.assign({}, state);
       newState.currentGame = action.nextGame;
       return newState;
+    case "BID_FINAL_JEOPARDY":
+      newState = Object.assign({}, state);
+      newState.final_jeopardy.categories[0].value = "$" + action.bid;
+      return newState;
     default:
       return state;
   }
@@ -197,7 +216,75 @@ let REQUEST_URL = 'http://localhost:3000/scraper';
 //*************************
 // VIEWS
 //*************************
+var FinalJeopardyBid = React.createClass({
+  getInitialState: function() {
+    return {
+      text: ""
+    };
+  },
 
+
+
+  validateBid: function() {
+    var text = this.state.text;
+    var state= store.getState();
+    var score = state.score;
+    let bid;
+    let maxBid;
+
+    if (score > 0) {
+      maxBid = score;
+
+      var parsedBid = parseInt(text);
+      if(!isNaN(parsedBid) && parsedBid >= 0){
+        if (bid > maxBid) {
+          this.setState({errorMessage: "You cannot wager more than you have to bid."})
+          return;
+        }
+        bid = text;
+      } else {
+        this.setState({errorMessage: "Please enter a positive number."})
+        return;
+      }
+    } else {
+      bid = 0;
+    }
+
+    store.dispatch(bidFinalJeopardy(bid));
+    let finalJeopardyClue = state.final_jeopardy.categories[0];
+    this.props.navigator.push({
+      title: "Final Jeopardy",
+      navigationBarHidden: true,
+      component: Question,
+      passProps: {
+        clue: finalJeopardyClue
+      }
+    });
+
+  },
+
+  render: function() {
+    var state = store.getState();
+
+
+     return (
+      <View>
+        <Text style={styles.question}>
+          What is your bid? You have {state.score} to wager.
+        </Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(text) => this.setState({text})}
+          onSubmitEditing={() => this.validateBid()}
+          value={this.state.text}
+          keyboardType="numeric"
+          autoFocus
+        />
+        <Text>{this.state.errorMessage}</Text>
+      </View>
+    );
+  }
+});
 
 var Question = React.createClass({
   getInitialState: function() {
@@ -239,6 +326,7 @@ var Question = React.createClass({
     var delta = this.getDelta(wasCorrect || wasntQuiteCorrect);
     store.dispatch(updateScore(delta));
    
+    //store.dispatch(nextGame("double_jeopardy")) easy to skip to FJ while debugging via this
     if (this.checkIfAllQuestionsAnswered()) {
       store.dispatch(nextGame(store.getState().currentGame));
     }
@@ -248,7 +336,7 @@ var Question = React.createClass({
     }, 3000);
   },
 
-  checkAnswer: function(text) {
+  checkAnswer: function() {
     var text = this.state.text.toLowerCase();
     var answer = this.props.clue.answer.toLowerCase();
 
@@ -283,6 +371,7 @@ var Question = React.createClass({
     this.setAnswerStatus(wasCorrect, wasntQuiteCorrect);
 
   },
+
   render: function() {
     if(this.state.answeredQuestion) {
       var correctText = "Incorrect!";
@@ -301,7 +390,7 @@ var Question = React.createClass({
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => this.setState({text})}
-          onSubmitEditing={(text) => this.checkAnswer(text)}
+          onSubmitEditing={() => this.checkAnswer()}
           value={this.state.text}
           autoFocus
         />
@@ -322,7 +411,7 @@ var DollarAmountList = React.createClass({
   },
 
   selectClue: function(clue, clueIndex) {
-    store.dispatch(selectQuestion("jeopardy", this.props.categoryIndex, clueIndex));
+    store.dispatch(selectQuestion(store.getState().currentGame, this.props.categoryIndex, clueIndex));
     this.props.navigator.push({
       title: clue.value,
       navigationBarHidden: true,
@@ -331,6 +420,7 @@ var DollarAmountList = React.createClass({
         clue
       }
     });
+
   },
 
   render: function() {
@@ -393,14 +483,28 @@ var CategoryList = React.createClass({
   },
 
   selectCategory: function(category, categoryIndex) {
-    this.props.navigator.push({
-      title: category.name,
-      component: DollarAmountList,
-      passProps: {
-        category,
-        categoryIndex
-      },
-    });
+    if (store.getState().currentGame === FINAL_JEOPARDY) {
+      this.props.navigator.push({
+        title: "Final Jeopardy",
+        navigationBarHidden: true,
+        component: FinalJeopardyBid,
+        passProps: {
+          category
+        }
+      })
+
+    } else {
+
+      this.props.navigator.push({
+        title: category.name,
+        component: DollarAmountList,
+        passProps: {
+          category,
+          categoryIndex
+        },
+      });
+
+    }
   },
 
   render: function() {
@@ -425,9 +529,17 @@ var CategoryList = React.createClass({
     );
   },
 
+  getGameDisplayName: function() {
+    var game = store.getState().currentGame;
+    game = game.slice(0,1).toUpperCase() + game.slice(1);
+    game = game.replace("_", " ")
+    return game
+  },
+
   renderFooter: function() {
+    var gameDisplayName = this.getGameDisplayName();
     return (
-      <Text>Current Score: {store.getState().score}</Text>
+      <Text>Current Score: {store.getState().score} - {gameDisplayName} Round</Text>
     )
   },
 
@@ -443,9 +555,11 @@ var CategoryList = React.createClass({
 });
 
 var huarte = React.createClass({
+
  render: function() {
   return (
     <NavigatorIOS
+      ref="nav"
       style={styles.container}
       initialRoute={{
         title: 'Categories',
@@ -485,3 +599,4 @@ const styles = StyleSheet.create({
 });
 
 AppRegistry.registerComponent('huarte', () => huarte);
+// I promise I will actually use things like modules and files once this gets to 1000 lines.
