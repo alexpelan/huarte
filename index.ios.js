@@ -11,121 +11,17 @@ import React, {
   View
 } from 'react-native';
 
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
+import thunkMiddleware from 'redux-thunk';
+import createLogger from 'redux-logger';
+
+const loggerMiddleware = createLogger();
 
 let defaultState = {
-  show_number:"Show #7125",
-  air_date:"Friday, July 31, 2015",
-  jeopardy:
-    {
-      categories:[
-        {
-          name:"A PICTURE IS WORTH...",
-          clues:[
-            {
-              value:"$200",
-              question: "Two words: this body of water",
-              answer: "Puget Sound"
-            },
-            {
-              value:"$400",
-              question: "Four words:  this crazy condition",
-              answer: "bats in the belfry"
-            },
-            {
-              value:"$600",
-              question: "Six words:  This 1969 movie title",
-              answer: "<i>Butch Cassidy and the Sundance Kid</i>"
-            },
-            {
-              value:"$800",
-              question: "Three names now:  This inventor",
-              answer: "Thomas Alva Edison"
-            },
-            {
-              value:"$1000",
-              question: "Two words:  This historic structure",
-              answer: "Tower Bridge"
-            }
-          ]
-        },
-        {
-          name:"4-LETTER VERBS",
-          clues:[
-            {
-              value:"$200",
-              question: "Used especially of stallions, it means to father a child",
-              answer: "sire"
-            },
-            {
-              value:"$400",
-              question: "As a noun, it's the ridge on the fingerboard of a guitar; as a verb, it means to worry",
-              answer: "fret"
-            },
-            {
-              value:"$600",
-              question: "Helen Reddy sang, \"I am woman, hear me\" do this",
-              answer: "roar"
-            },
-            {
-              value:"$800",
-              question: "To decrease gradually in intensity, such as the moon in passing from full to new",
-              answer: "wane"
-            },
-            {
-              value:"$1000",
-              question: "Itemize, or what a ship does when it tilts to one side",
-              answer: "list"
-            }
-          ]
-        },
-      ]
-    },
-    double_jeopardy:{
-      categories:[
-        {
-          name:"OLD TV SHOWS BY EPISODE TITLE",
-          clues:
-            [
-              {
-                value:"$400",
-                question: "\"Ricky Loses His Voice\"",
-                answer: "<i>I Love Lucy</i>"
-              },
-              {
-                value:"$800",
-                question: "\"The Courage of Tonto\"",
-                answer: "<i>The Lone Ranger</i>"
-              },
-              {
-                value:"$1200",
-                question: "A Western:  \"Kitty's Love Affair\"",
-                answer: "<i>Gunsmoke</i>"
-              },
-              {
-                value:"$1600",
-                question: "\"Norton Moves In\"",
-                answer: "<i>The Honeymooners</i>"
-              },
-              {
-                value:"$2000",
-                question: "\"Wally's Car Accident\"",
-                answer: "<i>Leave It to Beaver</i>"
-              }
-            ]
-        },
-      ]
-    },
-    final_jeopardy: {
-      categories: [
-        {
-          name: "CELEBRITIES IN SONG LYRICS",
-          question: "In a song, Weird Al says, \"I know a guy who knows a guy who knows a guy who knows a guy who knows a guy who knows\" him",
-          answer: "Kevin Bacon"
-      }]
-    },
+    currentGame: {},
     score: 0,
-    currentGame: "jeopardy"
+    currentRound: "jeopardy",
+    loaded: false
 };
 //*************************
 // CONSTS
@@ -137,10 +33,24 @@ const FINAL_JEOPARDY = "final_jeopardy";
 //*************************
 // ACTIONS
 //*************************
-function selectQuestion(game, categoryIndex, clueIndex){
+function requestGame() { //will eventually have some sort of id to fetch game by
+  return {
+    type: "REQUEST_GAME"
+  }
+};
+
+function receiveGame(json) {
+  return {
+    type: "RECEIVE_GAME",
+    game: json
+  }
+};
+
+
+function selectQuestion(round, categoryIndex, clueIndex){
   return {
     type: "SELECT_QUESTION",
-    game: game,
+    round: round,
     categoryIndex: categoryIndex,
     clueIndex: clueIndex
   };
@@ -153,17 +63,17 @@ function updateScore(delta) {
   }
 };
 
-function nextGame(currentGame) {
-  var nextGame;
-  if (currentGame === "jeopardy") {
-    nextGame = "double_jeopardy";
-  } else if (currentGame === "double_jeopardy") {
-    nextGame = "final_jeopardy";
+function nextRound(currentRound) {
+  var nextRound;
+  if (currentRound === "jeopardy") {
+    nextRound = "double_jeopardy";
+  } else if (currentRound === "double_jeopardy") {
+    nextRound = "final_jeopardy";
   }
 
   return {
-    type: "NEXT_GAME",
-    nextGame: nextGame
+    type: "NEXT_ROUND",
+    nextRound: nextRound
   };
 }
 
@@ -174,26 +84,53 @@ function bidFinalJeopardy(bid) {
   };
 }
 
+//*************************
+// THUNKS
+//*************************
+function fetchGame() {
+  return function(dispatch) {
+    //first dispatch that we are requesting
+    dispatch(requestGame());
+
+    //return a promise 
+    return  fetch(REQUEST_URL)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(receiveGame(json));
+      });
+
+    //FIXFIX: handle failure
+  };  
+};
+
 
 //*************************
 // REDUCERS
 //*************************
 
 
-function huarteApp(state, action) {
+function huarteApp(state = defaultState, action) {
   var newState;
   switch(action.type) {
+    case "REQUEST_GAME":
+      newState = Object.assign({}, state);
+      return newState; //no-op for now
+    case "RECEIVE_GAME":
+      newState = Object.assign({},state);
+      newState.currentGame = action.game;
+      newState.loaded = true;
+      return newState;
     case "SELECT_QUESTION":
       newState = Object.assign({}, state);
-      newState[action.game].categories[action.categoryIndex].clues[action.clueIndex].isCompleted = true;
+      newState.currentGame[action.round].categories[action.categoryIndex].clues[action.clueIndex].isCompleted = true;
       return newState;
     case "UPDATE_SCORE":
       newState = Object.assign({}, state);
       newState.score = newState.score + action.delta;
       return newState;
-    case "NEXT_GAME":
+    case "NEXT_ROUND":
       newState = Object.assign({}, state);
-      newState.currentGame = action.nextGame;
+      newState.currentRound = action.nextRound;
       return newState;
     case "BID_FINAL_JEOPARDY":
       newState = Object.assign({}, state);
@@ -206,7 +143,7 @@ function huarteApp(state, action) {
 };
 
 
-var store = createStore(huarteApp, defaultState);
+var store = createStore(huarteApp, applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 let _ = require("lodash");
 let levenshtein = require("fast-levenshtein");
@@ -304,10 +241,10 @@ var Question = React.createClass({
 
   checkIfAllQuestionsAnswered: function() {
     var state = store.getState();
-    var game = state.currentGame;
+    var round = state.currentRound;
     var returnValue = true;
 
-    _.each(state[game].categories, function(category){
+    _.each(state.currentGame[round].categories, function(category){
       _.each(category.clues, function(clue){
         if(!clue.isCompleted) {
           returnValue = false;
@@ -326,9 +263,9 @@ var Question = React.createClass({
     var delta = this.getDelta(wasCorrect || wasntQuiteCorrect);
     store.dispatch(updateScore(delta));
    
-    //store.dispatch(nextGame("double_jeopardy")) easy to skip to FJ while debugging via this
+    //store.dispatch(nextRound("double_jeopardy")) easy to skip to FJ while debugging via this
     if (this.checkIfAllQuestionsAnswered()) {
-      store.dispatch(nextGame(store.getState().currentGame));
+      store.dispatch(nextRound(store.getState().currentRound));
     }
 
     setTimeout(() => {
@@ -411,7 +348,7 @@ var DollarAmountList = React.createClass({
   },
 
   selectClue: function(clue, clueIndex) {
-    store.dispatch(selectQuestion(store.getState().currentGame, this.props.categoryIndex, clueIndex));
+    store.dispatch(selectQuestion(store.getState().currentRound, this.props.categoryIndex, clueIndex));
     this.props.navigator.push({
       title: clue.value,
       navigationBarHidden: true,
@@ -453,37 +390,27 @@ var CategoryList = React.createClass({
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
     });
-    var state = store.getState()
     return {
-      dataSource: dataSource.cloneWithRows(state[state.currentGame].categories),
-      loaded: true
+      dataSource: dataSource.cloneWithRows([]),
+      loaded: false
     };
   },
 
   componentDidMount: function() {
     store.subscribe(() => {
       var state = store.getState();
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(state[state.currentGame].categories)
-      });
+      if (state.loaded) {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(state.currentGame[state.currentRound].categories)
+        });
+      }
     });
+    store.dispatch(fetchGame());
   },
 
-  fetchData: function() {
-    var state = store.getState()
-    fetch(REQUEST_URL)
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(state[state.currentGame].categories), //FIXFIX: Should eventually use actual response data
-          loaded: true
-        });
-      })
-      .done();
-  },
 
   selectCategory: function(category, categoryIndex) {
-    if (store.getState().currentGame === FINAL_JEOPARDY) {
+    if (store.getState().currentRound === FINAL_JEOPARDY) {
       this.props.navigator.push({
         title: "Final Jeopardy",
         navigationBarHidden: true,
@@ -508,7 +435,7 @@ var CategoryList = React.createClass({
   },
 
   render: function() {
-    if(!this.state.loaded) {
+    if(!store.getState().loaded) {
       return this.renderLoadingView();
     }
     return (
@@ -529,17 +456,17 @@ var CategoryList = React.createClass({
     );
   },
 
-  getGameDisplayName: function() {
-    var game = store.getState().currentGame;
-    game = game.slice(0,1).toUpperCase() + game.slice(1);
-    game = game.replace("_", " ")
-    return game
+  getRoundDisplayName: function() {
+    var round = store.getState().currentRound;
+    round = round.slice(0,1).toUpperCase() + round.slice(1);
+    round = round.replace("_", " ")
+    return round
   },
 
   renderFooter: function() {
-    var gameDisplayName = this.getGameDisplayName();
+    var roundisplayName = this.getRoundDisplayName();
     return (
-      <Text>Current Score: {store.getState().score} - {gameDisplayName} Round</Text>
+      <Text>Current Score: {store.getState().score} - {roundisplayName} Round</Text>
     )
   },
 
