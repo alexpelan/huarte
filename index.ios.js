@@ -18,10 +18,14 @@ import createLogger from 'redux-logger';
 const loggerMiddleware = createLogger();
 
 let defaultState = {
+    seasons: [],
+    games: [],
     currentGame: {},
     score: 0,
     currentRound: "jeopardy",
-    loaded: false
+    gameLoaded: false,
+    seasonsLoaded: false,
+    gameListLoaded: false
 };
 //*************************
 // CONSTS
@@ -29,6 +33,9 @@ let defaultState = {
 const JEOPARDY = "jeopardy";
 const DOUBLE_JEOPARDY = "double_jeopardy";
 const FINAL_JEOPARDY = "final_jeopardy";
+const GAME_REQUEST_URL = 'http://localhost:3000/scraper/games/';
+const SEASONS_REQUEST_URL = "http://localhost:3000/scraper/";
+const GAME_LIST_REQUEST_URL = "http://localhost:3000/scraper/seasons/";
 
 //*************************
 // ACTIONS
@@ -46,6 +53,31 @@ function receiveGame(json) {
   }
 };
 
+function requestSeasons() {
+  return {
+    type: "REQUEST_SEASONS"
+  };
+};
+
+function receiveSeasons(json) {
+  return {
+    type: "RECEIVE_SEASONS",
+    seasons: json.seasons
+  };
+};
+
+function requestGameList() {
+  return {
+    type: "REQUEST_GAME_LIST",
+  }
+};
+
+function receiveGameList(json) {
+  return {
+    type: "RECEIVE_GAME_LIST",
+    games: json.games
+  }
+}
 
 function selectQuestion(round, categoryIndex, clueIndex){
   return {
@@ -87,13 +119,13 @@ function bidFinalJeopardy(bid) {
 //*************************
 // THUNKS
 //*************************
-function fetchGame() {
+function fetchGame(gameId) {
   return function(dispatch) {
     //first dispatch that we are requesting
     dispatch(requestGame());
 
     //return a promise 
-    return  fetch(REQUEST_URL)
+    return  fetch(GAME_REQUEST_URL + gameId)
       .then((response) => response.json())
       .then((json) => {
         dispatch(receiveGame(json));
@@ -101,6 +133,30 @@ function fetchGame() {
 
     //FIXFIX: handle failure
   };  
+};
+
+function fetchSeasons() {
+  return function(dispatch) {
+    dispatch(requestSeasons());
+
+    return fetch(SEASONS_REQUEST_URL)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(receiveSeasons(json));
+      });
+  }
+};
+
+function fetchGameList(seasonId) {
+  return function(dispatch) {
+    dispatch(requestGameList());
+
+    return fetch(GAME_LIST_REQUEST_URL + seasonId)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(receiveGameList(json));
+      });
+  }
 };
 
 
@@ -118,7 +174,23 @@ function huarteApp(state = defaultState, action) {
     case "RECEIVE_GAME":
       newState = Object.assign({},state);
       newState.currentGame = action.game;
-      newState.loaded = true;
+      newState.gameLoaded = true;
+      return newState;
+    case "REQUEST_SEASONS":
+      newState = Object.assign({}, state);
+      return newState;
+    case "RECEIVE_SEASONS":
+      newState = Object.assign({}, state);
+      newState.seasons = action.seasons;
+      newState.seasonsLoaded = true;
+      return newState;
+    case "REQUEST_GAME_LIST":
+      newState = Object.assign({}, state);
+      return newState;
+    case "RECEIVE_GAME_LIST":
+      newState = Object.assign({}, state);
+      newState.games = action.games;
+      newState.gameListLoaded = true;
       return newState;
     case "SELECT_QUESTION":
       newState = Object.assign({}, state);
@@ -146,13 +218,25 @@ function huarteApp(state = defaultState, action) {
 var store = createStore(huarteApp, applyMiddleware(thunkMiddleware, loggerMiddleware));
 
 let _ = require("lodash");
-let levenshtein = require("fast-levenshtein");
-let REQUEST_URL = 'http://localhost:3000/scraper';
+let levenshtein = require("fast-levenshtein")
 
 
 //*************************
 // VIEWS
 //*************************
+
+var Common = {
+  renderLoadingView: function() {
+    return (
+        <View style={styles.container}>
+          <Text>
+            Loading...
+          </Text>
+        </View>
+      );
+  }
+};
+
 var FinalJeopardyBid = React.createClass({
   getInitialState: function() {
     return {
@@ -391,21 +475,20 @@ var CategoryList = React.createClass({
         rowHasChanged: (row1, row2) => row1 !== row2
     });
     return {
-      dataSource: dataSource.cloneWithRows([]),
-      loaded: false
+      dataSource: dataSource.cloneWithRows([])
     };
   },
 
   componentDidMount: function() {
     store.subscribe(() => {
       var state = store.getState();
-      if (state.loaded) {
+      if (state.gameLoaded) {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(state.currentGame[state.currentRound].categories)
         });
       }
     });
-    store.dispatch(fetchGame());
+    store.dispatch(fetchGame(this.props.game.id));
   },
 
 
@@ -435,8 +518,8 @@ var CategoryList = React.createClass({
   },
 
   render: function() {
-    if(!store.getState().loaded) {
-      return this.renderLoadingView();
+    if(!store.getState().gameLoaded) {
+      return Common.renderLoadingView();
     }
     return (
       <ListView
@@ -470,14 +553,117 @@ var CategoryList = React.createClass({
     )
   },
 
-  renderLoadingView: function() {
+});
+
+var GameList = React.createClass({
+  getInitialState: function() {
+    var dataSource = new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+    });
+    return {
+      dataSource: dataSource.cloneWithRows([])
+    };
+  },
+
+  componentDidMount: function() {
+    store.subscribe(() => {
+      var state = store.getState();
+      if (state.gameListLoaded) {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(state.games)
+        });
+      }
+    });
+    store.dispatch(fetchGameList(this.props.season.id));
+  },
+
+  selectGame: function(game, gameIndex) {
+    this.props.navigator.push({
+      title: game.displayName,
+      component: CategoryList,
+      passProps: {
+        game,
+        gameIndex
+      },
+    });
+  },
+
+  render: function() {
+    if (!store.getState().gameListLoaded) {
+      return Common.renderLoadingView();
+    } 
     return (
-        <View style={styles.container}>
-          <Text>
-            Loading...
-          </Text>
-        </View>
-      );
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={(game, sectionID, gameIndex) => this.renderGame(game, gameIndex)}
+        style={styles.listView}/>
+      )
+  },
+
+  renderGame: function(game, gameIndex) {
+    return (
+      <Text style={styles.listItem}
+        onPress={() => this.selectGame(game, gameIndex)}>
+        {game.displayName}
+      </Text>
+      )
+  }
+});
+
+
+var SeasonList = React.createClass({
+   getInitialState: function() {
+    var dataSource = new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+    });
+    return {
+      dataSource: dataSource.cloneWithRows([])
+    };
+  },
+
+  componentDidMount: function() {
+    store.subscribe(() => {
+      var state = store.getState();
+      if (state.seasonsLoaded) {
+        this.setState({
+          dataSource: this.state.dataSource.cloneWithRows(state.seasons)
+        });
+      }
+    });
+    store.dispatch(fetchSeasons());
+  },
+
+
+  selectSeason: function(season, seasonIndex) {
+    this.props.navigator.push({
+      title: season.displayName,
+      component: GameList,
+      passProps: {
+        season,
+        seasonIndex
+      },
+    });
+  },
+
+  render: function() {
+    if(!store.getState().seasonsLoaded) {
+      return Common.renderLoadingView();
+    }
+    return (
+      <ListView
+        dataSource={this.state.dataSource}
+        renderRow={(season, sectionID, seasonIndex) => this.renderSeason(season, seasonIndex)}
+        style={styles.listView}/>
+    )
+  },
+
+  renderSeason: function(season, seasonIndex) {
+    return (
+      <Text style={styles.listItem}
+        onPress={() => this.selectSeason(season, seasonIndex)}>
+        {season.displayName}
+      </Text>
+    );
   }
 });
 
@@ -489,8 +675,8 @@ var huarte = React.createClass({
       ref="nav"
       style={styles.container}
       initialRoute={{
-        title: 'Categories',
-        component: CategoryList
+        title: 'Seasons',
+        component: SeasonList
       }}/>
   );
  }
@@ -510,7 +696,7 @@ const styles = StyleSheet.create({
     color: '#ececec'
   },
   listView: {
-    paddingTop: 35,
+    paddingTop: 70,
     backgroundColor: '#F5FCFF'
   },
   question: {
