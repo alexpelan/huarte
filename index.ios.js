@@ -307,6 +307,77 @@ var FinalJeopardyBid = React.createClass({
   }
 });
 
+
+// FIXFIX: a lot of shared logic with final jeopardy bid. like, 90% the same
+var DailyDoubleBid = React.createClass({
+  getInitialState: function() {
+    return {
+      text: ""
+    };
+  },
+
+
+
+  validateBid: function() {
+    var text = this.state.text;
+    var state= store.getState();
+    var score = state.score;
+    let bid;
+    let maxBid;
+
+    if (score > 0) {
+      maxBid = score;
+
+      var parsedBid = parseInt(text);
+      if(!isNaN(parsedBid) && parsedBid >= 0){
+        if (bid > maxBid) {
+          this.setState({errorMessage: "You cannot wager more than you have to bid."})
+          return;
+        }
+        bid = text;
+      } else {
+        this.setState({errorMessage: "Please enter a positive number."})
+        return;
+      }
+    } else {
+      bid = 0;
+    }
+
+    this.props.clue.value = "$" + bid;
+    this.props.navigator.push({
+      title: this.props.clue.value,
+      navigationBarHidden: true,
+      component: Question,
+      passProps: {
+        clue: this.props.clue
+      }
+    });
+
+  },
+
+  render: function() {
+    var state = store.getState();
+
+
+     return (
+      <View>
+        <Text style={styles.question}>
+          What is your bid? You have {state.score} to wager.
+        </Text>
+        <TextInput
+          style={styles.textInput}
+          onChangeText={(text) => this.setState({text})}
+          onSubmitEditing={() => this.validateBid()}
+          value={this.state.text}
+          keyboardType="numeric"
+          autoFocus
+        />
+        <Text>{this.state.errorMessage}</Text>
+      </View>
+    );
+  }
+});
+
 var Question = React.createClass({
   getInitialState: function() {
     return {
@@ -353,7 +424,14 @@ var Question = React.createClass({
     }
 
     setTimeout(() => {
-      this.props.navigator.popN(2); // not ideal, but popToRoute is undocumented / doesn't seem to work right
+
+      if (this.props.clue.isDailyDouble) {
+        this.props.navigator.popN(3); // have an extra screen for bidding
+      }
+      else {
+        this.props.navigator.popN(2); // not ideal, but popToRoute is undocumented / doesn't seem to work right
+      }
+
     }, 3000);
   },
 
@@ -433,14 +511,29 @@ var DollarAmountList = React.createClass({
 
   selectClue: function(clue, clueIndex) {
     store.dispatch(selectQuestion(store.getState().currentRound, this.props.categoryIndex, clueIndex));
-    this.props.navigator.push({
-      title: clue.value,
-      navigationBarHidden: true,
-      component: Question,
-      passProps: {
-        clue
-      }
-    });
+
+    if (clue.isDailyDouble) {
+      this.props.navigator.push({
+        title: "Daily Double!",
+        component: DailyDoubleBid,
+        passProps: {
+          clue,
+          clueIndex
+        }
+      })
+
+    } else {
+      this.props.navigator.push({
+        title: clue.value,
+        navigationBarHidden: true,
+        component: Question,
+        passProps: {
+          clue
+        }
+      });  
+    }
+
+
 
   },
 
@@ -685,19 +778,20 @@ var huarte = React.createClass({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
   },
   listItem: {
     fontSize: 20,
     marginBottom: 8,
-    textAlign: 'center'
+    textAlign: 'center',
+    color: 'white'
   },
   listItemDisabled: {
     color: '#ececec'
   },
   listView: {
     paddingTop: 70,
-    backgroundColor: '#F5FCFF'
+    backgroundColor: '#0000af',
   },
   question: {
     paddingTop: 100,
