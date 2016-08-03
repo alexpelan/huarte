@@ -1,5 +1,6 @@
 'use strict';
 import React, {
+  AsyncStorage,
   AppRegistry,
   Component,
   Image,
@@ -23,6 +24,8 @@ let defaultState = {
     currentGame: {},
     score: 0,
     currentRound: "jeopardy",
+    currentGameCorrect: 0,
+    currentGameIncorrect: 0,
     gameLoaded: false,
     seasonsLoaded: false,
     gameListLoaded: false
@@ -88,7 +91,7 @@ function selectQuestion(round, categoryIndex, clueIndex){
   };
 };
 
-function updateScore(delta) {
+function updateScore(delta, wasCorrect) {
   return {
     type: "UPDATE_SCORE",
     delta: delta
@@ -101,6 +104,8 @@ function nextRound(currentRound) {
     nextRound = "double_jeopardy";
   } else if (currentRound === "double_jeopardy") {
     nextRound = "final_jeopardy";
+  } else if (currentRound === "final_jeopardy") {
+    Common.savePlayerStatistics(store.getState());
   }
 
   return {
@@ -198,6 +203,12 @@ function huarteApp(state = defaultState, action) {
       return newState;
     case "UPDATE_SCORE":
       newState = Object.assign({}, state);
+      if (action.delta > 0) {
+        newState.currentGameCorrect = newState.currentGameCorrect + 1;
+      } else {
+        newState.currentGameIncorrect = newState.currentGameIncorrect + 1;
+      }
+
       newState.score = newState.score + action.delta;
       return newState;
     case "NEXT_ROUND":
@@ -222,7 +233,7 @@ let levenshtein = require("fast-levenshtein")
 
 
 //*************************
-// VIEWS
+// UTILITY FUNCTIONS
 //*************************
 
 var Common = {
@@ -234,8 +245,36 @@ var Common = {
           </Text>
         </View>
       );
+  },
+
+
+  saveStatistics: function(state) { 
+    this.changeNumericAsyncStorage("total_winnings", state.currentScore);
+    this.changeNumericAsyncStorage("total_correct", state.currentGameCorrect);
+    this.changeNumericAsyncStorage("total_incorrect", state.currentGameIncorrect);
+  },
+
+
+  // used to take existing value and apply a change to it, not to set a new value
+  changeNumericAsyncStorage: function(key, delta) {
+        AsyncStorage.getItem(key).then((value) => {
+
+      if (!value) {
+        value = 0;
+      }
+
+      AsyncStorage.setItem(key, value + delta);
+
+    }).done();
   }
+
+
 };
+
+//*************************
+// VIEWS
+//*************************
+
 
 var FinalJeopardyBid = React.createClass({
   getInitialState: function() {
