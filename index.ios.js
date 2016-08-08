@@ -6,6 +6,7 @@ import React, {
   Image,
   ListView,
   NavigatorIOS,
+  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -239,8 +240,8 @@ let levenshtein = require("fast-levenshtein")
 var Common = {
   renderLoadingView: function() {
     return (
-        <View style={styles.container}>
-          <Text>
+        <View style={styles.loadingView}>
+          <Text style={styles.loadingText}>
             Loading...
           </Text>
         </View>
@@ -324,14 +325,16 @@ var FinalJeopardyBid = React.createClass({
   },
 
   render: function() {
+    StatusBar.setBarStyle('light-content', true);
     var state = store.getState();
 
 
      return (
-      <View>
+      <View style={styles.questionView}>
         <Text style={styles.question}>
           What is your bid? You have {state.score} to wager.
         </Text>
+        <Text>{this.state.errorMessage}</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => this.setState({text})}
@@ -340,7 +343,6 @@ var FinalJeopardyBid = React.createClass({
           keyboardType="numeric"
           autoFocus
         />
-        <Text>{this.state.errorMessage}</Text>
       </View>
     );
   }
@@ -395,14 +397,16 @@ var DailyDoubleBid = React.createClass({
   },
 
   render: function() {
+    StatusBar.setBarStyle('light-content', true);
     var state = store.getState();
 
 
      return (
-      <View>
+      <View style={styles.questionView}>
         <Text style={styles.question}>
           What is your bid? You have {state.score} to wager.
         </Text>
+        <Text>{this.state.errorMessage}</Text>
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => this.setState({text})}
@@ -411,7 +415,6 @@ var DailyDoubleBid = React.createClass({
           keyboardType="numeric"
           autoFocus
         />
-        <Text>{this.state.errorMessage}</Text>
       </View>
     );
   }
@@ -511,6 +514,7 @@ var Question = React.createClass({
   },
 
   render: function() {
+    StatusBar.setBarStyle('light-content', true);
     if(this.state.answeredQuestion) {
       var correctText = "Incorrect!";
       if(this.state.wasCorrect && !this.state.wasntQuiteCorrect) {
@@ -521,9 +525,12 @@ var Question = React.createClass({
       var answerFeedback = <Text>You entered {this.state.text}. The correct answer is {this.props.clue.answer}. {correctText}.</Text>
     }
     return (
-      <View>
+      <View style={styles.questionView}>
         <Text style={styles.question}>
           {this.props.clue.question}
+        </Text>
+        <Text style={styles.question}>
+            {answerFeedback}
         </Text>
         <TextInput
           style={styles.textInput}
@@ -531,8 +538,9 @@ var Question = React.createClass({
           onSubmitEditing={() => this.checkAnswer()}
           value={this.state.text}
           autoFocus
+          placeholder="What is..."
+          placeholderTextColor="white"
         />
-        {answerFeedback}
       </View>
     );
   }
@@ -577,10 +585,12 @@ var DollarAmountList = React.createClass({
   },
 
   render: function() {
+    StatusBar.setBarStyle('default', true);
     return (
       <ListView
         dataSource={this.state.dataSource}
         renderRow={(clue, sectionId, clueIndex) => this.renderClue(clue, clueIndex)}
+        automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
     )
   },
@@ -650,6 +660,7 @@ var CategoryList = React.createClass({
   },
 
   render: function() {
+    StatusBar.setBarStyle('default', true);
     if(!store.getState().gameLoaded) {
       return Common.renderLoadingView();
     }
@@ -681,7 +692,7 @@ var CategoryList = React.createClass({
   renderFooter: function() {
     var roundisplayName = this.getRoundDisplayName();
     return (
-      <Text>Current Score: {store.getState().score} - {roundisplayName} Round</Text>
+      <Text style={styles.scoreText}>Current Score: {store.getState().score} - {roundisplayName} Round</Text>
     )
   },
 
@@ -721,6 +732,7 @@ var GameList = React.createClass({
   },
 
   render: function() {
+    StatusBar.setBarStyle('default', true);
     if (!store.getState().gameListLoaded) {
       return Common.renderLoadingView();
     } 
@@ -778,6 +790,7 @@ var SeasonList = React.createClass({
   },
 
   render: function() {
+    StatusBar.setBarStyle('default', true);
     if(!store.getState().seasonsLoaded) {
       return Common.renderLoadingView();
     }
@@ -802,6 +815,7 @@ var SeasonList = React.createClass({
 var huarte = React.createClass({
 
  render: function() {
+  StatusBar.setBarStyle('default', true);
   return (
     <NavigatorIOS
       ref="nav"
@@ -813,6 +827,10 @@ var huarte = React.createClass({
   );
  }
 })
+
+const STYLE_CONSTS = {
+  JEOPARDY_BLUE: "#0000af"
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -830,17 +848,44 @@ const styles = StyleSheet.create({
   },
   listView: {
     paddingTop: 70,
-    backgroundColor: '#0000af',
+    backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
   },
   question: {
     paddingTop: 100,
-    fontSize: 20
+    fontSize: 20,
+    color: 'white',
+    paddingLeft: 20,
+    paddingRight: 20
   },
   textInput: {
     height: 40, 
-    borderColor: 'gray', 
+    borderColor: 'white', 
     borderWidth: 1,
+    color: 'white',
+    paddingLeft: 10,
+    paddingRight: 10
   },
+  loadingView: {
+    flex: 1,
+    backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  loadingText: {
+    color: 'white',
+    fontSize: 24
+  },
+  scoreText: {
+    color: 'white',
+    fontSize: 18,
+    textAlign: 'center'
+  },
+  questionView: {
+    flex: 1,
+    backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  }
 
 });
 
