@@ -4,6 +4,7 @@ import React, {
   AppRegistry,
   Component,
   Image,
+  Linking,
   ListView,
   NavigatorIOS,
   StatusBar,
@@ -275,6 +276,16 @@ var Common = {
 //*************************
 // VIEWS
 //*************************
+
+const Link = React.createClass({
+  render: function () {
+    return (
+      <Text style={styles.hyperlink} onPress={() => { Linking.openURL(this.props.url)}}>
+        {this.props.text}
+      </Text>
+      );
+  }
+})
 
 
 var FinalJeopardyBid = React.createClass({
@@ -754,8 +765,30 @@ var GameList = React.createClass({
   }
 });
 
+var Statistics = React.createClass({
+  render: function() {
+    StatusBar.setBarStyle('default', true);
+    return (
+      <Text> Blah </Text>
+      )
+  }
+});
 
-var SeasonList = React.createClass({
+const About = React.createClass({
+  render: function() {
+    StatusBar.setBarStyle('default', true);
+    return (
+      <View style={[styles.loadingView, styles.paragraphView]}>
+        <Text style={styles.loadingText}>
+          Huarte is a game by <Link text="Alex Pelan," url="http://www.alexpelan.com"/> a software developer in Brooklyn, NY. The questions and answers are from <Link text="J-Archive." url="www.j-archive.com"/> The app was built using Facebook's <Link text="React Native" url="https://facebook.github.io/react-native/"/> framework and its source is fully available <Link text="here." url="https://github.com/alexpelan/huarte"/>
+        </Text>
+      </View>
+      )
+  }
+}) 
+
+
+const SeasonList = React.createClass({
    getInitialState: function() {
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
@@ -812,17 +845,71 @@ var SeasonList = React.createClass({
   }
 });
 
+const HUARTE_MENU_DATASOURCE = [
+  {
+    displayName: "Play",
+    component: SeasonList
+  },
+  {
+    displayName: "Statistics",
+    component: Statistics
+  },
+  {
+    displayName: "About",
+    component: About
+  }
+];
+
+var HuarteMainMenu = React.createClass({
+  getInitialState: function() {
+    var dataSource = new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+    });
+    return {
+      dataSource: dataSource.cloneWithRows(HUARTE_MENU_DATASOURCE)
+    };
+  },
+
+
+  render: function() {
+    StatusBar.setBarStyle('default', true);
+    return (
+      <ListView
+        dataSource = {this.state.dataSource}
+        renderRow={(menuItem) => this.renderMenuRow(menuItem)}
+        automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
+        style={styles.listView}/>
+      )
+  },
+
+  renderMenuRow: function(menuItem) {
+    return (
+      <Text style={styles.listItem}
+        onPress={() => this.selectMenuItem(menuItem)}>
+        {menuItem.displayName}
+      </Text>
+    );
+  },
+
+  selectMenuItem: function(menuItem) {
+    this.props.navigator.push({
+      title: menuItem.displayName,
+      component: menuItem.component
+    })
+  }
+
+});
+
 var huarte = React.createClass({
 
  render: function() {
-  StatusBar.setBarStyle('default', true);
   return (
     <NavigatorIOS
       ref="nav"
       style={styles.container}
       initialRoute={{
-        title: 'Seasons',
-        component: SeasonList
+        title: 'Huarte',
+        component: HuarteMainMenu
       }}/>
   );
  }
@@ -871,6 +958,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  paragraphView: {
+    paddingLeft: 20,
+    paddingRight: 20
+  },
   loadingText: {
     color: 'white',
     fontSize: 24
@@ -885,6 +976,9 @@ const styles = StyleSheet.create({
     backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  hyperlink: {
+    textDecorationLine: 'underline'
   }
 
 });
