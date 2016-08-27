@@ -205,11 +205,12 @@ function huarteApp(state = defaultState, action) {
       return newState;
     case "UPDATE_SCORE":
       newState = Object.assign({}, state);
+      let wasCorrect = false;
       if (action.delta > 0) {
-        newState.currentGameCorrect = newState.currentGameCorrect + 1;
-      } else {
-        newState.currentGameIncorrect = newState.currentGameIncorrect + 1;
-      }
+        wasCorrect = true;
+      } 
+
+      Common.saveStatistics(wasCorrect, action.delta);
 
       newState.score = newState.score + action.delta;
       return newState;
@@ -250,25 +251,38 @@ var Common = {
   },
 
 
-  saveStatistics: function(state) { 
-    this.changeNumericAsyncStorage("total_winnings", state.currentScore);
-    this.changeNumericAsyncStorage("total_correct", state.currentGameCorrect);
-    this.changeNumericAsyncStorage("total_incorrect", state.currentGameIncorrect);
+  saveStatistics: function(wasCorrect, delta) { 
+    this.changeNumericAsyncStorage("total_winnings", delta);
+    if (wasCorrect) {
+      this.changeNumericAsyncStorage("total_correct", 1);
+    } else {
+      this.changeNumericAsyncStorage("total_incorrect", 1);
+    }
   },
 
+  getStatistics: function() {
+    return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorect"])
+  },
 
   // used to take existing value and apply a change to it, not to set a new value
   changeNumericAsyncStorage: function(key, delta) {
-        AsyncStorage.getItem(key).then((value) => {
+    AsyncStorage.getItem(key).then((value) => {
 
       if (!value) {
         value = 0;
+      } else {
+        value = parseInt(value);
       }
 
-      AsyncStorage.setItem(key, value + delta);
+      value = value + delta;
+      value = value.toString();
+
+      AsyncStorage.setItem(key, value);
 
     }).done();
-  }
+  },
+
+
 
 
 };
@@ -288,7 +302,7 @@ const Link = React.createClass({
 })
 
 
-var FinalJeopardyBid = React.createClass({
+const FinalJeopardyBid = React.createClass({
   getInitialState: function() {
     return {
       text: ""
@@ -361,7 +375,7 @@ var FinalJeopardyBid = React.createClass({
 
 
 // FIXFIX: a lot of shared logic with final jeopardy bid. like, 90% the same
-var DailyDoubleBid = React.createClass({
+const DailyDoubleBid = React.createClass({
   getInitialState: function() {
     return {
       text: ""
@@ -431,7 +445,7 @@ var DailyDoubleBid = React.createClass({
   }
 });
 
-var Question = React.createClass({
+const Question = React.createClass({
   getInitialState: function() {
     return {
       text: ""
@@ -557,7 +571,7 @@ var Question = React.createClass({
   }
 });
 
-var DollarAmountList = React.createClass({
+const DollarAmountList = React.createClass({
   getInitialState: function () {
     var dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row !== row2
@@ -622,7 +636,7 @@ var DollarAmountList = React.createClass({
 
 });
 
-var CategoryList = React.createClass({
+const CategoryList = React.createClass({
    getInitialState: function() {
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
@@ -709,7 +723,7 @@ var CategoryList = React.createClass({
 
 });
 
-var GameList = React.createClass({
+const GameList = React.createClass({
   getInitialState: function() {
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
@@ -765,11 +779,45 @@ var GameList = React.createClass({
   }
 });
 
-var Statistics = React.createClass({
+const Statistics = React.createClass({
+  getInitialState: function() {
+    return {
+      hasLoaded: false,
+      statistics: []
+    };
+  },
+
+  componentDidMount: function() {
+    Common.getStatistics().then((statistics) => {
+
+      statistics.forEach((stat) => {
+        if (!stat[1]) {
+          stat[1] = 0;
+        }
+      });
+
+      this.setState({
+        hasLoaded: true,
+        statistics: statistics
+      })
+    })
+  },
+
   render: function() {
     StatusBar.setBarStyle('default', true);
+    if (!this.state.hasLoaded) {
+      return Common.renderLoadingView();
+    }
+
     return (
-      <Text> Blah </Text>
+      <View style={[styles.loadingView, styles.paragraphView]}>
+        <Text style={styles.loadingText}> Statistics </Text>
+        {this.state.statistics.map((statistic) => {
+          return (
+            <Text style={styles.scoreText} key={statistic[0]}> {statistic[0]}: {[statistic[1]]}</Text>
+            );
+        })}
+      </View>
       )
   }
 });
@@ -860,7 +908,7 @@ const HUARTE_MENU_DATASOURCE = [
   }
 ];
 
-var HuarteMainMenu = React.createClass({
+const HuarteMainMenu = React.createClass({
   getInitialState: function() {
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
@@ -900,7 +948,7 @@ var HuarteMainMenu = React.createClass({
 
 });
 
-var huarte = React.createClass({
+const huarte = React.createClass({
 
  render: function() {
   return (
