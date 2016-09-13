@@ -11,6 +11,7 @@ import React, {
   StyleSheet,
   Text,
   TextInput,
+  WebView,
   View
 } from 'react-native';
 
@@ -240,17 +241,6 @@ let levenshtein = require("fast-levenshtein")
 //*************************
 
 var Common = {
-  renderLoadingView: function() {
-    return (
-        <View style={styles.loadingView}>
-          <Text style={styles.loadingText}>
-            Loading...
-          </Text>
-        </View>
-      );
-  },
-
-
   saveStatistics: function(wasCorrect, delta) { 
     this.changeNumericAsyncStorage("total_winnings", delta);
     if (wasCorrect) {
@@ -261,7 +251,7 @@ var Common = {
   },
 
   getStatistics: function() {
-    return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorect"])
+    return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorrect"])
   },
 
   // used to take existing value and apply a change to it, not to set a new value
@@ -281,10 +271,6 @@ var Common = {
 
     }).done();
   },
-
-
-
-
 };
 
 //*************************
@@ -299,8 +285,80 @@ const Link = React.createClass({
       </Text>
       );
   }
-})
+});
 
+const SimpleMessage = React.createClass({
+  getDefaultProps: function() {
+    return {
+      message: "Loading..."
+    };
+  },
+
+  render: function() {
+    return (
+      <View style={styles.loadingView}>
+        <Text style={styles.loadingText}>
+          {this.props.message}
+        </Text>
+      </View>
+    );
+  }
+});  
+
+// Should this be truly polymorphic? 
+const MediaLink = React.createClass({
+
+  linkText: function() {
+    if (this.props.media.type === "audio") {
+      return "Play audio";
+    } else if (this.props.media.type === "image") {
+      return "View image";
+    } 
+  },
+
+  showMedia: function() {
+    if (this.props.media.type === "audio") {
+      return;
+    } else if (this.props.media.type === "image") {
+      this.props.navigator.push({
+        title: "Image",
+        component: ImageWebView,
+        passProps: {
+          url: this.props.media.url
+        }
+      })
+    } 
+  },
+
+  render: function() {
+    return (
+        <Text style={[styles.hyperlink, styles.scoreText]} onPress={() => { this.showMedia()}}>{this.linkText()}</Text>
+      );
+  }
+});
+
+const ImageWebView = React.createClass({
+
+  onError: function() {
+    this.props.navigator.replace({
+      title: "Error",
+      component: SimpleMessage,
+      passProps: {
+        message: "There was an error loading the image"
+      }
+    })
+  },
+
+  render: function() {
+    return (
+      <WebView
+        source={{uri: this.props.url}}
+        onError={this.onError}
+      />
+    );
+  }
+
+}); 
 
 const FinalJeopardyBid = React.createClass({
   getInitialState: function() {
@@ -549,11 +607,18 @@ const Question = React.createClass({
       }
       var answerFeedback = <Text>You entered {this.state.text}. The correct answer is {this.props.clue.answer}. {correctText}.</Text>
     }
+
     return (
       <View style={styles.questionView}>
         <Text style={styles.question}>
           {this.props.clue.question}
         </Text>
+        {this.props.clue.media.map((mediaLink) => {
+          return (
+              <MediaLink media={mediaLink} navigator={this.props.navigator} key={mediaLink.url}>
+              </MediaLink>
+            );
+        })}
         <Text style={styles.question}>
             {answerFeedback}
         </Text>
@@ -687,7 +752,9 @@ const CategoryList = React.createClass({
   render: function() {
     StatusBar.setBarStyle('default', true);
     if(!store.getState().gameLoaded) {
-      return Common.renderLoadingView();
+      return (
+          <SimpleMessage></SimpleMessage>
+        );
     }
     return (
       <ListView
@@ -759,7 +826,9 @@ const GameList = React.createClass({
   render: function() {
     StatusBar.setBarStyle('default', true);
     if (!store.getState().gameListLoaded) {
-      return Common.renderLoadingView();
+      return (
+          <SimpleMessage></SimpleMessage>
+      );
     } 
     return (
       <ListView
@@ -778,6 +847,12 @@ const GameList = React.createClass({
       )
   }
 });
+
+const STATISTIC_DISPLAY_NAMES = {
+  "total_winnings": "Total Winnings",
+  "total_correct": "Total Correct",
+  "total_incorrect": "Total Incorrect"
+};
 
 const Statistics = React.createClass({
   getInitialState: function() {
@@ -806,7 +881,9 @@ const Statistics = React.createClass({
   render: function() {
     StatusBar.setBarStyle('default', true);
     if (!this.state.hasLoaded) {
-      return Common.renderLoadingView();
+      return (
+          <SimpleMessage></SimpleMessage>
+      );
     }
 
     return (
@@ -814,7 +891,7 @@ const Statistics = React.createClass({
         <Text style={styles.loadingText}> Statistics </Text>
         {this.state.statistics.map((statistic) => {
           return (
-            <Text style={styles.scoreText} key={statistic[0]}> {statistic[0]}: {[statistic[1]]}</Text>
+            <Text style={styles.scoreText} key={statistic[0]}> {STATISTIC_DISPLAY_NAMES[statistic[0]]}: {[statistic[1]]}</Text>
             );
         })}
       </View>
@@ -873,7 +950,9 @@ const SeasonList = React.createClass({
   render: function() {
     StatusBar.setBarStyle('default', true);
     if(!store.getState().seasonsLoaded) {
-      return Common.renderLoadingView();
+      return (
+          <SimpleMessage></SimpleMessage>
+      );
     }
     return (
       <ListView
