@@ -317,17 +317,13 @@ const MediaLink = React.createClass({
   },
 
   showMedia: function() {
-    if (this.props.media.type === "audio") {
-      return;
-    } else if (this.props.media.type === "image") {
-      this.props.navigator.push({
-        title: "Image",
-        component: ImageWebView,
-        passProps: {
-          url: this.props.media.url
-        }
-      })
-    } 
+    this.props.navigator.push({
+      title: "Media",
+      component: MediaWebView,
+      passProps: {
+        url: this.props.media.url
+      }
+    })
   },
 
   render: function() {
@@ -337,7 +333,7 @@ const MediaLink = React.createClass({
   }
 });
 
-const ImageWebView = React.createClass({
+const MediaWebView = React.createClass({
 
   onError: function() {
     this.props.navigator.replace({
