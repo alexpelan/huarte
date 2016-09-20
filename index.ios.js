@@ -22,16 +22,10 @@ import createLogger from 'redux-logger';
 const loggerMiddleware = createLogger();
 
 let defaultState = {
-    seasons: [],
-    games: [],
-    currentGame: {},
-    score: 0,
-    currentRound: "jeopardy",
-    currentGameCorrect: 0,
-    currentGameIncorrect: 0,
-    gameLoaded: false,
-    seasonsLoaded: false,
-    gameListLoaded: false
+    seasons: {},
+    games: {},
+    currentGameId: undefined,
+    seasonsLoaded: false
 };
 //*************************
 // CONSTS
@@ -46,17 +40,19 @@ const GAME_LIST_REQUEST_URL = "http://localhost:3000/scraper/seasons/";
 //*************************
 // ACTIONS
 //*************************
-function requestGame() { //will eventually have some sort of id to fetch game by
+function requestGame(gameId) { 
   return {
-    type: "REQUEST_GAME"
-  }
+    type: "REQUEST_GAME",
+    gameId: gameId
+  };
 };
 
-function receiveGame(json) {
+function receiveGame(json, gameId) {
   return {
     type: "RECEIVE_GAME",
-    game: json
-  }
+    game: json,
+    gameId: gameId
+  };
 };
 
 function requestSeasons() {
@@ -66,6 +62,11 @@ function requestSeasons() {
 };
 
 function receiveSeasons(json) {
+  Object.keys(json.seasons).forEach((seasonId) => {
+    let season = json.seasons[seasonId];
+    season.gamesLoaded = false;
+    season.games = [];
+  });
   return {
     type: "RECEIVE_SEASONS",
     seasons: json.seasons
@@ -75,14 +76,19 @@ function receiveSeasons(json) {
 function requestGameList() {
   return {
     type: "REQUEST_GAME_LIST",
-  }
+  };
 };
 
-function receiveGameList(json) {
+function receiveGameList(json, seasonId) {
+  Object.keys(json.games).forEach((gameId) => {
+    let game = json.games[gameId];
+    game.loaded =false;
+  });
   return {
     type: "RECEIVE_GAME_LIST",
-    games: json.games
-  }
+    games: json.games,
+    seasonId
+  };
 }
 
 function selectQuestion(round, categoryIndex, clueIndex){
@@ -98,7 +104,7 @@ function updateScore(delta, wasCorrect) {
   return {
     type: "UPDATE_SCORE",
     delta: delta
-  }
+  };
 };
 
 function nextRound(currentRound) {
@@ -130,13 +136,13 @@ function bidFinalJeopardy(bid) {
 function fetchGame(gameId) {
   return function(dispatch) {
     //first dispatch that we are requesting
-    dispatch(requestGame());
+    dispatch(requestGame(gameId));
 
     //return a promise 
     return  fetch(GAME_REQUEST_URL + gameId)
       .then((response) => response.json())
       .then((json) => {
-        dispatch(receiveGame(json));
+        dispatch(receiveGame(json, gameId));
       });
 
     //FIXFIX: handle failure
@@ -162,7 +168,7 @@ function fetchGameList(seasonId) {
     return fetch(GAME_LIST_REQUEST_URL + seasonId)
       .then((response) => response.json())
       .then((json) => {
-        dispatch(receiveGameList(json));
+        dispatch(receiveGameList(json, seasonId));
       });
   }
 };
@@ -178,11 +184,18 @@ function huarteApp(state = defaultState, action) {
   switch(action.type) {
     case "REQUEST_GAME":
       newState = Object.assign({}, state);
-      return newState; //no-op for now
+      newState.currentGameId = parseInt(action.gameId);
+      return newState; 
     case "RECEIVE_GAME":
       newState = Object.assign({},state);
-      newState.currentGame = action.game;
-      newState.gameLoaded = true;
+      newState.games[action.gameId].jeopardy = action.game.jeopardy;
+      newState.games[action.gameId].double_jeopardy = action.game.double_jeopardy;
+      newState.games[action.gameId].final_jeopardy = action.game.final_jeopardy;
+      newState.games[action.gameId].currentRound = "jeopardy";
+      newState.games[action.gameId].score = 0;
+      newState.games[action.gameId].numberCorrect = 0;
+      newState.games[action.gameId].numberIncorrect = 0;
+      newState.games[action.gameId].loaded = true;
       return newState;
     case "REQUEST_SEASONS":
       newState = Object.assign({}, state);
@@ -197,12 +210,15 @@ function huarteApp(state = defaultState, action) {
       return newState;
     case "RECEIVE_GAME_LIST":
       newState = Object.assign({}, state);
-      newState.games = action.games;
-      newState.gameListLoaded = true;
+      Object.keys(action.games).forEach((gameId) => {
+        newState.games[gameId] = action.games[gameId];
+        newState.seasons[action.seasonId].games.push(gameId); 
+      });
+      newState.seasons[action.seasonId].gamesLoaded = true;
       return newState;
     case "SELECT_QUESTION":
       newState = Object.assign({}, state);
-      newState.currentGame[action.round].categories[action.categoryIndex].clues[action.clueIndex].isCompleted = true;
+      newState.games[state.currentGameId][action.round].categories[action.categoryIndex].clues[action.clueIndex].isCompleted = true;
       return newState;
     case "UPDATE_SCORE":
       newState = Object.assign({}, state);
@@ -213,15 +229,16 @@ function huarteApp(state = defaultState, action) {
 
       Common.saveStatistics(wasCorrect, action.delta);
 
-      newState.score = newState.score + action.delta;
+      var currentScore = state.games[state.currentGameId].score
+      newState.games[state.currentGameId].score = currentScore + action.delta;
       return newState;
     case "NEXT_ROUND":
       newState = Object.assign({}, state);
-      newState.currentRound = action.nextRound;
+      newState.games[state.currentGameId].currentRound = action.nextRound;
       return newState;
     case "BID_FINAL_JEOPARDY":
       newState = Object.assign({}, state);
-      newState.final_jeopardy.categories[0].value = "$" + action.bid;
+      newState.games[state.currentGameId].final_jeopardy.categories[0].value = "$" + action.bid;
       return newState;
     default:
       return state;
@@ -240,7 +257,7 @@ let levenshtein = require("fast-levenshtein")
 // UTILITY FUNCTIONS
 //*************************
 
-var Common = {
+const Common = {
   saveStatistics: function(wasCorrect, delta) { 
     this.changeNumericAsyncStorage("total_winnings", delta);
     if (wasCorrect) {
@@ -270,7 +287,48 @@ var Common = {
       AsyncStorage.setItem(key, value);
 
     }).done();
+  }
+};
+
+const StateHelper = {
+  isSeasonLoaded: function (seasonId) {
+    return store.getState().seasons[seasonId].gamesLoaded;
   },
+
+  getReferences: function (listOfIds, keyName) {
+    var references = {};
+    listOfIds.forEach((id) => {
+      references[id] = store.getState()[keyName][id];
+    });
+    return references;
+  },
+
+  transformObjectToListDataSource: function(obj) {
+    var list = []
+    for (var property in obj) {
+      var listItem = obj[property];
+      listItem.id = property;
+      list.push(listItem);
+    }
+    return list.sort(function(a, b){
+      return b.id - a.id;
+    });
+  },
+
+  getCurrentGame: function() {
+    var state = store.getState();
+    if (state.currentGameId) {
+      var game = state.games[state.currentGameId];
+      return game;
+    } else {
+      return {};
+    }
+  },
+
+  getCurrentRound: function() {
+    var game = this.getCurrentGame();
+    return game[game.currentRound];
+  }
 };
 
 //*************************
@@ -367,8 +425,7 @@ const FinalJeopardyBid = React.createClass({
 
   validateBid: function() {
     var text = this.state.text;
-    var state= store.getState();
-    var score = state.score;
+    var score = StateHelper.getCurrentGame().score;
     let bid;
     let maxBid;
 
@@ -405,7 +462,7 @@ const FinalJeopardyBid = React.createClass({
 
   render: function() {
     StatusBar.setBarStyle('light-content', true);
-    var state = store.getState();
+    var score = StateHelper.getCurrentGame().score;
 
 
      return (
@@ -477,7 +534,7 @@ const DailyDoubleBid = React.createClass({
 
   render: function() {
     StatusBar.setBarStyle('light-content', true);
-    var state = store.getState();
+    var score= StateHelper.getCurrentGame().score;
 
 
      return (
@@ -516,11 +573,9 @@ const Question = React.createClass({
   },
 
   checkIfAllQuestionsAnswered: function() {
-    var state = store.getState();
-    var round = state.currentRound;
     var returnValue = true;
 
-    _.each(state.currentGame[round].categories, function(category){
+    _.each(StateHelper.getCurrentRound().categories, function(category){
       _.each(category.clues, function(clue){
         if(!clue.isCompleted) {
           returnValue = false;
@@ -541,7 +596,7 @@ const Question = React.createClass({
    
     //store.dispatch(nextRound("double_jeopardy")) easy to skip to FJ while debugging via this
     if (this.checkIfAllQuestionsAnswered()) {
-      store.dispatch(nextRound(store.getState().currentRound));
+      store.dispatch(nextRound(StateHelper.getCurrentGame().currentRound));
     }
 
     setTimeout(() => {
@@ -643,7 +698,7 @@ const DollarAmountList = React.createClass({
   },
 
   selectClue: function(clue, clueIndex) {
-    store.dispatch(selectQuestion(store.getState().currentRound, this.props.categoryIndex, clueIndex));
+    store.dispatch(selectQuestion(StateHelper.getCurrentGame().currentRound, this.props.categoryIndex, clueIndex));
 
     if (clue.isDailyDouble) {
       this.props.navigator.push({
@@ -709,19 +764,21 @@ const CategoryList = React.createClass({
 
   componentDidMount: function() {
     store.subscribe(() => {
-      var state = store.getState();
-      if (state.gameLoaded) {
+      if (this.hasLoaded()) {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(state.currentGame[state.currentRound].categories)
+          dataSource: this.state.dataSource.cloneWithRows(StateHelper.getCurrentRound().categories)
         });
       }
     });
     store.dispatch(fetchGame(this.props.game.id));
   },
 
+  hasLoaded: function() {
+    return StateHelper.getCurrentGame().loaded;
+  },
 
   selectCategory: function(category, categoryIndex) {
-    if (store.getState().currentRound === FINAL_JEOPARDY) {
+    if (StateHelper.getCurrentGame().currentRound === FINAL_JEOPARDY) {
       this.props.navigator.push({
         title: "Final Jeopardy",
         navigationBarHidden: true,
@@ -747,7 +804,7 @@ const CategoryList = React.createClass({
 
   render: function() {
     StatusBar.setBarStyle('default', true);
-    if(!store.getState().gameLoaded) {
+    if(!this.hasLoaded()) {
       return (
           <SimpleMessage></SimpleMessage>
         );
@@ -771,16 +828,16 @@ const CategoryList = React.createClass({
   },
 
   getRoundDisplayName: function() {
-    var round = store.getState().currentRound;
+    var round = StateHelper.getCurrentGame().currentRound;
     round = round.slice(0,1).toUpperCase() + round.slice(1);
     round = round.replace("_", " ")
     return round
   },
 
   renderFooter: function() {
-    var roundisplayName = this.getRoundDisplayName();
+    var roundDisplayName = this.getRoundDisplayName();
     return (
-      <Text style={styles.scoreText}>Current Score: {store.getState().score} - {roundisplayName} Round</Text>
+      <Text style={styles.scoreText}>Current Score: {StateHelper.getCurrentGame().score} - {roundDisplayName} Round</Text>
     )
   },
 
@@ -799,13 +856,18 @@ const GameList = React.createClass({
   componentDidMount: function() {
     store.subscribe(() => {
       var state = store.getState();
-      if (state.gameListLoaded) {
+      if (this.hasLoaded()) {
+        const games = StateHelper.getReferences(this.props.season.games, "games");
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(state.games)
+          dataSource: this.state.dataSource.cloneWithRows(StateHelper.transformObjectToListDataSource(games))
         });
       }
     });
     store.dispatch(fetchGameList(this.props.season.id));
+  },
+
+  hasLoaded: function() {
+    return StateHelper.isSeasonLoaded(this.props.season.id);
   },
 
   selectGame: function(game, gameIndex) {
@@ -821,7 +883,7 @@ const GameList = React.createClass({
 
   render: function() {
     StatusBar.setBarStyle('default', true);
-    if (!store.getState().gameListLoaded) {
+    if (!this.hasLoaded()) {
       return (
           <SimpleMessage></SimpleMessage>
       );
@@ -924,7 +986,7 @@ const SeasonList = React.createClass({
       var state = store.getState();
       if (state.seasonsLoaded) {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(state.seasons)
+          dataSource: this.state.dataSource.cloneWithRows(StateHelper.transformObjectToListDataSource(state.seasons))
         });
       }
     });
