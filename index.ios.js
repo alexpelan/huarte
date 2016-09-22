@@ -25,7 +25,8 @@ let defaultState = {
     seasons: {},
     games: {},
     currentGameId: undefined,
-    seasonsLoaded: false
+    seasonsLoaded: false,
+    seasonsLoadedTime: undefined
 };
 //*************************
 // CONSTS
@@ -36,6 +37,7 @@ const FINAL_JEOPARDY = "final_jeopardy";
 const GAME_REQUEST_URL = 'http://localhost:3000/scraper/games/';
 const SEASONS_REQUEST_URL = "http://localhost:3000/scraper/";
 const GAME_LIST_REQUEST_URL = "http://localhost:3000/scraper/seasons/";
+const MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 
 //*************************
 // ACTIONS
@@ -48,10 +50,12 @@ function requestGame(gameId) {
 };
 
 function receiveGame(json, gameId) {
+  const timeLoaded = new Date()
   return {
     type: "RECEIVE_GAME",
     game: json,
-    gameId: gameId
+    gameId: gameId,
+    timeLoaded
   };
 };
 
@@ -67,9 +71,11 @@ function receiveSeasons(json) {
     season.gamesLoaded = false;
     season.games = [];
   });
+  const timeLoaded = new Date()
   return {
     type: "RECEIVE_SEASONS",
-    seasons: json.seasons
+    seasons: json.seasons,
+    timeLoaded
   };
 };
 
@@ -82,12 +88,14 @@ function requestGameList() {
 function receiveGameList(json, seasonId) {
   Object.keys(json.games).forEach((gameId) => {
     let game = json.games[gameId];
-    game.loaded =false;
+    game.loaded = false;
   });
+  const timeLoaded = new Date()
   return {
     type: "RECEIVE_GAME_LIST",
     games: json.games,
-    seasonId
+    seasonId, 
+    timeLoaded
   };
 }
 
@@ -130,10 +138,20 @@ function bidFinalJeopardy(bid) {
   };
 }
 
+function noop() {
+  return {
+    type: "NOOP"
+  };
+}
+
 //*************************
 // THUNKS
 //*************************
 function fetchGame(gameId) {
+  if (store.getState().games[gameId].loaded && StateHelper.isCacheValid(store.getState().games[gameId].timeLoaded, MILLISECONDS_IN_DAY)) {
+    return noop();
+  }
+
   return function(dispatch) {
     //first dispatch that we are requesting
     dispatch(requestGame(gameId));
@@ -150,6 +168,10 @@ function fetchGame(gameId) {
 };
 
 function fetchSeasons() {
+  if (StateHelper.isCacheValid(store.getState().seasonsLoadedTime, MILLISECONDS_IN_DAY)) {
+    return noop();
+  }
+
   return function(dispatch) {
     dispatch(requestSeasons());
 
@@ -162,6 +184,10 @@ function fetchSeasons() {
 };
 
 function fetchGameList(seasonId) {
+  if (StateHelper.isSeasonLoaded(seasonId) && StateHelper.isCacheValid(store.getState().seasons[seasonId].timeLoaded, MILLISECONDS_IN_DAY)) {
+    return noop();
+  }
+
   return function(dispatch) {
     dispatch(requestGameList());
 
@@ -196,6 +222,7 @@ function huarteApp(state = defaultState, action) {
       newState.games[action.gameId].numberCorrect = 0;
       newState.games[action.gameId].numberIncorrect = 0;
       newState.games[action.gameId].loaded = true;
+      newState.games[action.gameId].timeLoaded = action.timeLoaded;
       return newState;
     case "REQUEST_SEASONS":
       newState = Object.assign({}, state);
@@ -204,6 +231,7 @@ function huarteApp(state = defaultState, action) {
       newState = Object.assign({}, state);
       newState.seasons = action.seasons;
       newState.seasonsLoaded = true;
+      newState.seasonsLoadedTime = action.timeLoaded;
       return newState;
     case "REQUEST_GAME_LIST":
       newState = Object.assign({}, state);
@@ -215,6 +243,7 @@ function huarteApp(state = defaultState, action) {
         newState.seasons[action.seasonId].games.push(gameId); 
       });
       newState.seasons[action.seasonId].gamesLoaded = true;
+      newState.seasons[action.seasonId].timeLoaded = action.timeLoaded;
       return newState;
     case "SELECT_QUESTION":
       newState = Object.assign({}, state);
@@ -328,6 +357,10 @@ const StateHelper = {
   getCurrentRound: function() {
     var game = this.getCurrentGame();
     return game[game.currentRound];
+  },
+
+  isCacheValid: function(time, expirationTime) {
+    return (new Date() - expirationTime) < time;
   }
 };
 
@@ -763,7 +796,7 @@ const CategoryList = React.createClass({
   },
 
   componentDidMount: function() {
-    store.subscribe(() => {
+    this.unsubscribe = store.subscribe(() => {
       if (this.hasLoaded()) {
         this.setState({
           dataSource: this.state.dataSource.cloneWithRows(StateHelper.getCurrentRound().categories)
@@ -771,6 +804,10 @@ const CategoryList = React.createClass({
       }
     });
     store.dispatch(fetchGame(this.props.game.id));
+  },
+
+  componentWillUnmount: function() {
+    this.unsubscribe();
   },
 
   hasLoaded: function() {
@@ -814,6 +851,7 @@ const CategoryList = React.createClass({
         dataSource={this.state.dataSource}
         renderRow={(category, sectionID, categoryIndex) => this.renderCategory(category, categoryIndex)}
         renderFooter={() => this.renderFooter()}
+        automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
     )
   },
@@ -854,7 +892,7 @@ const GameList = React.createClass({
   },
 
   componentDidMount: function() {
-    store.subscribe(() => {
+    this.unsubscribe = store.subscribe(() => {
       var state = store.getState();
       if (this.hasLoaded()) {
         const games = StateHelper.getReferences(this.props.season.games, "games");
@@ -864,6 +902,10 @@ const GameList = React.createClass({
       }
     });
     store.dispatch(fetchGameList(this.props.season.id));
+  },
+
+  componentWillUnmount: function() {
+    this.unsubscribe();
   },
 
   hasLoaded: function() {
@@ -892,6 +934,7 @@ const GameList = React.createClass({
       <ListView
         dataSource={this.state.dataSource}
         renderRow={(game, sectionID, gameIndex) => this.renderGame(game, gameIndex)}
+        automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
       )
   },
@@ -982,7 +1025,7 @@ const SeasonList = React.createClass({
   },
 
   componentDidMount: function() {
-    store.subscribe(() => {
+    this.unsubscribe = store.subscribe(() => {
       var state = store.getState();
       if (state.seasonsLoaded) {
         this.setState({
@@ -993,6 +1036,9 @@ const SeasonList = React.createClass({
     store.dispatch(fetchSeasons());
   },
 
+  componentWillUnmount: function() {
+    this.unsubscribe();
+  },
 
   selectSeason: function(season, seasonIndex) {
     this.props.navigator.push({
@@ -1016,6 +1062,7 @@ const SeasonList = React.createClass({
       <ListView
         dataSource={this.state.dataSource}
         renderRow={(season, sectionID, seasonIndex) => this.renderSeason(season, seasonIndex)}
+        automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
     )
   },
