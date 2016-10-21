@@ -34,9 +34,9 @@ let defaultState = {
 const JEOPARDY = "jeopardy";
 const DOUBLE_JEOPARDY = "double_jeopardy";
 const FINAL_JEOPARDY = "final_jeopardy";
-const GAME_REQUEST_URL = 'http://localhost:3000/scraper/games/';
-const SEASONS_REQUEST_URL = "http://localhost:3000/scraper/";
-const GAME_LIST_REQUEST_URL = "http://localhost:3000/scraper/seasons/";
+const GAME_REQUEST_URL = 'http://localhost:3000/api/games/';
+const SEASONS_REQUEST_URL = "http://localhost:3000/api/";
+const GAME_LIST_REQUEST_URL = "http://localhost:3000/api/seasons/";
 const MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 
 //*************************
@@ -122,7 +122,7 @@ function nextRound(currentRound) {
   } else if (currentRound === "double_jeopardy") {
     nextRound = "final_jeopardy";
   } else if (currentRound === "final_jeopardy") {
-    Common.savePlayerStatistics(store.getState());
+    Common.saveSingleGameStatistics(StateHelper.getCurrentGame());
   }
 
   return {
@@ -260,6 +260,12 @@ function huarteApp(state = defaultState, action) {
 
       var currentScore = state.games[state.currentGameId].score
       newState.games[state.currentGameId].score = currentScore + action.delta;
+
+      if (wasCorrect) {
+        newState.games[state.currentGameId].numberCorrect = newState.games[state.currentGameId].numberCorrect + 1;
+      } else {
+        newState.games[state.currentGameId].numberIncorrect = newState.games[state.currentGameId].numberIncorrect + 1;
+      }
       return newState;
     case "NEXT_ROUND":
       newState = Object.assign({}, state);
@@ -296,8 +302,16 @@ const Common = {
     }
   },
 
+  saveSingleGameStatistics: function(game) {
+    this.changeNumericAsyncStorage("games_completed", 1);
+    this.changeNumericAsyncStorage("total_winnings_completed_games", game.score);
+    this.changeNumericAsyncStorage("total_correct_completed_games", game.numberCorrect);
+    this.changeNumericAsyncStorage("total_incorrect_completed_games", game.numberIncorrect);
+  },
+
   getStatistics: function() {
-    return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorrect"])
+    return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorrect", "games_completed", "total_winnings_completed_games",
+                                  "total_correct_completed_games", "total_incorrect_completed_games"])
   },
 
   // used to take existing value and apply a change to it, not to set a new value
@@ -501,7 +515,7 @@ const FinalJeopardyBid = React.createClass({
      return (
       <View style={styles.questionView}>
         <Text style={styles.question}>
-          What is your bid? You have {state.score} to wager.
+          What is your bid? You have {score} to wager.
         </Text>
         <Text>{this.state.errorMessage}</Text>
         <TextInput
@@ -573,7 +587,7 @@ const DailyDoubleBid = React.createClass({
      return (
       <View style={styles.questionView}>
         <Text style={styles.question}>
-          What is your bid? You have {state.score} to wager.
+          What is your bid? You have {score} to wager.
         </Text>
         <Text>{this.state.errorMessage}</Text>
         <TextInput
@@ -949,10 +963,31 @@ const GameList = React.createClass({
   }
 });
 
-const STATISTIC_DISPLAY_NAMES = {
-  "total_winnings": "Total Winnings",
-  "total_correct": "Total Correct",
-  "total_incorrect": "Total Incorrect"
+const STATISTIC_METADATA = {
+  total_winnings: {
+    displayName: "Total Winnings",
+  },
+  total_correct: {
+    displayName: "Total Correct",
+  },
+  total_incorrect: {
+    displayName: "Total Incorrect",
+  },
+  games_completed: {
+    displayName: "Games Completed",
+  },
+  total_winnings_completed_games: {
+    displayName: "Average Winnings",
+    divisor: "games_completed"
+  },
+  total_correct_completed_games: {
+    displayName: "Average Correct",
+    divisor: "games_completed"
+  },
+  total_incorrect_completed_games: {
+    displayName: "Average Incorrect",
+    divisor: "games_completed"
+  }
 };
 
 const Statistics = React.createClass({
@@ -965,11 +1000,18 @@ const Statistics = React.createClass({
 
   componentDidMount: function() {
     Common.getStatistics().then((statistics) => {
-
       statistics.forEach((stat) => {
         if (!stat[1]) {
           stat[1] = 0;
         }
+
+        if (STATISTIC_METADATA[stat[0].divisor]) {
+          const divisor = statistics[stats[0].divisor][1];
+          if (divisor !== 0) {
+            stat[1] = stat[1] / divisor;
+          }
+        }
+
       });
 
       this.setState({
@@ -992,7 +1034,7 @@ const Statistics = React.createClass({
         <Text style={styles.loadingText}> Statistics </Text>
         {this.state.statistics.map((statistic) => {
           return (
-            <Text style={styles.scoreText} key={statistic[0]}> {STATISTIC_DISPLAY_NAMES[statistic[0]]}: {[statistic[1]]}</Text>
+            <Text style={styles.scoreText} key={statistic[0]}> {STATISTIC_METADATA[statistic[0]].displayName}: {[statistic[1]]}</Text>
             );
         })}
       </View>
@@ -1163,7 +1205,7 @@ const styles = StyleSheet.create({
     color: 'white'
   },
   listItemDisabled: {
-    color: '#ececec'
+    color: STYLE_CONSTS.JEOPARDY_BLUE,
   },
   listView: {
     paddingTop: 70,
