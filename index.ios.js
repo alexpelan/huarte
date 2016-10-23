@@ -501,7 +501,8 @@ const FinalJeopardyBid = React.createClass({
       navigationBarHidden: true,
       component: Question,
       passProps: {
-        clue: finalJeopardyClue
+        clue: finalJeopardyClue,
+        isSkippable: false
       }
     });
 
@@ -573,7 +574,8 @@ const DailyDoubleBid = React.createClass({
       navigationBarHidden: true,
       component: Question,
       passProps: {
-        clue: this.props.clue
+        clue: this.props.clue,
+        isSkippable: false
       }
     });
 
@@ -647,15 +649,21 @@ const Question = React.createClass({
     }
 
     setTimeout(() => {
+      this.returnToCategories();
+    }, 3000);
+  },
 
+  skipQuestion: function() {
+    this.returnToCategories();
+  },
+
+  returnToCategories: function() {
       if (this.props.clue.isDailyDouble) {
         this.props.navigator.popN(3); // have an extra screen for bidding
       }
       else {
         this.props.navigator.popN(2); // not ideal, but popToRoute is undocumented / doesn't seem to work right
       }
-
-    }, 3000);
   },
 
   checkAnswer: function() {
@@ -695,6 +703,7 @@ const Question = React.createClass({
   },
 
   render: function() {
+    let skipLink;
     StatusBar.setBarStyle('light-content', true);
     if(this.state.answeredQuestion) {
       var correctText = "Incorrect!";
@@ -704,6 +713,10 @@ const Question = React.createClass({
         correctText = "Close Enough!";
       }
       var answerFeedback = <Text>You entered {this.state.text}. The correct answer is {this.props.clue.answer}. {correctText}.</Text>
+    }
+
+    if (this.props.isSkippable) {
+      skipLink = <Text style={[styles.hyperlink, styles.scoreText]} onPress={() => this.skipQuestion()}>Skip</Text>
     }
 
     return (
@@ -720,6 +733,7 @@ const Question = React.createClass({
         <Text style={styles.question}>
             {answerFeedback}
         </Text>
+        {skipLink}
         <TextInput
           style={styles.textInput}
           onChangeText={(text) => this.setState({text})}
@@ -763,7 +777,8 @@ const DollarAmountList = React.createClass({
         navigationBarHidden: true,
         component: Question,
         passProps: {
-          clue
+          clue,
+          isSkippable: true
         }
       });  
     }
