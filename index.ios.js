@@ -37,6 +37,7 @@ const FINAL_JEOPARDY = "final_jeopardy";
 const GAME_REQUEST_URL = 'http://localhost:3000/api/games/';
 const SEASONS_REQUEST_URL = "http://localhost:3000/api/";
 const GAME_LIST_REQUEST_URL = "http://localhost:3000/api/seasons/";
+const DISPUTE_URL = "http://localhost:3000/api/dispute"
 const MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
 
 //*************************
@@ -649,12 +650,29 @@ const Question = React.createClass({
     }
 
     setTimeout(() => {
-      this.returnToCategories();
+      if (!this.state.disputedQuestion) {
+        this.returnToCategories();
+      }
     }, 3000);
   },
 
   skipQuestion: function() {
     this.returnToCategories();
+  },
+
+  disputeQuestion: function() {
+    if (this.state.disputedQuestion) {
+      this.returnToCategories();
+    } else {
+      fetch(DISPUTE_URL, {
+        method: "POST",
+        body: JSON.stringify({
+          clue: this.props.clue,
+          userAnswer: this.state.text.toLowerCase()
+        })
+      }).then(() => true); // fire and forget
+      this.setState({disputedQuestion: true});
+    }
   },
 
   returnToCategories: function() {
@@ -704,6 +722,8 @@ const Question = React.createClass({
 
   render: function() {
     let skipLink;
+    let disputeLink;
+    let disputeLinkText;
     StatusBar.setBarStyle('light-content', true);
     if(this.state.answeredQuestion) {
       var correctText = "Incorrect!";
@@ -713,9 +733,17 @@ const Question = React.createClass({
         correctText = "Close Enough!";
       }
       var answerFeedback = <Text>You entered {this.state.text}. The correct answer is {this.props.clue.answer}. {correctText}.</Text>
+
+      if (this.state.disputedQuestion) {
+        disputeLinkText = "Thanks for the feedback. Tap to continue.";
+      } else {
+        disputeLinkText = "Report inaccurate grading"
+      }
+
+      disputeLink = <Text style={[styles.hyperlink, styles.negativeAction]} onPress={() => this.disputeQuestion()}>{disputeLinkText}</Text>
     }
 
-    if (this.props.isSkippable) {
+    if (this.props.isSkippable && !this.state.answeredQuestion) {
       skipLink = <Text style={[styles.hyperlink, styles.scoreText]} onPress={() => this.skipQuestion()}>Skip</Text>
     }
 
@@ -733,6 +761,7 @@ const Question = React.createClass({
         <Text style={styles.question}>
             {answerFeedback}
         </Text>
+        {disputeLink}
         {skipLink}
         <TextInput
           style={styles.textInput}
@@ -1259,6 +1288,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 18,
     textAlign: 'center'
+  },
+  negativeAction: {
+    color: 'red',
+    fontSize: 18
   },
   questionView: {
     flex: 1,
