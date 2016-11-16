@@ -1,4 +1,5 @@
 'use strict';
+//Vendor imports
 import React, {
   AsyncStorage,
   AppRegistry,
@@ -18,6 +19,32 @@ import React, {
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from 'redux-thunk';
 import createLogger from 'redux-logger';
+
+// App imports
+
+// Components
+import Link from './app/components/Link';
+import SimpleMessage from './app/components/SimpleMessage';
+import About from "./app/components/About";
+
+// Actions
+import {
+  requestGame,
+  receiveGame,
+  requestSeasons,
+  receiveSeasons,
+  requestGameList,
+  receiveGameList,
+  selectQuestion,
+  updateScore,
+  nextRound,
+  bidFinalJeopardy,
+  noop
+} from "./app/actions/index";
+
+import Common from "./app/util/Common";
+import styles from "./app/styles/styles";
+
 
 const loggerMiddleware = createLogger();
 
@@ -39,111 +66,6 @@ const SEASONS_REQUEST_URL = "http://localhost:3000/api/";
 const GAME_LIST_REQUEST_URL = "http://localhost:3000/api/seasons/";
 const DISPUTE_URL = "http://localhost:3000/api/dispute"
 const MILLISECONDS_IN_DAY = 24 * 60 * 60 * 1000;
-
-//*************************
-// ACTIONS
-//*************************
-function requestGame(gameId) { 
-  return {
-    type: "REQUEST_GAME",
-    gameId: gameId
-  };
-};
-
-function receiveGame(json, gameId) {
-  const timeLoaded = new Date()
-  return {
-    type: "RECEIVE_GAME",
-    game: json,
-    gameId: gameId,
-    timeLoaded
-  };
-};
-
-function requestSeasons() {
-  return {
-    type: "REQUEST_SEASONS"
-  };
-};
-
-function receiveSeasons(json) {
-  Object.keys(json.seasons).forEach((seasonId) => {
-    let season = json.seasons[seasonId];
-    season.gamesLoaded = false;
-    season.games = [];
-  });
-  const timeLoaded = new Date()
-  return {
-    type: "RECEIVE_SEASONS",
-    seasons: json.seasons,
-    timeLoaded
-  };
-};
-
-function requestGameList() {
-  return {
-    type: "REQUEST_GAME_LIST",
-  };
-};
-
-function receiveGameList(json, seasonId) {
-  Object.keys(json.games).forEach((gameId) => {
-    let game = json.games[gameId];
-    game.loaded = false;
-  });
-  const timeLoaded = new Date()
-  return {
-    type: "RECEIVE_GAME_LIST",
-    games: json.games,
-    seasonId, 
-    timeLoaded
-  };
-}
-
-function selectQuestion(round, categoryIndex, clueIndex){
-  return {
-    type: "SELECT_QUESTION",
-    round: round,
-    categoryIndex: categoryIndex,
-    clueIndex: clueIndex
-  };
-};
-
-function updateScore(delta, wasCorrect) {
-  return {
-    type: "UPDATE_SCORE",
-    delta: delta
-  };
-};
-
-function nextRound(currentRound) {
-  var nextRound;
-  if (currentRound === "jeopardy") {
-    nextRound = "double_jeopardy";
-  } else if (currentRound === "double_jeopardy") {
-    nextRound = "final_jeopardy";
-  } else if (currentRound === "final_jeopardy") {
-    Common.saveSingleGameStatistics(StateHelper.getCurrentGame());
-  }
-
-  return {
-    type: "NEXT_ROUND",
-    nextRound: nextRound
-  };
-}
-
-function bidFinalJeopardy(bid) {
-  return {
-     type: "BID_FINAL_JEOPARDY",
-     bid: bid
-  };
-}
-
-function noop() {
-  return {
-    type: "NOOP"
-  };
-}
 
 //*************************
 // THUNKS
@@ -293,47 +215,6 @@ let levenshtein = require("fast-levenshtein")
 // UTILITY FUNCTIONS
 //*************************
 
-const Common = {
-  saveStatistics: function(wasCorrect, delta) { 
-    this.changeNumericAsyncStorage("total_winnings", delta);
-    if (wasCorrect) {
-      this.changeNumericAsyncStorage("total_correct", 1);
-    } else {
-      this.changeNumericAsyncStorage("total_incorrect", 1);
-    }
-  },
-
-  saveSingleGameStatistics: function(game) {
-    this.changeNumericAsyncStorage("games_completed", 1);
-    this.changeNumericAsyncStorage("total_winnings_completed_games", game.score);
-    this.changeNumericAsyncStorage("total_correct_completed_games", game.numberCorrect);
-    this.changeNumericAsyncStorage("total_incorrect_completed_games", game.numberIncorrect);
-  },
-
-  getStatistics: function() {
-    return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorrect", "games_completed", "total_winnings_completed_games",
-                                  "total_correct_completed_games", "total_incorrect_completed_games"])
-  },
-
-  // used to take existing value and apply a change to it, not to set a new value
-  changeNumericAsyncStorage: function(key, delta) {
-    AsyncStorage.getItem(key).then((value) => {
-
-      if (!value) {
-        value = 0;
-      } else {
-        value = parseInt(value);
-      }
-
-      value = value + delta;
-      value = value.toString();
-
-      AsyncStorage.setItem(key, value);
-
-    }).done();
-  }
-};
-
 const StateHelper = {
   isSeasonLoaded: function (seasonId) {
     return store.getState().seasons[seasonId].gamesLoaded;
@@ -382,85 +263,6 @@ const StateHelper = {
 //*************************
 // VIEWS
 //*************************
-
-const Link = React.createClass({
-  render: function () {
-    return (
-      <Text style={styles.hyperlink} onPress={() => { Linking.openURL(this.props.url)}}>
-        {this.props.text}
-      </Text>
-      );
-  }
-});
-
-const SimpleMessage = React.createClass({
-  getDefaultProps: function() {
-    return {
-      message: "Loading..."
-    };
-  },
-
-  render: function() {
-    return (
-      <View style={styles.loadingView}>
-        <Text style={styles.loadingText}>
-          {this.props.message}
-        </Text>
-      </View>
-    );
-  }
-});  
-
-// Should this be truly polymorphic? 
-const MediaLink = React.createClass({
-
-  linkText: function() {
-    if (this.props.media.type === "audio") {
-      return "Play audio";
-    } else if (this.props.media.type === "image") {
-      return "View image";
-    } 
-  },
-
-  showMedia: function() {
-    this.props.navigator.push({
-      title: "Media",
-      component: MediaWebView,
-      passProps: {
-        url: this.props.media.url
-      }
-    })
-  },
-
-  render: function() {
-    return (
-        <Text style={[styles.hyperlink, styles.scoreText]} onPress={() => { this.showMedia()}}>{this.linkText()}</Text>
-      );
-  }
-});
-
-const MediaWebView = React.createClass({
-
-  onError: function() {
-    this.props.navigator.replace({
-      title: "Error",
-      component: SimpleMessage,
-      passProps: {
-        message: "There was an error loading the image"
-      }
-    })
-  },
-
-  render: function() {
-    return (
-      <WebView
-        source={{uri: this.props.url}}
-        onError={this.onError}
-      />
-    );
-  }
-
-}); 
 
 const FinalJeopardyBid = React.createClass({
   getInitialState: function() {
@@ -1086,20 +888,6 @@ const Statistics = React.createClass({
   }
 });
 
-const About = React.createClass({
-  render: function() {
-    StatusBar.setBarStyle('default', true);
-    return (
-      <View style={[styles.loadingView, styles.paragraphView]}>
-        <Text style={styles.loadingText}>
-          Huarte is a game by <Link text="Alex Pelan," url="http://www.alexpelan.com"/> a software developer in Brooklyn, NY. The questions and answers are from <Link text="J-Archive." url="www.j-archive.com"/> The app was built using Facebook's <Link text="React Native" url="https://facebook.github.io/react-native/"/> framework and its source is fully available <Link text="here." url="https://github.com/alexpelan/huarte"/>
-        </Text>
-      </View>
-      )
-  }
-}) 
-
-
 const SeasonList = React.createClass({
    getInitialState: function() {
     var dataSource = new ListView.DataSource({
@@ -1233,77 +1021,4 @@ const huarte = React.createClass({
  }
 })
 
-const STYLE_CONSTS = {
-  JEOPARDY_BLUE: "#0000af"
-};
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: 'white',
-  },
-  listItem: {
-    fontSize: 20,
-    marginBottom: 8,
-    textAlign: 'center',
-    color: 'white'
-  },
-  listItemDisabled: {
-    color: STYLE_CONSTS.JEOPARDY_BLUE,
-  },
-  listView: {
-    paddingTop: 70,
-    backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
-  },
-  question: {
-    paddingTop: 100,
-    fontSize: 20,
-    color: 'white',
-    paddingLeft: 20,
-    paddingRight: 20
-  },
-  textInput: {
-    height: 40, 
-    borderColor: 'white', 
-    borderWidth: 1,
-    color: 'white',
-    paddingLeft: 10,
-    paddingRight: 10
-  },
-  loadingView: {
-    flex: 1,
-    backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  paragraphView: {
-    paddingLeft: 20,
-    paddingRight: 20
-  },
-  loadingText: {
-    color: 'white',
-    fontSize: 24
-  },
-  scoreText: {
-    color: 'white',
-    fontSize: 18,
-    textAlign: 'center'
-  },
-  negativeAction: {
-    color: 'red',
-    fontSize: 18
-  },
-  questionView: {
-    flex: 1,
-    backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-  hyperlink: {
-    textDecorationLine: 'underline'
-  }
-
-});
-
 AppRegistry.registerComponent('huarte', () => huarte);
-// I promise I will actually use things like modules and files once this gets to 1000 lines.
