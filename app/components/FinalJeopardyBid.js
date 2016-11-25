@@ -50,6 +50,7 @@ const FinalJeopardyBid = React.createClass({
 
     store.dispatch(bidFinalJeopardy(bid));
     let finalJeopardyClue = state.final_jeopardy.categories[0];
+    const categoryName = this.props.category.name;
     this.props.navigator.push({
       title: "Final Jeopardy",
       navigationBarHidden: true,
@@ -57,7 +58,8 @@ const FinalJeopardyBid = React.createClass({
       passProps: {
         clue: finalJeopardyClue,
         isSkippable: false,
-        store
+        store,
+        categoryName
       }
     });
 

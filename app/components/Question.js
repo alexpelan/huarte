@@ -166,6 +166,9 @@ const Question = React.createClass({
 
     return (
       <View style={styles.questionView}>
+        <Text style={styles.questionHeader}>
+          {this.props.categoryName} - {this.props.clue.value}
+        </Text>
         <Text style={styles.question}>
           {this.props.clue.question}
         </Text>

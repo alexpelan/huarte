@@ -26,6 +26,7 @@ const DollarAmountList = React.createClass({
 
   selectClue: function(clue, clueIndex) {
     const store = this.props.store;
+    const categoryName = this.props.category.name;
     store.dispatch(selectQuestion(StateHelper.getCurrentGame(store).currentRound, this.props.categoryIndex, clueIndex));
 
     if (clue.isDailyDouble) {
@@ -35,7 +36,8 @@ const DollarAmountList = React.createClass({
         passProps: {
           clue,
           clueIndex,
-          store
+          store,
+          categoryName
         }
       })
 
@@ -47,7 +49,8 @@ const DollarAmountList = React.createClass({
         passProps: {
           clue,
           isSkippable: true,
-          store
+          store,
+          categoryName
         }
       });  
     }

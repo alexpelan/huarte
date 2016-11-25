@@ -21,20 +21,18 @@ const DailyDoubleBid = React.createClass({
     };
   },
 
-
-
   validateBid: function() {
     const store = this.props.store;
-    var text = this.state.text;
-    var state= store.getState();
-    var score = state.score;
+    let text = this.state.text;
+    let state= store.getState();
+    let score = state.score;
     let bid;
     let maxBid;
 
     if (score > 0) {
       maxBid = score;
 
-      var parsedBid = parseInt(text);
+      let parsedBid = parseInt(text);
       if(!isNaN(parsedBid) && parsedBid >= 0){
         if (bid > maxBid) {
           this.setState({errorMessage: "You cannot wager more than you have to bid."})
@@ -49,6 +47,7 @@ const DailyDoubleBid = React.createClass({
       bid = 0;
     }
 
+    const categoryName = this.props.categoryName;
     this.props.clue.value = "$" + bid;
     this.props.navigator.push({
       title: this.props.clue.value,
@@ -57,7 +56,8 @@ const DailyDoubleBid = React.createClass({
       passProps: {
         clue: this.props.clue,
         isSkippable: false,
-        store
+        store,
+        categoryName
       }
     });
 

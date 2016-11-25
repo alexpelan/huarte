@@ -22,6 +22,12 @@ const styles = StyleSheet.create({
     paddingTop: 70,
     backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
   },
+  questionHeader: {
+    paddingTop: 40,
+    fontSize: 20,
+    color: 'white',
+    textAlign: 'center'
+  },
   question: {
     paddingTop: 100,
     fontSize: 20,

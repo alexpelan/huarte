@@ -99,7 +99,7 @@ const CategoryList = React.createClass({
   },
 
   getRoundDisplayName: function() {
-    var round = StateHelper.getCurrentGame(this.props.store).currentRound;
+    let round = StateHelper.getCurrentGame(this.props.store).currentRound;
     round = round.slice(0,1).toUpperCase() + round.slice(1);
     round = round.replace("_", " ")
     return round
