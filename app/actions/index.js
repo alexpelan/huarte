@@ -1,25 +1,28 @@
+import StateHelper from "../util/StateHelper";
+import CONSTS from "../util/Consts";
+
 function requestGame(gameId) { 
   return {
     type: "REQUEST_GAME",
     gameId: gameId
   };
-};
+}
 
 function receiveGame(json, gameId) {
-  const timeLoaded = new Date()
+  const timeLoaded = new Date();
   return {
     type: "RECEIVE_GAME",
     game: json,
     gameId: gameId,
     timeLoaded
   };
-};
+}
 
 function requestSeasons() {
   return {
     type: "REQUEST_SEASONS"
   };
-};
+}
 
 function receiveSeasons(json) {
   Object.keys(json.seasons).forEach((seasonId) => {
@@ -27,19 +30,19 @@ function receiveSeasons(json) {
     season.gamesLoaded = false;
     season.games = [];
   });
-  const timeLoaded = new Date()
+  const timeLoaded = new Date();
   return {
     type: "RECEIVE_SEASONS",
     seasons: json.seasons,
     timeLoaded
   };
-};
+}
 
 function requestGameList() {
   return {
     type: "REQUEST_GAME_LIST",
   };
-};
+}
 
 function receiveGameList(json, seasonId) {
   Object.keys(json.games).forEach((gameId) => {
@@ -100,6 +103,60 @@ function noop() {
   };
 }
 
+//*************************
+// THUNKS
+//*************************
+function fetchGameList(store, seasonId) {
+  if (StateHelper.isSeasonLoaded(store, seasonId) && StateHelper.isCacheValid(store.getState().seasons[seasonId].timeLoaded, CONSTS.MILLISECONDS_IN_DAY)) {
+    return noop();
+  }
+
+  return function(dispatch) {
+    dispatch(requestGameList());
+
+    return fetch(CONSTS.GAME_LIST_REQUEST_URL + seasonId)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(receiveGameList(json, seasonId));
+      });
+  };
+}
+
+function fetchSeasons(store) {
+  if (StateHelper.isCacheValid(store.getState().seasonsLoadedTime, CONSTS.MILLISECONDS_IN_DAY)) {
+    return noop();
+  }
+
+  return function(dispatch) {
+    dispatch(requestSeasons());
+
+    return fetch(CONSTS.SEASONS_REQUEST_URL)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(receiveSeasons(json));
+      });
+  };
+}
+
+function fetchGame(store, gameId) {
+  if (store.getState().games[gameId].loaded && StateHelper.isCacheValid(store.getState().games[gameId].timeLoaded, CONSTS.MILLISECONDS_IN_DAY)) {
+    return noop();
+  }
+
+  return function(dispatch) {
+    //first dispatch that we are requesting
+    dispatch(requestGame(gameId));
+
+    //return a promise 
+    return  fetch(CONSTS.GAME_REQUEST_URL + gameId)
+      .then((response) => response.json())
+      .then((json) => {
+        dispatch(receiveGame(json, gameId));
+      });
+
+  };  
+}
+
 export {
   requestGame,
   receiveGame,
@@ -111,5 +168,8 @@ export {
   updateScore,
   nextRound,
   bidFinalJeopardy,
-  noop
+  noop,
+  fetchGame,
+  fetchGameList,
+  fetchSeasons
 };

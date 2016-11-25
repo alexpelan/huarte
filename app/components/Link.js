@@ -1,4 +1,5 @@
 import React, {
+	Linking,
 	StyleSheet,
 	Text
 } from "react-native";
