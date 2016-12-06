@@ -1,4 +1,5 @@
-import React, {
+import React from "react";
+import {
   StatusBar,
   ListView,
   Text,
@@ -7,6 +8,7 @@ import React, {
 
 import {selectQuestion} from "../actions/index";
 
+import DailyDoubleBid from "./DailyDoubleBid";
 import Question from "./Question";
 import SimpleMessage from "./SimpleMessage";
 
@@ -28,7 +30,7 @@ const DollarAmountList = React.createClass({
     const store = this.props.store;
     const categoryName = this.props.category.name;
     store.dispatch(selectQuestion(StateHelper.getCurrentGame(store).currentRound, this.props.categoryIndex, clueIndex));
-
+    console.log("is it a daily double?", clue.isDailyDouble)
     if (clue.isDailyDouble) {
       this.props.navigator.push({
         title: "Daily Double!",
@@ -37,7 +39,8 @@ const DollarAmountList = React.createClass({
           clue,
           clueIndex,
           store,
-          categoryName
+          categoryName,
+          isSkippable: false
         }
       })
 

@@ -1,8 +1,9 @@
-import React, {
+import React from "react";
+import {
   StatusBar,
   ListView,
   Text,
-  TextInput
+  TextInput,
   View
 } from "react-native";
 
@@ -33,12 +34,14 @@ const DailyDoubleBid = React.createClass({
       maxBid = score;
 
       let parsedBid = parseInt(text);
+      console.log("parsed bid ", parsedBid)
       if(!isNaN(parsedBid) && parsedBid >= 0){
         if (bid > maxBid) {
           this.setState({errorMessage: "You cannot wager more than you have to bid."})
           return;
         }
         bid = text;
+        console.log("bid is ", bid)
       } else {
         this.setState({errorMessage: "Please enter a positive number."})
         return;
@@ -49,6 +52,7 @@ const DailyDoubleBid = React.createClass({
 
     const categoryName = this.props.categoryName;
     this.props.clue.value = "$" + bid;
+    console.log("the clue is ", this.props.clue)
     this.props.navigator.push({
       title: this.props.clue.value,
       navigationBarHidden: true,

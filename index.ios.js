@@ -1,6 +1,7 @@
 'use strict';
 //Vendor imports
-import React, {
+import React from "react";
+import {
   AppRegistry,
   NavigatorIOS
 } from 'react-native';
