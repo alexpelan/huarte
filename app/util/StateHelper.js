@@ -41,6 +41,11 @@ const StateHelper = {
 
   isCacheValid: function(time, expirationTime) {
     return (new Date() - expirationTime) < time;
+  },
+
+  getHighestBidForCurrentGame: function(store) {
+    var currentRound = this.getCurrentRound(store);
+    return currentRound.highestDollarAmount;
   }
 };
 

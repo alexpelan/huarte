@@ -22,37 +22,42 @@ const DailyDoubleBid = React.createClass({
     };
   },
 
+  getMaxBid: function() {
+    const store = this.props.store;
+    const score = StateHelper.getCurrentGame(store).score;
+    let maxBid;
+
+    if (score > 0) {
+      maxBid = score;
+    } else {
+      maxBid = StateHelper.getHighestBidForCurrentGame(store);
+    }
+
+    return maxBid;
+  },
+
   validateBid: function() {
     const store = this.props.store;
     let text = this.state.text;
     let state= store.getState();
     let score = state.score;
     let bid;
-    let maxBid;
 
-    if (score > 0) {
-      maxBid = score;
-
-      let parsedBid = parseInt(text);
-      console.log("parsed bid ", parsedBid)
-      if(!isNaN(parsedBid) && parsedBid >= 0){
-        if (bid > maxBid) {
-          this.setState({errorMessage: "You cannot wager more than you have to bid."})
-          return;
-        }
-        bid = text;
-        console.log("bid is ", bid)
-      } else {
-        this.setState({errorMessage: "Please enter a positive number."})
+    const maxBid = this.getMaxBid();
+    let parsedBid = parseInt(text);
+    if(!isNaN(parsedBid) && parsedBid >= 0){
+      if (parsedBid > maxBid) {
+        this.setState({errorMessage: "You cannot wager more than you have to bid."});
         return;
       }
+      bid = text;
     } else {
-      bid = 0;
+      this.setState({errorMessage: "Please enter a positive number."});
+      return;
     }
 
     const categoryName = this.props.categoryName;
     this.props.clue.value = "$" + bid;
-    console.log("the clue is ", this.props.clue)
     this.props.navigator.push({
       title: this.props.clue.value,
       navigationBarHidden: true,
@@ -69,13 +74,12 @@ const DailyDoubleBid = React.createClass({
 
   render: function() {
     StatusBar.setBarStyle('light-content', true);
-    var score= StateHelper.getCurrentGame(this.props.store).score;
-
+    const maxBid = this.getMaxBid();
 
      return (
       <View style={styles.questionView}>
         <Text style={styles.question}>
-          What is your bid? You have {score} to wager.
+          What is your bid? You have {maxBid} to wager.
         </Text>
         <Text>{this.state.errorMessage}</Text>
         <TextInput
