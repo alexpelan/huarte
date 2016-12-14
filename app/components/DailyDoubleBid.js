@@ -25,12 +25,13 @@ const DailyDoubleBid = React.createClass({
   getMaxBid: function() {
     const store = this.props.store;
     const score = StateHelper.getCurrentGame(store).score;
+    let highestBidForGame = StateHelper.getHighestBidForCurrentGame(store);
     let maxBid;
 
-    if (score > 0) {
+    if (score > highestBidForGame) {
       maxBid = score;
     } else {
-      maxBid = StateHelper.getHighestBidForCurrentGame(store);
+      maxBid = highestBidForGame;
     }
 
     return maxBid;
