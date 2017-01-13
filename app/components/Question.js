@@ -47,7 +47,7 @@ const Question = React.createClass({
         if(!clue.isCompleted) {
           returnValue = false;
         }
-      })
+      });
 
     });
 
@@ -58,7 +58,7 @@ const Question = React.createClass({
   setAnswerStatus: function(wasCorrect, wasntQuiteCorrect){
     const store = this.props.store;
     var answeredQuestion = true;
-    this.setState({wasCorrect, wasntQuiteCorrect, answeredQuestion})
+    this.setState({wasCorrect, wasntQuiteCorrect, answeredQuestion});
     var delta = this.getDelta(wasCorrect || wasntQuiteCorrect);
     store.dispatch(updateScore(delta));
    
@@ -75,7 +75,10 @@ const Question = React.createClass({
   },
 
   skipQuestion: function() {
-    this.returnToCategories();
+    this.setState({skippedQuestion: true});
+    setTimeout(() => {
+      this.returnToCategories();
+    }, 3000);
   },
 
   disputeQuestion: function() {
@@ -120,7 +123,7 @@ const Question = React.createClass({
           wasCorrect = true;
           wasntQuiteCorrect = true
         }
-      })
+      });
 
     }
 
@@ -142,6 +145,7 @@ const Question = React.createClass({
     let skipLink;
     let disputeLink;
     let disputeLinkText;
+    let answerFeedback;
     StatusBar.setBarStyle('light-content', true);
     if(this.state.answeredQuestion) {
       var correctText = "Incorrect!";
@@ -150,7 +154,7 @@ const Question = React.createClass({
       } else if (this.state.wasCorrect && this.state.wasntQuiteCorrect) {
         correctText = "Close Enough!";
       }
-      var answerFeedback = <Text>You entered {this.state.text}. The correct answer is {this.props.clue.answer}. {correctText}.</Text>
+        answerFeedback = <Text>You entered {this.state.text}. The correct answer is {this.props.clue.answer}. {correctText}.</Text>
 
       if (this.state.disputedQuestion) {
         disputeLinkText = "Thanks for the feedback. Tap to continue.";
@@ -159,6 +163,9 @@ const Question = React.createClass({
       }
 
       disputeLink = <Text style={[styles.hyperlink, styles.negativeAction]} onPress={() => this.disputeQuestion()}>{disputeLinkText}</Text>
+    }
+    else if (this.state.skippedQuestion) {
+      answerFeedback = <Text>The correct answer was {this.props.clue.answer}.</Text>
     }
 
     if (this.props.isSkippable && !this.state.answeredQuestion) {
