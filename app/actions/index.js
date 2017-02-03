@@ -1,5 +1,6 @@
 import StateHelper from "../util/StateHelper";
 import CONSTS from "../util/Consts";
+import api from "../util/Api";
 
 function requestGame(gameId) { 
   return {
@@ -49,7 +50,7 @@ function receiveGameList(json, seasonId) {
     let game = json.games[gameId];
     game.loaded = false;
   });
-  const timeLoaded = new Date()
+  const timeLoaded = new Date();
   return {
     type: "RECEIVE_GAME_LIST",
     games: json.games,
@@ -114,7 +115,7 @@ function fetchGameList(store, seasonId) {
   return function(dispatch) {
     dispatch(requestGameList());
 
-    return fetch(CONSTS.GAME_LIST_REQUEST_URL + seasonId)
+    return api.fetchGameList(seasonId)
       .then((response) => response.json())
       .then((json) => {
         dispatch(receiveGameList(json, seasonId));
