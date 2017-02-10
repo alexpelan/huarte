@@ -131,7 +131,7 @@ function fetchSeasons(store) {
   return function(dispatch) {
     dispatch(requestSeasons());
 
-    return fetch(CONSTS.SEASONS_REQUEST_URL)
+    return api.fetchSeasonsList()
       .then((response) => response.json())
       .then((json) => {
         dispatch(receiveSeasons(json));
@@ -149,7 +149,7 @@ function fetchGame(store, gameId) {
     dispatch(requestGame(gameId));
 
     //return a promise 
-    return  fetch(CONSTS.GAME_REQUEST_URL + gameId)
+    return  api.fetchGame(gameId)
       .then((response) => response.json())
       .then((json) => {
         dispatch(receiveGame(json, gameId));
