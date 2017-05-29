@@ -26,7 +26,7 @@ const SeasonList = React.createClass({
   },
 
   componentDidMount: function() {
-    const store = this.props.store
+    const store = this.props.store;
     this.unsubscribe = store.subscribe(() => {
       var state = store.getState();
       if (state.seasonsLoaded) {
@@ -42,14 +42,13 @@ const SeasonList = React.createClass({
     this.unsubscribe();
   },
 
-  selectSeason: function(season, seasonIndex) {
+  selectSeason: function(season) {
     const store = this.props.store;
     this.props.navigator.push({
       title: season.displayName,
       component: GameList,
       passProps: {
         season,
-        seasonIndex,
         store
       },
     });
@@ -65,16 +64,16 @@ const SeasonList = React.createClass({
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(season, sectionID, seasonIndex) => this.renderSeason(season, seasonIndex)}
+        renderRow={(season, sectionID) => this.renderSeason(season)}
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
     )
   },
 
-  renderSeason: function(season, seasonIndex) {
+  renderSeason: function(season) {
     return (
       <Text style={styles.listItem}
-        onPress={() => this.selectSeason(season, seasonIndex)}>
+        onPress={() => this.selectSeason(season)}>
         {season.displayName}
       </Text>
     );

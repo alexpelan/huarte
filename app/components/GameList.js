@@ -35,7 +35,7 @@ const GameList = React.createClass({
         });
       }
     });
-    store.dispatch(fetchGameList(store, this.props.season.id));
+    store.dispatch(fetchGameList(store, this.props.season.seasonId));
   },
 
   componentWillUnmount: function() {
@@ -43,7 +43,7 @@ const GameList = React.createClass({
   },
 
   hasLoaded: function() {
-    return StateHelper.isSeasonLoaded(this.props.store, this.props.season.id);
+    return StateHelper.isSeasonLoaded(this.props.store, this.props.season.seasonId);
   },
 
   selectGame: function(game, gameIndex) {
