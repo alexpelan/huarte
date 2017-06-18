@@ -1,4 +1,4 @@
-const DOMAIN = "http://ec2-54-68-99-81.us-west-2.compute.amazonaws.com:3000";
+const DOMAIN = "https://www.hornung-api.com";
 
 const CONSTS = {
 	JEOPARDY: "jeopardy",
