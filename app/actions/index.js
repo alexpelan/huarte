@@ -19,6 +19,13 @@ function receiveGame(json, gameId) {
   };
 }
 
+function selectGame(game) {
+  return {
+    type: "SELECT_GAME",
+    gameId: game.id
+  };
+}
+
 function requestSeasons() {
   return {
     type: "REQUEST_SEASONS"
@@ -161,6 +168,7 @@ function fetchGame(store, gameId) {
 export {
   requestGame,
   receiveGame,
+  selectGame,
   requestSeasons,
   receiveSeasons,
   requestGameList,

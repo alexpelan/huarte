@@ -13,7 +13,6 @@ function huarteApp(state = defaultState, action) {
   switch(action.type) {
     case "REQUEST_GAME":
       newState = Object.assign({}, state);
-      newState.currentGameId = parseInt(action.gameId);
       return newState; 
     case "RECEIVE_GAME":
       newState = Object.assign({},state);
@@ -26,6 +25,10 @@ function huarteApp(state = defaultState, action) {
       newState.games[action.gameId].numberIncorrect = 0;
       newState.games[action.gameId].loaded = true;
       newState.games[action.gameId].timeLoaded = action.timeLoaded;
+      return newState;
+    case "SELECT_GAME":
+      newState = Object.assign({}, state);
+      newState.currentGameId = parseInt(action.gameId);
       return newState;
     case "REQUEST_SEASONS":
       newState = Object.assign({}, state);

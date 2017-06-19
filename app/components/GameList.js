@@ -6,7 +6,10 @@ import {
   View
 } from "react-native";
 
-import {fetchGameList} from "../actions/index";
+import {
+  fetchGameList,
+  selectGame,
+} from "../actions/index";
 
 import CategoryList from "./CategoryList";
 import SimpleMessage from "./SimpleMessage";
@@ -48,6 +51,7 @@ const GameList = React.createClass({
 
   selectGame: function(game, gameIndex) {
     const store = this.props.store;
+    store.dispatch(selectGame(game));
     this.props.navigator.push({
       title: game.displayName,
       component: CategoryList,
