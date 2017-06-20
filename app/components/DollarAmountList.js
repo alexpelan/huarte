@@ -30,7 +30,6 @@ const DollarAmountList = React.createClass({
     const store = this.props.store;
     const categoryName = this.props.category.name;
     store.dispatch(selectQuestion(StateHelper.getCurrentGame(store).currentRound, this.props.categoryIndex, clueIndex));
-    console.log("is it a daily double?", clue.isDailyDouble)
     if (clue.isDailyDouble) {
       this.props.navigator.push({
         title: "Daily Double!",
@@ -42,7 +41,7 @@ const DollarAmountList = React.createClass({
           categoryName,
           isSkippable: false
         }
-      })
+      });
 
     } else {
       this.props.navigator.push({

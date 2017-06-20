@@ -62,10 +62,7 @@ const Question = React.createClass({
     var delta = this.getDelta(wasCorrect || wasntQuiteCorrect);
     store.dispatch(updateScore(delta));
    
-    //store.dispatch(nextRound("double_jeopardy")) easy to skip to FJ while debugging via this
-    if (this.checkIfAllQuestionsAnswered()) {
-      store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound));
-    }
+    this.checkIfAllQuestionsAnswered();
 
     setTimeout(() => {
       if (!this.state.disputedQuestion) {
@@ -76,6 +73,7 @@ const Question = React.createClass({
 
   skipQuestion: function() {
     this.setState({skippedQuestion: true});
+    this.checkIfAllQuestionsAnswered();
     setTimeout(() => {
       this.returnToCategories();
     }, 3000);
