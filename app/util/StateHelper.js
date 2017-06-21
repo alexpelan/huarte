@@ -1,7 +1,10 @@
 const StateHelper = {
 
   isSeasonLoaded: function (store, seasonId) {
-    return store.getState().seasons[seasonId].gamesLoaded;
+    const season = store.getState().seasons.find((season) => {
+      return season.seasonId === seasonId;
+    });
+    return season.gamesLoaded;
   },
 
   getReferences: function (store, listOfIds, keyName) {

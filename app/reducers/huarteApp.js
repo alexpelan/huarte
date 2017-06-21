@@ -44,12 +44,15 @@ function huarteApp(state = defaultState, action) {
       return newState;
     case "RECEIVE_GAME_LIST":
       newState = Object.assign({}, state);
+      const seasonToUpdate = newState.seasons.find((season) => {
+        return season.seasonId === action.seasonId;
+      });
       Object.keys(action.games).forEach((gameId) => {
         newState.games[gameId] = action.games[gameId];
-        newState.seasons[action.seasonId].games.push(gameId); 
+        seasonToUpdate.games.push(gameId); 
       });
-      newState.seasons[action.seasonId].gamesLoaded = true;
-      newState.seasons[action.seasonId].timeLoaded = action.timeLoaded;
+      seasonToUpdate.gamesLoaded = true;
+      seasonToUpdate.timeLoaded = action.timeLoaded;
       return newState;
     case "SELECT_QUESTION":
       newState = Object.assign({}, state);
