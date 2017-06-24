@@ -31,8 +31,11 @@ const CategoryList = React.createClass({
     this.unsubscribe = store.subscribe(() => {
       if (this.hasLoaded()) {
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(StateHelper.getCurrentRound(store).categories)
+            dataSource: new ListView.DataSource({
+              rowHasChanged: (row1, row2) => row1 !== row2
+            })
         });
+    
       }
     });
     store.dispatch(fetchGame(store, this.props.game.id));
@@ -80,9 +83,11 @@ const CategoryList = React.createClass({
           <SimpleMessage></SimpleMessage>
         );
     }
+    const store = this.props.store;
+    const dataSource = this.state.dataSource.cloneWithRows(StateHelper.getCurrentRound(store).categories);
     return (
       <ListView
-        dataSource={this.state.dataSource}
+        dataSource={dataSource}
         renderRow={(category, sectionID, categoryIndex) => this.renderCategory(category, categoryIndex)}
         renderFooter={() => this.renderFooter()}
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
@@ -92,7 +97,7 @@ const CategoryList = React.createClass({
 
   renderCategory: function(category, categoryIndex) {
     return (
-      <Text style={styles.listItem}
+      <Text style={[styles.listItem, category.isCompleted && styles.listItemDisabled]}
         onPress={() => this.selectCategory(category, categoryIndex)}>
         {category.name}
       </Text>

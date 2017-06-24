@@ -57,6 +57,19 @@ function huarteApp(state = defaultState, action) {
     case "SELECT_QUESTION":
       newState = Object.assign({}, state);
       newState.games[state.currentGameId][action.round].categories[action.categoryIndex].clues[action.clueIndex].isCompleted = true;
+     
+      const modifiedCategory = newState.games[state.currentGameId][action.round].categories[action.categoryIndex];
+      let isCategoryCompleted = true;
+      modifiedCategory.clues.forEach((clue) => {
+        if (!clue.isCompleted) {
+          isCategoryCompleted = false;
+        }
+      });
+      
+      if (isCategoryCompleted) {
+        newState.games[state.currentGameId][action.round].categories[action.categoryIndex].isCompleted = true;
+      }
+
       return newState;
     case "UPDATE_SCORE":
       newState = Object.assign({}, state);
