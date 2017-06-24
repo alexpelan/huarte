@@ -51,7 +51,9 @@ const Question = React.createClass({
 
     });
 
-    return returnValue;
+    if (returnValue) {
+      store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound));
+    }
 
   },
 
