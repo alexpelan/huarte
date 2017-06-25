@@ -1,7 +1,8 @@
 import {StyleSheet} from "react-native";
 
 const STYLE_CONSTS = {
-  JEOPARDY_BLUE: "#0000af"
+  JEOPARDY_BLUE: "#0000af",
+  ERROR_BACKGROUND: "#ff0033"
 };
 
 const styles = StyleSheet.create({
@@ -74,6 +75,21 @@ const styles = StyleSheet.create({
   },
   hyperlink: {
     textDecorationLine: 'underline'
+  },
+  popover: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  errorPopover: {
+    backgroundColor: STYLE_CONSTS.ERROR_BACKGROUND,
+    color: 'white',
+    fontSize: 18,
+    paddingTop: 10,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 10
   }
 
 });

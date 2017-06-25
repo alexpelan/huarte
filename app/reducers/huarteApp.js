@@ -5,7 +5,11 @@ let defaultState = {
     games: {},
     currentGameId: undefined,
     seasonsLoaded: false,
-    seasonsLoadedTime: undefined
+    seasonsLoadedTime: undefined,
+    error: {
+      isError: false,
+      errorText: ""
+    }
 };
 
 function huarteApp(state = defaultState, action) {
@@ -65,7 +69,7 @@ function huarteApp(state = defaultState, action) {
           isCategoryCompleted = false;
         }
       });
-      
+
       if (isCategoryCompleted) {
         newState.games[state.currentGameId][action.round].categories[action.categoryIndex].isCompleted = true;
       }
@@ -96,6 +100,16 @@ function huarteApp(state = defaultState, action) {
     case "BID_FINAL_JEOPARDY":
       newState = Object.assign({}, state);
       newState.games[state.currentGameId].final_jeopardy.categories[0].value = "$" + action.bid;
+      return newState;
+    case "GLOBAL_SET_ERROR":
+      newState = Object.assign({}, state);
+      newState.error.isError = true;
+      newState.error.errorText = action.error;
+      return newState;
+    case "GLOBAL_DISMISS_ERROR":
+      newState = Object.assign({}, state);
+      newState.error.isError = false;
+      newState.error.errorText = "";
       return newState;
     default:
       return state;

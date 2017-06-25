@@ -105,6 +105,19 @@ function bidFinalJeopardy(bid) {
   };
 }
 
+function setError(error) {
+  return {
+    type: "GLOBAL_SET_ERROR",
+    error: error
+  };
+}
+
+function dismissError() {
+  return {
+    type: "GLOBAL_DISMISS_ERROR"
+  };
+}
+
 function noop() {
   return {
     type: "NOOP"
@@ -122,11 +135,11 @@ function fetchGameList(store, seasonId) {
   return function(dispatch) {
     dispatch(requestGameList());
 
-    return api.fetchGameList(seasonId)
-      .then((response) => response.json())
+    return api.fetchGameList(seasonId, store)
       .then((json) => {
         dispatch(receiveGameList(json, seasonId));
-      });
+      })
+      .catch(() => {}); //FIXFIX: better way to handle this than empty catch? We handle any errors in api.js
   };
 }
 
@@ -138,11 +151,11 @@ function fetchSeasons(store) {
   return function(dispatch) {
     dispatch(requestSeasons());
 
-    return api.fetchSeasonsList()
-      .then((response) => response.json())
+    return api.fetchSeasonsList(store)
       .then((json) => {
         dispatch(receiveSeasons(json));
-      });
+      })
+      .catch(() => {});
   };
 }
 
@@ -156,11 +169,11 @@ function fetchGame(store, gameId) {
     dispatch(requestGame(gameId));
 
     //return a promise 
-    return  api.fetchGame(gameId)
-      .then((response) => response.json())
+    return  api.fetchGame(gameId, store)
       .then((json) => {
         dispatch(receiveGame(json, gameId));
-      });
+      })
+      .catch(() => {});
 
   };  
 }
@@ -177,6 +190,8 @@ export {
   updateScore,
   nextRound,
   bidFinalJeopardy,
+  setError,
+  dismissError,
   noop,
   fetchGame,
   fetchGameList,
