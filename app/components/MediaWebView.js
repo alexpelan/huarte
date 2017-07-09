@@ -24,6 +24,7 @@ const MediaWebView = React.createClass({
       <WebView
         source={{uri: this.props.url}}
         onError={this.onError}
+        scalesPageToFit={true}
       />
     );
   }
