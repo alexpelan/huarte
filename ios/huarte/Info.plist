@@ -55,5 +55,7 @@
             </dict>
         </dict>
     </dict>
+    <key>BugsnagAPIKey</key>
+    <string>6763ff50a00c0cb1cd7dc53fbb6a3eba</string>
 </dict>
 </plist>
