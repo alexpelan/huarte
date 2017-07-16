@@ -3,9 +3,13 @@ import {
   StatusBar,
   ListView,
   Text,
-  TextInput
+  TextInput,
+  TouchableWithoutFeedback,
   View
 } from "react-native";
+
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+import DismissKeyboard from 'dismissKeyboard';
 
 import {
   bidFinalJeopardy
@@ -66,26 +70,37 @@ const FinalJeopardyBid = React.createClass({
 
   },
 
+  onKeyboardToggle: function(toggleState) {
+    this.setState({isKeyboardOpen: toggleState});
+  },
+
   render: function() {
+    let keyboardSpacerStyle;
     StatusBar.setBarStyle('light-content', true);
     var score = StateHelper.getCurrentGame(this.props.store).score;
 
+    if (!this.state.isKeyboardOpen) {
+      keyboardSpacerStyle = styles.keyboardSpacerHidden;
+    }
 
-     return (
-      <View style={styles.questionView}>
-        <Text style={styles.question}>
-          What is your bid? You have {score} to wager.
-        </Text>
-        <Text>{this.state.errorMessage}</Text>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => this.setState({text})}
-          onSubmitEditing={() => this.validateBid()}
-          value={this.state.text}
-          keyboardType="numeric"
-          autoFocus
-        />
-      </View>
+    return (
+      <TouchableWithoutFeedback onPress={() => DismissKeyboard()}>
+        <View style={styles.questionView}>
+          <Text style={styles.question}>
+            What is your bid? You have {score} to wager.
+          </Text>
+          <Text>{this.state.errorMessage}</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => this.setState({text})}
+            onSubmitEditing={() => this.validateBid()}
+            value={this.state.text}
+            keyboardType="numeric"
+            autoFocus
+          />
+          <KeyboardSpacer style={keyboardSpacerStyle} onToggle={(toggleState) => this.onKeyboardToggle(toggleState)} />
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 });

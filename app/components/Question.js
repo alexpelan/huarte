@@ -4,8 +4,11 @@ import {
   ListView,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View
 } from "react-native";
+import DismissKeyboard from 'dismissKeyboard';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {
   updateScore,
@@ -141,11 +144,16 @@ const Question = React.createClass({
 
   },
 
+  onKeyboardToggle: function(toggleState) {
+    this.setState({isKeyboardOpen: toggleState});
+  },
+
   render: function() {
     let skipLink;
     let disputeLink;
     let disputeLinkText;
     let answerFeedback;
+    let keyboardSpacerStyle;
     StatusBar.setBarStyle('light-content', true);
     if(this.state.answeredQuestion) {
       var correctText = "Incorrect!";
@@ -172,35 +180,42 @@ const Question = React.createClass({
       skipLink = <Text style={[styles.hyperlink, styles.scoreText]} onPress={() => this.skipQuestion()}>Skip</Text>
     }
 
+    if (!this.state.isKeyboardOpen) {
+      keyboardSpacerStyle = styles.keyboardSpacerHidden;
+    }
+
     return (
-      <View style={styles.questionView}>
-        <Text style={styles.questionHeader}>
-          {this.props.categoryName} - {this.props.clue.value}
-        </Text>
-        <Text style={styles.question}>
-          {this.props.clue.question}
-        </Text>
-        {this.props.clue.media.map((mediaLink) => {
-          return (
-              <MediaLink media={mediaLink} navigator={this.props.navigator} key={mediaLink.url}>
-              </MediaLink>
-            );
-        })}
-        <Text style={styles.question}>
-            {answerFeedback}
-        </Text>
-        {disputeLink}
-        {skipLink}
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => this.setState({text})}
-          onSubmitEditing={() => this.checkAnswer()}
-          value={this.state.text}
-          autoFocus
-          placeholder="What is..."
-          placeholderTextColor="white"
-        />
-      </View>
+      <TouchableWithoutFeedback onPress={() => DismissKeyboard()}>
+        <View style={styles.questionView} >
+          <Text style={styles.questionHeader}>
+            {this.props.categoryName} - {this.props.clue.value}
+          </Text>
+          <Text style={styles.question}>
+            {this.props.clue.question}
+          </Text>
+          {this.props.clue.media.map((mediaLink) => {
+            return (
+                <MediaLink media={mediaLink} navigator={this.props.navigator} key={mediaLink.url}>
+                </MediaLink>
+              );
+          })}
+          <Text style={styles.question}>
+              {answerFeedback}
+          </Text>
+          {disputeLink}
+          {skipLink}
+          <TextInput
+            style={[styles.textInput, styles.questionTextInput]}
+            onChangeText={(text) => this.setState({text})}
+            onSubmitEditing={() => this.checkAnswer()}
+            value={this.state.text}
+            autoFocus
+            placeholder="What is..."
+            placeholderTextColor="white"
+          />
+          <KeyboardSpacer style={keyboardSpacerStyle} onToggle={(toggleState) => this.onKeyboardToggle(toggleState)} />
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 });

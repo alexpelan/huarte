@@ -44,6 +44,9 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10
   },
+  questionTextInput: {
+    marginTop: 20
+  },
   loadingView: {
     flex: 1,
     backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
@@ -90,6 +93,10 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     paddingRight: 10,
     paddingBottom: 10
+  },
+  keyboardSpacerHidden: {
+    position: 'absolute',
+    bottom: -15
   }
 
 });

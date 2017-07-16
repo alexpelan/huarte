@@ -1,11 +1,14 @@
 import React from "react";
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {
   StatusBar,
   ListView,
   Text,
   TextInput,
+  TouchableWithoutFeedback,
   View
 } from "react-native";
+import DismissKeyboard from 'dismissKeyboard';
 
 import Question from "./Question";
 import SimpleMessage from "./SimpleMessage";
@@ -73,25 +76,37 @@ const DailyDoubleBid = React.createClass({
 
   },
 
+  onKeyboardToggle: function(toggleState) {
+    this.setState({isKeyboardOpen: toggleState});
+  },
+
   render: function() {
+    let keyboardSpacerStyle;
     StatusBar.setBarStyle('light-content', true);
     const maxBid = this.getMaxBid();
 
-     return (
-      <View style={styles.questionView}>
-        <Text style={styles.question}>
-          What is your bid? You have {maxBid} to wager.
-        </Text>
-        <Text>{this.state.errorMessage}</Text>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={(text) => this.setState({text})}
-          onSubmitEditing={() => this.validateBid()}
-          value={this.state.text}
-          keyboardType="numeric"
-          autoFocus
-        />
-      </View>
+    if (!this.state.isKeyboardOpen) {
+      keyboardSpacerStyle = styles.keyboardSpacerHidden;
+    }
+
+    return (
+      <TouchableWithoutFeedback onPress={() => DismissKeyboard()}>
+        <View style={styles.questionView}>
+          <Text style={styles.question}>
+            What is your bid? You have {maxBid} to wager.
+          </Text>
+          <Text>{this.state.errorMessage}</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={(text) => this.setState({text})}
+            onSubmitEditing={() => this.validateBid()}
+            value={this.state.text}
+            keyboardType="numeric"
+            autoFocus
+          />
+          <KeyboardSpacer style={keyboardSpacerStyle} onToggle={(toggleState) => this.onKeyboardToggle(toggleState)} />
+        </View>
+      </TouchableWithoutFeedback>
     );
   }
 });
