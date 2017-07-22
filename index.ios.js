@@ -10,8 +10,8 @@ import {
 
 import { createStore, applyMiddleware } from "redux";
 import thunkMiddleware from 'redux-thunk';
-import createLogger from 'redux-logger';
-import { Client } from 'bugsnag-react-native';
+import {createLogger} from 'redux-logger';
+//import { Client } from 'bugsnag-react-native';
 
 // App imports
 import Banner from "./app/components/Banner";
@@ -22,7 +22,7 @@ import huarteApp from "./app/reducers/huarteApp";
 import styles from "./app/styles/styles";
 
 const loggerMiddleware = createLogger();
-const bugsnag = new Client();
+//const bugsnag = new Client();
 const huarte = React.createClass({
 
   getInitialState: function() {
