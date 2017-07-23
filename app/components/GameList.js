@@ -49,7 +49,7 @@ const GameList = React.createClass({
     return StateHelper.isSeasonLoaded(this.props.store, this.props.season.seasonId);
   },
 
-  selectGame: function(game, gameIndex) {
+  selectGame: function(game) {
     const store = this.props.store;
     store.dispatch(selectGame(game));
     this.props.navigator.push({
@@ -57,7 +57,6 @@ const GameList = React.createClass({
       component: CategoryList,
       passProps: {
         game,
-        gameIndex,
         store
       },
     });
@@ -73,16 +72,16 @@ const GameList = React.createClass({
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(game, sectionID, gameIndex) => this.renderGame(game, gameIndex)}
+        renderRow={(game) => this.renderGame(game)}
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
       )
   },
 
-  renderGame: function(game, gameIndex) {
+  renderGame: function(game) {
     return (
       <Text style={styles.listItem}
-        onPress={() => this.selectGame(game, gameIndex)}>
+        onPress={() => this.selectGame(game)}>
         {game.displayName}
       </Text>
       )

@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<RCTScrollView
+  automaticallyAdjustContentInsets={false}
+  dataSource={
+    ListViewDataSource {
+      "items": 3,
+    }
+  }
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#0000af",
+      "paddingTop": 70,
+    }
+  }
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "color": "white",
+          "fontSize": 20,
+          "marginBottom": 8,
+          "textAlign": "center",
+        }
+      }
+    >
+      Play
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "color": "white",
+          "fontSize": 20,
+          "marginBottom": 8,
+          "textAlign": "center",
+        }
+      }
+    >
+      Statistics
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "color": "white",
+          "fontSize": 20,
+          "marginBottom": 8,
+          "textAlign": "center",
+        }
+      }
+    >
+      About
+    </Text>
+  </View>
+</RCTScrollView>
+`;

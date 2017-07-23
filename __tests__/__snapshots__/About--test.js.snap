@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "alignItems": "center",
+        "backgroundColor": "#0000af",
+        "flex": 1,
+        "justifyContent": "center",
+      },
+      Object {
+        "paddingLeft": 20,
+        "paddingRight": 20,
+      },
+    ]
+  }
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Object {
+        "color": "white",
+        "fontSize": 24,
+      }
+    }
+  >
+    Huarte is a game by 
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "textDecorationLine": "underline",
+        }
+      }
+    >
+      Alex Pelan,
+    </Text>
+     a software developer in Brooklyn, NY. The questions and answers are from 
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "textDecorationLine": "underline",
+        }
+      }
+    >
+      J-Archive.
+    </Text>
+     The app was built using Facebook's 
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "textDecorationLine": "underline",
+        }
+      }
+    >
+      React Native
+    </Text>
+     framework and its source is fully available 
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Object {
+          "textDecorationLine": "underline",
+        }
+      }
+    >
+      here.
+    </Text>
+  </Text>
+</View>
+`;

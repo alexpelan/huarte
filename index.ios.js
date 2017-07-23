@@ -34,7 +34,7 @@ const huarte = React.createClass({
   componentWillMount: function() {
     this.store = createStore(huarteApp, applyMiddleware(thunkMiddleware, loggerMiddleware));
     this.unsubscribe = this.store.subscribe(() => {
-      if (this.store.getState().error.errorText != this.state.errorMessage) {
+      if (this.store.getState().error.errorText !== this.state.errorMessage) {
         this.setState({
           errorMessage: this.store.getState().error.errorText
         });

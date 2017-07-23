@@ -19,7 +19,6 @@ const internalAPI = {
 				throw new Error(reponse);
 			})
 			.catch((response) => {
-				
 				// throwing here means .then() in our thunks won't be executed
 				store.dispatch(setError(response.message));
 				throw new Error (response);

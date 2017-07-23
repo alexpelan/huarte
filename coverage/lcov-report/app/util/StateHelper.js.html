@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/util/StateHelper.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">app/util</a> StateHelper.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">32% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>8/25</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">50% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>1/2</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">30% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>3/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">32% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>8/25</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55</td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">const StateHelper = {
+&nbsp;
+  isSeasonLoaded: <span class="fstat-no" title="function not covered" >fu</span>nction (store, seasonId) {
+    const season = <span class="cstat-no" title="statement not covered" >store.getState().seasons.find(<span class="fstat-no" title="function not covered" >(s</span>eason) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      return season.seasonId === seasonId;</span>
+    });
+<span class="cstat-no" title="statement not covered" >    return season.gamesLoaded;</span>
+  },
+&nbsp;
+  getReferences: <span class="fstat-no" title="function not covered" >fu</span>nction (store, listOfIds, keyName) {
+    var references = <span class="cstat-no" title="statement not covered" >{};</span>
+<span class="cstat-no" title="statement not covered" >    listOfIds.forEach(<span class="fstat-no" title="function not covered" >(i</span>d) =&gt; {</span>
+<span class="cstat-no" title="statement not covered" >      references[id] = store.getState()[keyName][id];</span>
+    });
+<span class="cstat-no" title="statement not covered" >    return references;</span>
+  },
+&nbsp;
+  transformObjectToListDataSource: <span class="fstat-no" title="function not covered" >fu</span>nction(obj) {
+    var list = <span class="cstat-no" title="statement not covered" >[];</span>
+<span class="cstat-no" title="statement not covered" >    for (var property in obj) {</span>
+      var listItem = <span class="cstat-no" title="statement not covered" >obj[property];</span>
+<span class="cstat-no" title="statement not covered" >      listItem.id = property;</span>
+<span class="cstat-no" title="statement not covered" >      list.push(listItem);</span>
+    }
+<span class="cstat-no" title="statement not covered" >    return list.sort(<span class="fstat-no" title="function not covered" >fu</span>nction(a, b){</span>
+<span class="cstat-no" title="statement not covered" >      return b.id - a.id;</span>
+    });
+  },
+&nbsp;
+  getCurrentGame: function(store) {
+    var state = store.getState();
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (state.currentGameId) {
+      var game = state.games[state.currentGameId];
+      return game;
+    } else {
+<span class="cstat-no" title="statement not covered" >      return {};</span>
+    }
+  },
+&nbsp;
+  getCurrentRound: function(store) {
+    var game = this.getCurrentGame(store);
+    return game[game.currentRound];
+  },
+&nbsp;
+  isCacheValid: function(time, expirationTime) {
+    return (new Date() - expirationTime) &lt; time;
+  },
+&nbsp;
+  getHighestBidForCurrentGame: <span class="fstat-no" title="function not covered" >fu</span>nction(store) {
+    var currentRound = <span class="cstat-no" title="statement not covered" >this.getCurrentRound(store);</span>
+<span class="cstat-no" title="statement not covered" >    return currentRound.highestDollarAmount;</span>
+  }
+};
+&nbsp;
+export default StateHelper;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 23 2017 17:38:32 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>

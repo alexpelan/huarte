@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  disabled={false}
+  ellipsizeMode="tail"
+  onPress={[Function]}
+  style={
+    Object {
+      "textDecorationLine": "underline",
+    }
+  }
+>
+  Click me!
+</Text>
+`;

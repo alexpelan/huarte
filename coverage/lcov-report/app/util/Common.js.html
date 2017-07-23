@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for app/util/Common.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(../../sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="../../index.html">All files</a> / <a href="index.html">app/util</a> Common.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">5.88% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>1/17</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>0/4</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">0% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>0/5</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">5.88% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>1/17</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line low'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import {
+  AsyncStorage
+} from "react-native";
+&nbsp;
+const Common = {
+  saveStatistics: <span class="fstat-no" title="function not covered" >fu</span>nction(wasCorrect, delta) { 
+<span class="cstat-no" title="statement not covered" >    this.changeNumericAsyncStorage("total_winnings", delta);</span>
+<span class="cstat-no" title="statement not covered" >    if (wasCorrect) {</span>
+<span class="cstat-no" title="statement not covered" >      this.changeNumericAsyncStorage("total_correct", 1);</span>
+    } else {
+<span class="cstat-no" title="statement not covered" >      this.changeNumericAsyncStorage("total_incorrect", 1);</span>
+    }
+  },
+&nbsp;
+  saveSingleGameStatistics: <span class="fstat-no" title="function not covered" >fu</span>nction(game) {
+<span class="cstat-no" title="statement not covered" >    this.changeNumericAsyncStorage("games_completed", 1);</span>
+<span class="cstat-no" title="statement not covered" >    this.changeNumericAsyncStorage("total_winnings_completed_games", game.score);</span>
+<span class="cstat-no" title="statement not covered" >    this.changeNumericAsyncStorage("total_correct_completed_games", game.numberCorrect);</span>
+<span class="cstat-no" title="statement not covered" >    this.changeNumericAsyncStorage("total_incorrect_completed_games", game.numberIncorrect);</span>
+  },
+&nbsp;
+  getStatistics: <span class="fstat-no" title="function not covered" >fu</span>nction() {
+<span class="cstat-no" title="statement not covered" >    return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorrect", "games_completed", "total_winnings_completed_games",</span>
+                                  "total_correct_completed_games", "total_incorrect_completed_games"]);
+  },
+&nbsp;
+  // used to take existing value and apply a change to it, not to set a new value
+  changeNumericAsyncStorage: <span class="fstat-no" title="function not covered" >fu</span>nction(key, delta) {
+<span class="cstat-no" title="statement not covered" >    AsyncStorage.getItem(key).then(<span class="fstat-no" title="function not covered" >(v</span>alue) =&gt; {</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      if (!value) {</span>
+<span class="cstat-no" title="statement not covered" >        value = 0;</span>
+      } else {
+<span class="cstat-no" title="statement not covered" >        value = parseInt(value);</span>
+      }
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      value = value + delta;</span>
+<span class="cstat-no" title="statement not covered" >      value = value.toString();</span>
+&nbsp;
+<span class="cstat-no" title="statement not covered" >      AsyncStorage.setItem(key, value);</span>
+&nbsp;
+    }).done();
+  }
+};
+&nbsp;
+export default Common;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 23 2017 17:38:32 GMT-0400 (EDT)
+</div>
+</div>
+<script src="../../prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="../../sorter.js"></script>
+</body>
+</html>
