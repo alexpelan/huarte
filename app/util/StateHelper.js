@@ -42,6 +42,10 @@ const StateHelper = {
     return game[game.currentRound];
   },
 
+  getSeasonById: function(store, seasonId) {
+    return store.getState().seasons.find((season) => season.seasonId === seasonId);
+  },
+
   isCacheValid: function(time, expirationTime) {
     return (new Date() - expirationTime) < time;
   },

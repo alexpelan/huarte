@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<RCTScrollView
+  automaticallyAdjustContentInsets={false}
+  dataSource={
+    ListViewDataSource {
+      "items": 4,
+    }
+  }
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#0000af",
+      "paddingTop": 70,
+    }
+  }
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $200
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $400
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $600
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $800
+    </Text>
+  </View>
+</RCTScrollView>
+`;

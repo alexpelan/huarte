@@ -20,24 +20,24 @@
     </h1>
     <div class='clearfix'>
       <div class='fl pad1y space-right2'>
-        <span class="strong">3.7% </span>
+        <span class="strong">13.58% </span>
         <span class="quiet">Statements</span>
-        <span class='fraction'>3/81</span>
+        <span class='fraction'>11/81</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">10.87% </span>
         <span class="quiet">Branches</span>
-        <span class='fraction'>0/46</span>
+        <span class='fraction'>5/46</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">0% </span>
+        <span class="strong">8.7% </span>
         <span class="quiet">Functions</span>
-        <span class='fraction'>0/23</span>
+        <span class='fraction'>2/23</span>
       </div>
       <div class='fl pad1y space-right2'>
-        <span class="strong">3.8% </span>
+        <span class="strong">13.92% </span>
         <span class="quiet">Lines</span>
-        <span class='fraction'>3/79</span>
+        <span class='fraction'>11/79</span>
       </div>
     </div>
   </div>
@@ -290,12 +290,12 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">8x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -421,13 +421,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -439,19 +439,19 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -516,8 +516,8 @@ let levenshtein = require("fast-levenshtein");
 let _ = require("lodash");
 &nbsp;
 const Question = React.createClass({
-  getInitialState: <span class="fstat-no" title="function not covered" >fu</span>nction() {
-<span class="cstat-no" title="statement not covered" >    return {</span>
+  getInitialState: function() {
+    return {
       text: ""
     };
   },
@@ -637,14 +637,14 @@ const Question = React.createClass({
 <span class="cstat-no" title="statement not covered" >    this.setState({isKeyboardOpen: toggleState});</span>
   },
 &nbsp;
-  render: <span class="fstat-no" title="function not covered" >fu</span>nction() {
+  render: function() {
     let skipLink;
     let disputeLink;
     let disputeLinkText;
     let answerFeedback;
     let keyboardSpacerStyle;
-<span class="cstat-no" title="statement not covered" >    StatusBar.setBarStyle('light-content', true);</span>
-<span class="cstat-no" title="statement not covered" >    if(this.state.answeredQuestion) {</span>
+    StatusBar.setBarStyle('light-content', true);
+    <span class="missing-if-branch" title="if path not taken" >I</span>if(this.state.answeredQuestion) {
       var correctText = <span class="cstat-no" title="statement not covered" >"Incorrect!";</span>
 <span class="cstat-no" title="statement not covered" >      if(this.state.wasCorrect &amp;&amp; !this.state.wasntQuiteCorrect) {</span>
 <span class="cstat-no" title="statement not covered" >        correctText = "Correct!";</span>
@@ -661,19 +661,19 @@ const Question = React.createClass({
 &nbsp;
 <span class="cstat-no" title="statement not covered" >      disputeLink = &lt;Text style={[styles.hyperlink, styles.negativeAction]} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this.disputeQuestion()}</span>&gt;{disputeLinkText}&lt;/Text&gt;</span>
     }
-    else <span class="cstat-no" title="statement not covered" >if (this.state.skippedQuestion) {</span>
+    else <span class="missing-if-branch" title="if path not taken" >I</span>if (this.state.skippedQuestion) {
 <span class="cstat-no" title="statement not covered" >      answerFeedback = &lt;Text&gt;The correct answer was {this.props.clue.answer}.&lt;/Text&gt;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (this.props.isSkippable &amp;&amp; !this.state.answeredQuestion) {</span>
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (this.props.isSkippable &amp;&amp; <span class="branch-1 cbranch-no" title="branch not covered" >!this.state.answeredQuestion)</span> {
 <span class="cstat-no" title="statement not covered" >      skipLink = &lt;Text style={[styles.hyperlink, styles.scoreText]} onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >this.skipQuestion()}</span>&gt;Skip&lt;/Text&gt;</span>
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    if (!this.state.isKeyboardOpen) {</span>
-<span class="cstat-no" title="statement not covered" >      keyboardSpacerStyle = styles.keyboardSpacerHidden;</span>
+    <span class="missing-if-branch" title="else path not taken" >E</span>if (!this.state.isKeyboardOpen) {
+      keyboardSpacerStyle = styles.keyboardSpacerHidden;
     }
 &nbsp;
-<span class="cstat-no" title="statement not covered" >    return (</span>
+    return (
       &lt;TouchableWithoutFeedback onPress={<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >DismissKeyboard()}</span>&gt;
         &lt;View style={styles.questionView} &gt;
           &lt;Text style={styles.questionHeader}&gt;
@@ -715,7 +715,7 @@ export default Question;</pre></td></tr>
 </div><!-- /wrapper -->
 <div class='footer quiet pad2 space-top1 center small'>
   Code coverage
-  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Sun Jul 23 2017 17:38:32 GMT-0400 (EDT)
+  generated by <a href="https://istanbul.js.org/" target="_blank">istanbul</a> at Wed Jul 26 2017 23:57:22 GMT-0400 (EDT)
 </div>
 </div>
 <script src="../../prettify.js"></script>

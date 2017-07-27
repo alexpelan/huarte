@@ -128,7 +128,7 @@ function noop() {
 // THUNKS
 //*************************
 function fetchGameList(store, seasonId) {
-  if (StateHelper.isSeasonLoaded(store, seasonId) && StateHelper.isCacheValid(store.getState().seasons[seasonId].timeLoaded, CONSTS.MILLISECONDS_IN_DAY)) {
+  if (StateHelper.isSeasonLoaded(store, seasonId) && StateHelper.isCacheValid(StateHelper.getSeasonById(store, seasonId).timeLoaded, CONSTS.MILLISECONDS_IN_DAY)) {
     return noop();
   }
 

@@ -1,0 +1,49 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`audio link 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  disabled={false}
+  ellipsizeMode="tail"
+  onPress={[Function]}
+  style={
+    Array [
+      Object {
+        "textDecorationLine": "underline",
+      },
+      Object {
+        "color": "white",
+        "fontSize": 18,
+        "textAlign": "center",
+      },
+    ]
+  }
+>
+  Play audio
+</Text>
+`;
+
+exports[`image link 1`] = `
+<Text
+  accessible={true}
+  allowFontScaling={true}
+  disabled={false}
+  ellipsizeMode="tail"
+  onPress={[Function]}
+  style={
+    Array [
+      Object {
+        "textDecorationLine": "underline",
+      },
+      Object {
+        "color": "white",
+        "fontSize": 18,
+        "textAlign": "center",
+      },
+    ]
+  }
+>
+  View image
+</Text>
+`;

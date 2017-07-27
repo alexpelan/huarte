@@ -1,0 +1,120 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  accessibilityComponentType={undefined}
+  accessibilityLabel={undefined}
+  accessibilityTraits={undefined}
+  accessible={true}
+  hitSlop={undefined}
+  nativeID={undefined}
+  onLayout={undefined}
+  onResponderGrant={[Function]}
+  onResponderMove={[Function]}
+  onResponderRelease={[Function]}
+  onResponderTerminate={[Function]}
+  onResponderTerminationRequest={[Function]}
+  onStartShouldSetResponder={[Function]}
+  style={
+    Object {
+      "alignItems": "center",
+      "backgroundColor": "#0000af",
+      "flex": 1,
+      "justifyContent": "space-between",
+    }
+  }
+  testID={undefined}
+>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Object {
+        "color": "white",
+        "fontSize": 20,
+        "paddingTop": 40,
+        "textAlign": "center",
+      }
+    }
+  >
+    VALLEYS
+     - 
+    $200
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Object {
+        "color": "white",
+        "fontSize": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 100,
+      }
+    }
+  >
+    Today part of Israel, the Valley of Elah is where these 2 fought as recounted in the first book of Samuel
+  </Text>
+  <Text
+    accessible={true}
+    allowFontScaling={true}
+    disabled={false}
+    ellipsizeMode="tail"
+    style={
+      Object {
+        "color": "white",
+        "fontSize": 20,
+        "paddingLeft": 20,
+        "paddingRight": 20,
+        "paddingTop": 100,
+      }
+    }
+  />
+  <TextInput
+    autoFocus={true}
+    onChangeText={[Function]}
+    onSubmitEditing={[Function]}
+    placeholder="What is..."
+    placeholderTextColor="white"
+    style={
+      Array [
+        Object {
+          "borderColor": "white",
+          "borderWidth": 1,
+          "color": "white",
+          "height": 40,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+        },
+        Object {
+          "marginTop": 20,
+        },
+      ]
+    }
+    value=""
+  />
+  <View
+    style={
+      Array [
+        Object {
+          "bottom": 0,
+          "left": 0,
+          "right": 0,
+        },
+        Object {
+          "height": 0,
+        },
+        Object {
+          "bottom": -15,
+          "position": "absolute",
+        },
+      ]
+    }
+  />
+</View>
+`;

@@ -49,6 +49,7 @@ const Statistics = React.createClass({
 
   componentDidMount: function() {
     Common.getStatistics().then((statistics) => {
+      console.log("done, my statistics are ", statistics)
       statistics.forEach((stat) => {
         if (!stat[1]) {
           stat[1] = 0;
@@ -62,11 +63,11 @@ const Statistics = React.createClass({
         }
 
       });
-
+      console.log("gonna setstate now? ")
       this.setState({
         hasLoaded: true,
         statistics: statistics
-      })
+      });
     })
   },
 

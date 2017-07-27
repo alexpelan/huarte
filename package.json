@@ -27,6 +27,7 @@
     "react-test-renderer": "16.0.0-alpha.12"
   },
   "jest": {
-    "preset": "react-native"
+    "preset": "react-native",
+    "setupFiles": ["./testHelpers/jestSetup.js"]
   }
 }

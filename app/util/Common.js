@@ -20,6 +20,7 @@ const Common = {
   },
 
   getStatistics: function() {
+    console.log("here is getStatistics")
     return AsyncStorage.multiGet(["total_winnings", "total_correct", "total_incorrect", "games_completed", "total_winnings_completed_games",
                                   "total_correct_completed_games", "total_incorrect_completed_games"]);
   },
