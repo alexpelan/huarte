@@ -20,7 +20,7 @@ import SimpleMessage from "./SimpleMessage";
 
 import styles from "../styles/styles";
 
-import CONSTS from "../util/Consts";
+import api from "../util/Api";
 import StateHelper from "../util/StateHelper";
 
 let levenshtein = require("fast-levenshtein");
@@ -88,13 +88,14 @@ const Question = React.createClass({
     if (this.state.disputedQuestion) {
       this.returnToCategories();
     } else {
-      fetch(CONSTS.DISPUTE_URL, {
+      api.disputeQuestion({
         method: "POST",
         body: JSON.stringify({
           clue: this.props.clue,
           userAnswer: this.state.text.toLowerCase()
-        })
-      }).then(() => true); // fire and forget
+        }),
+        headers: { "Content-Type": "application/json"}
+      }, this.props.store).then(() => true); // fire and forget
       this.setState({disputedQuestion: true});
     }
   },
@@ -124,7 +125,7 @@ const Question = React.createClass({
       _.each(answerTokens, (token) => {
         if(token === text) {
           wasCorrect = true;
-          wasntQuiteCorrect = true
+          wasntQuiteCorrect = true;
         }
       });
 
