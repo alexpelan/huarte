@@ -8,17 +8,16 @@ import MediaWebView from "./MediaWebView";
 import styles from "../styles/styles";
 
 // Should this be truly polymorphic? 
-const MediaLink = React.createClass({
-
-  linkText: function() {
+class MediaLink extends React.Component {
+  linkText = () => {
     if (this.props.media.type === "audio") {
       return "Play audio";
     } else if (this.props.media.type === "image") {
       return "View image";
     } 
-  },
+  };
 
-  showMedia: function() {
+  showMedia = () => {
     this.props.navigator.push({
       title: "Media",
       component: MediaWebView,
@@ -26,13 +25,13 @@ const MediaLink = React.createClass({
         url: this.props.media.url
       }
     })
-  },
+  };
 
-  render: function() {
+  render() {
     return (
         <Text style={[styles.hyperlink, styles.scoreText]} onPress={() => { this.showMedia()}}>{this.linkText()}</Text>
       );
   }
-});
+}
 
 export default MediaLink;

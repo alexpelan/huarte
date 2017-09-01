@@ -7,9 +7,8 @@ import {
 import SimpleMessage from "./SimpleMessage";
 import styles from "../styles/styles";
 
-const MediaWebView = React.createClass({
-
-  onError: function() {
+class MediaWebView extends React.Component {
+  onError = () => {
     this.props.navigator.replace({
       title: "Error",
       component: SimpleMessage,
@@ -17,9 +16,9 @@ const MediaWebView = React.createClass({
         message: "There was an error loading the image"
       }
     })
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <WebView
         source={{uri: this.props.url}}
@@ -28,7 +27,6 @@ const MediaWebView = React.createClass({
       />
     );
   }
-
-}); 
+}
 
 export default MediaWebView;

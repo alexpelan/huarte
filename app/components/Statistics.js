@@ -39,15 +39,13 @@ const STATISTIC_METADATA = {
   }
 };
 
-const Statistics = React.createClass({
-  getInitialState: function() {
-    return {
-      hasLoaded: false,
-      statistics: []
-    };
-  },
+class Statistics extends React.Component {
+  state = {
+    hasLoaded: false,
+    statistics: []
+  };
 
-  componentDidMount: function() {
+  componentDidMount() {
     Common.getStatistics().then((statistics) => {
       console.log("done, my statistics are ", statistics)
       statistics.forEach((stat) => {
@@ -69,9 +67,9 @@ const Statistics = React.createClass({
         statistics: statistics
       });
     })
-  },
+  }
 
-  render: function() {
+  render() {
     StatusBar.setBarStyle('default', true);
     if (!this.state.hasLoaded) {
       return (
@@ -90,6 +88,6 @@ const Statistics = React.createClass({
       </View>
       )
   }
-});
+}
 
 export default Statistics;

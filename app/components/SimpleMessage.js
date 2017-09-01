@@ -7,14 +7,12 @@ import {
 
 import styles from "../styles/styles";
 
-const SimpleMessage = React.createClass({
-  getDefaultProps: function() {
-    return {
-      message: "Loading..."
-    };
-  },
+class SimpleMessage extends React.Component {
+  static defaultProps = {
+    message: "Loading..."
+  };
 
-  render: function() {
+  render() {
     return (
       <View style={styles.loadingView}>
         <Text style={styles.loadingText}>
@@ -23,6 +21,6 @@ const SimpleMessage = React.createClass({
       </View>
     );
   }
-});  
+}
 
 export default SimpleMessage

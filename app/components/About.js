@@ -8,8 +8,8 @@ import {
 import Link from "./Link";
 import styles from "../styles/styles";
 
-const About = React.createClass({
-  render: function() {
+class About extends React.Component {
+  render() {
     StatusBar.setBarStyle('default', true);
     return (
       <View style={[styles.loadingView, styles.paragraphView]}>
@@ -19,6 +19,6 @@ const About = React.createClass({
       </View>
       )
   }
-}); 
+}
 
 export default About;

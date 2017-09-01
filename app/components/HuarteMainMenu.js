@@ -26,18 +26,19 @@ const HUARTE_MENU_DATASOURCE = [
   }
 ];
 
-const HuarteMainMenu = React.createClass({
-  getInitialState: function() {
+class HuarteMainMenu extends React.Component {
+  constructor(props) {
+    super(props);
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
     });
-    return {
+
+    this.state = {
       dataSource: dataSource.cloneWithRows(HUARTE_MENU_DATASOURCE)
     };
-  },
+  }
 
-
-  render: function() {
+  render() {
     StatusBar.setBarStyle('default', true);
     return (
         <ListView
@@ -47,18 +48,18 @@ const HuarteMainMenu = React.createClass({
           style={styles.listView}/>
         )
 
-  },
+  }
 
-  renderMenuRow: function(menuItem) {
+  renderMenuRow = (menuItem) => {
     return (
       <Text style={styles.listItem}
         onPress={() => this.selectMenuItem(menuItem)}>
         {menuItem.displayName}
       </Text>
     );
-  },
+  };
 
-  selectMenuItem: function(menuItem) {
+  selectMenuItem = (menuItem) => {
     const store = this.props.store;
     this.props.navigator.push({
       title: menuItem.displayName,
@@ -67,8 +68,7 @@ const HuarteMainMenu = React.createClass({
         store
       }
     })
-  }
-
-});
+  };
+}
 
 export default HuarteMainMenu;

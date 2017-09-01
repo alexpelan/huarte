@@ -18,14 +18,12 @@ import styles from "../styles/styles";
 import StateHelper from "../util/StateHelper";
 
 // FIXFIX: a lot of shared logic with final jeopardy bid. like, 90% the same
-const DailyDoubleBid = React.createClass({
-  getInitialState: function() {
-    return {
-      text: ""
-    };
-  },
+class DailyDoubleBid extends React.Component {
+  state = {
+    text: ""
+  };
 
-  getMaxBid: function() {
+  getMaxBid = () => {
     const store = this.props.store;
     const score = StateHelper.getCurrentGame(store).score;
     let highestBidForGame = StateHelper.getHighestBidForCurrentGame(store);
@@ -38,9 +36,9 @@ const DailyDoubleBid = React.createClass({
     }
 
     return maxBid;
-  },
+  };
 
-  validateBid: function() {
+  validateBid = () => {
     const store = this.props.store;
     let text = this.state.text;
     let state= store.getState();
@@ -74,13 +72,13 @@ const DailyDoubleBid = React.createClass({
       }
     });
 
-  },
+  };
 
-  onKeyboardToggle: function(toggleState) {
+  onKeyboardToggle = (toggleState) => {
     this.setState({isKeyboardOpen: toggleState});
-  },
+  };
 
-  render: function() {
+  render() {
     let keyboardSpacerStyle;
     StatusBar.setBarStyle('light-content', true);
     const maxBid = this.getMaxBid();
@@ -109,6 +107,6 @@ const DailyDoubleBid = React.createClass({
       </TouchableWithoutFeedback>
     );
   }
-});
+}
 
 export default DailyDoubleBid;

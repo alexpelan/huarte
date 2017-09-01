@@ -21,14 +21,12 @@ import styles from "../styles/styles";
 
 import StateHelper from "../util/StateHelper";
 
-const FinalJeopardyBid = React.createClass({
-  getInitialState: function() {
-    return {
-      text: ""
-    };
-  },
+class FinalJeopardyBid extends React.Component {
+  state = {
+    text: ""
+  };
 
-  validateBid: function() {
+  validateBid = () => {
     const store = this.props.store;
     var text = this.state.text;
     var score = StateHelper.getCurrentGame().score;
@@ -68,13 +66,13 @@ const FinalJeopardyBid = React.createClass({
       }
     });
 
-  },
+  };
 
-  onKeyboardToggle: function(toggleState) {
+  onKeyboardToggle = (toggleState) => {
     this.setState({isKeyboardOpen: toggleState});
-  },
+  };
 
-  render: function() {
+  render() {
     let keyboardSpacerStyle;
     StatusBar.setBarStyle('light-content', true);
     var score = StateHelper.getCurrentGame(this.props.store).score;
@@ -103,6 +101,6 @@ const FinalJeopardyBid = React.createClass({
       </TouchableWithoutFeedback>
     );
   }
-});
+}
 
 export default FinalJeopardyBid;

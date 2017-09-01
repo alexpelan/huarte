@@ -23,15 +23,13 @@ import styles from "./app/styles/styles";
 
 const loggerMiddleware = createLogger();
 const bugsnag = new Client();
-const huarte = React.createClass({
 
-  getInitialState: function() {
-    return {
-      errorMessage: ""
-    };
-  },
+class huarte extends React.Component {
+  state = {
+    errorMessage: ""
+  };
 
-  componentWillMount: function() {
+  componentWillMount() {
     this.store = createStore(huarteApp, applyMiddleware(thunkMiddleware, loggerMiddleware));
     this.unsubscribe = this.store.subscribe(() => {
       if (this.store.getState().error.errorText !== this.state.errorMessage) {
@@ -40,13 +38,13 @@ const huarte = React.createClass({
         });
       }
     });
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.unsubscribe();
-  },
+  }
 
-  render: function() {
+  render() {
     let banner;
     const store = this.store;
 
@@ -72,6 +70,6 @@ const huarte = React.createClass({
 
     );
   }
-});
+}
 
 AppRegistry.registerComponent('huarte', () => huarte);

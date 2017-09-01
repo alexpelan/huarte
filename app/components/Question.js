@@ -26,23 +26,21 @@ import StateHelper from "../util/StateHelper";
 let levenshtein = require("fast-levenshtein");
 let _ = require("lodash");
 
-const Question = React.createClass({
-  getInitialState: function() {
-    return {
-      text: ""
-    };
-  },
+class Question extends React.Component {
+  state = {
+    text: ""
+  };
 
-  getDelta: function(wasCorrect) {
+  getDelta = (wasCorrect) => {
     var numberWithoutDollarSign = parseInt(this.props.clue.value.slice(1));
     if (wasCorrect) {
       return numberWithoutDollarSign;
     } else {
       return -1 * numberWithoutDollarSign;
     }
-  },
+  };
 
-  checkIfAllQuestionsAnswered: function() {
+  checkIfAllQuestionsAnswered = () => {
     var returnValue = true;
 
     _.each(StateHelper.getCurrentRound(this.props.store).categories, function(category){
@@ -58,9 +56,9 @@ const Question = React.createClass({
       store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound));
     }
 
-  },
+  };
 
-  setAnswerStatus: function(wasCorrect, wasntQuiteCorrect){
+  setAnswerStatus = (wasCorrect, wasntQuiteCorrect) => {
     const store = this.props.store;
     var answeredQuestion = true;
     this.setState({wasCorrect, wasntQuiteCorrect, answeredQuestion});
@@ -74,17 +72,17 @@ const Question = React.createClass({
         this.returnToCategories();
       }
     }, 3000);
-  },
+  };
 
-  skipQuestion: function() {
+  skipQuestion = () => {
     this.setState({skippedQuestion: true});
     this.checkIfAllQuestionsAnswered();
     setTimeout(() => {
       this.returnToCategories();
     }, 3000);
-  },
+  };
 
-  disputeQuestion: function() {
+  disputeQuestion = () => {
     if (this.state.disputedQuestion) {
       this.returnToCategories();
     } else {
@@ -98,18 +96,18 @@ const Question = React.createClass({
       }, this.props.store).then(() => true); // fire and forget
       this.setState({disputedQuestion: true});
     }
-  },
+  };
 
-  returnToCategories: function() {
+  returnToCategories = () => {
       if (this.props.clue.isDailyDouble) {
         this.props.navigator.popN(3); // have an extra screen for bidding
       }
       else {
         this.props.navigator.popN(2); // not ideal, but popToRoute is undocumented / doesn't seem to work right
       }
-  },
+  };
 
-  checkAnswer: function() {
+  checkAnswer = () => {
     var text = this.state.text.toLowerCase();
     var answer = this.props.clue.answer.toLowerCase();
 
@@ -143,13 +141,13 @@ const Question = React.createClass({
 
     this.setAnswerStatus(wasCorrect, wasntQuiteCorrect);
 
-  },
+  };
 
-  onKeyboardToggle: function(toggleState) {
+  onKeyboardToggle = (toggleState) => {
     this.setState({isKeyboardOpen: toggleState});
-  },
+  };
 
-  render: function() {
+  render() {
     let skipLink;
     let disputeLink;
     let disputeLinkText;
@@ -219,6 +217,6 @@ const Question = React.createClass({
       </TouchableWithoutFeedback>
     );
   }
-});
+}
 
 export default Question;

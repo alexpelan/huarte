@@ -16,17 +16,19 @@ import styles from "../styles/styles";
 import CONSTS from "../util/Consts";
 import StateHelper from "../util/StateHelper";
 
-const CategoryList = React.createClass({
-   getInitialState: function() {
+class CategoryList extends React.Component {
+  constructor(props) {
+    super(props);
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
     });
-    return {
+
+    this.state = {
       dataSource: dataSource.cloneWithRows([])
     };
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     const store = this.props.store;
     this.unsubscribe = store.subscribe(() => {
       if (this.hasLoaded()) {
@@ -39,17 +41,17 @@ const CategoryList = React.createClass({
       }
     });
     store.dispatch(fetchGame(store, this.props.game.id));
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.unsubscribe();
-  },
+  }
 
-  hasLoaded: function() {
+  hasLoaded = () => {
     return StateHelper.getCurrentGame(this.props.store).loaded;
-  },
+  };
 
-  selectCategory: function(category, categoryIndex) {
+  selectCategory = (category, categoryIndex) => {
     const store = this.props.store;
     if (StateHelper.getCurrentGame(store).currentRound === CONSTS.FINAL_JEOPARDY) {
       this.props.navigator.push({
@@ -74,9 +76,9 @@ const CategoryList = React.createClass({
       });
 
     }
-  },
+  };
 
-  render: function() {
+  render() {
     StatusBar.setBarStyle('default', true);
     if(!this.hasLoaded()) {
       return (
@@ -93,32 +95,31 @@ const CategoryList = React.createClass({
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
     )
-  },
+  }
 
-  renderCategory: function(category, categoryIndex) {
+  renderCategory = (category, categoryIndex) => {
     return (
       <Text style={[styles.listItem, category.isCompleted && styles.listItemDisabled]}
         onPress={() => this.selectCategory(category, categoryIndex)}>
         {category.name}
       </Text>
     );
-  },
+  };
 
-  getRoundDisplayName: function() {
+  getRoundDisplayName = () => {
     let round = StateHelper.getCurrentGame(this.props.store).currentRound;
     round = round.slice(0,1).toUpperCase() + round.slice(1);
     round = round.replace("_", " ")
     return round
-  },
+  };
 
-  renderFooter: function() {
+  renderFooter = () => {
     var roundDisplayName = this.getRoundDisplayName();
     const store = this.props.store;
     return (
       <Text style={styles.scoreText}>Current Score: {StateHelper.getCurrentGame(store).score} - {roundDisplayName} Round</Text>
     )
-  },
-
-});
+  };
+}
 
 export default CategoryList;

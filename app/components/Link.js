@@ -7,14 +7,14 @@ import {
 
 import styles from "../styles/styles";
 
-const Link = React.createClass({
-  render: function () {
+class Link extends React.Component {
+  render() {
     return (
       <Text style={styles.hyperlink} onPress={() => { Linking.openURL(this.props.url)}}>
         {this.props.text}
       </Text>
       );
   }
-});
+}
 
 export default Link;

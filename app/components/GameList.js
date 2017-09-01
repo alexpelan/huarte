@@ -18,17 +18,19 @@ import styles from "../styles/styles";
 
 import StateHelper from "../util/StateHelper";
 
-const GameList = React.createClass({
-  getInitialState: function() {
+class GameList extends React.Component {
+  constructor(props) {
+    super(props);
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
     });
-    return {
+
+    this.state = {
       dataSource: dataSource.cloneWithRows([])
     };
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     const store = this.props.store;
     this.unsubscribe = store.subscribe(() => {
       if (this.hasLoaded()) {
@@ -39,17 +41,17 @@ const GameList = React.createClass({
       }
     });
     store.dispatch(fetchGameList(store, this.props.season.seasonId));
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.unsubscribe();
-  },
+  }
 
-  hasLoaded: function() {
+  hasLoaded = () => {
     return StateHelper.isSeasonLoaded(this.props.store, this.props.season.seasonId);
-  },
+  };
 
-  selectGame: function(game) {
+  selectGame = (game) => {
     const store = this.props.store;
     store.dispatch(selectGame(game));
     this.props.navigator.push({
@@ -60,9 +62,9 @@ const GameList = React.createClass({
         store
       },
     });
-  },
+  };
 
-  render: function() {
+  render() {
     StatusBar.setBarStyle('default', true);
     if (!this.hasLoaded()) {
       return (
@@ -76,16 +78,16 @@ const GameList = React.createClass({
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
       )
-  },
+  }
 
-  renderGame: function(game) {
+  renderGame = (game) => {
     return (
       <Text style={styles.listItem}
         onPress={() => this.selectGame(game)}>
         {game.displayName}
       </Text>
       )
-  }
-});
+  };
+}
 
 export default GameList;

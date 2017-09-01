@@ -10,12 +10,12 @@ import {
 
 import styles from "../styles/styles";
 
-const Banner = React.createClass({
-  dismiss: function() {
+class Banner extends React.Component {
+  dismiss = () => {
     this.props.store.dispatch(dismissError());
-  },
+  };
 
-  render: function() {
+  render() {
     return (
       <View style={styles.popove}>
         <Text style={styles.errorPopover}>
@@ -27,6 +27,6 @@ const Banner = React.createClass({
       </View>
     );
   }
-});  
+}
 
 export default Banner

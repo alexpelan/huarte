@@ -1,4 +1,4 @@
-const DOMAIN = "https://www.hornung-api.com";
+const DOMAIN = "http://localhost:3001";
 
 const CONSTS = {
 	JEOPARDY: "jeopardy",

@@ -16,17 +16,19 @@ import styles from "../styles/styles";
 
 import StateHelper from "../util/StateHelper";
 
-const DollarAmountList = React.createClass({
-  getInitialState: function () {
+class DollarAmountList extends React.Component {
+  constructor(props) {
+    super(props);
     var dataSource = new ListView.DataSource({
       rowHasChanged: (row1, row2) => row !== row2
     });
-    return {
-      dataSource: dataSource.cloneWithRows(this.props.category.clues)
-    };
-  },
 
-  selectClue: function(clue, clueIndex) {
+    this.state = {
+      dataSource: dataSource.cloneWithRows(props.category.clues)
+    };
+  }
+
+  selectClue = (clue, clueIndex) => {
     const store = this.props.store;
     const categoryName = this.props.category.name;
     store.dispatch(selectQuestion(StateHelper.getCurrentGame(store).currentRound, this.props.categoryIndex, clueIndex));
@@ -59,9 +61,9 @@ const DollarAmountList = React.createClass({
 
 
 
-  },
+  };
 
-  render: function() {
+  render() {
     StatusBar.setBarStyle('default', true);
     return (
       <ListView
@@ -70,9 +72,9 @@ const DollarAmountList = React.createClass({
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
     )
-  },
+  }
 
-  renderClue: function(clue, clueIndex){
+  renderClue = (clue, clueIndex) => {
     return (
       <Text style={[styles.listItem, clue.isCompleted && styles.listItemDisabled]}
         onPress={() => {
@@ -84,8 +86,7 @@ const DollarAmountList = React.createClass({
         {clue.value}
       </Text>
     );
-  }
-
-});
+  };
+}
 
 export default DollarAmountList;

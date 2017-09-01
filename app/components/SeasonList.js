@@ -15,17 +15,19 @@ import {
 import StateHelper from "../util/StateHelper";
 import styles from "../styles/styles";
 
-const SeasonList = React.createClass({
-   getInitialState: function() {
+class SeasonList extends React.Component {
+  constructor(props) {
+    super(props);
     var dataSource = new ListView.DataSource({
         rowHasChanged: (row1, row2) => row1 !== row2
     });
-    return {
+
+    this.state = {
       dataSource: dataSource.cloneWithRows([])
     };
-  },
+  }
 
-  componentDidMount: function() {
+  componentDidMount() {
     const store = this.props.store;
     this.unsubscribe = store.subscribe(() => {
       var state = store.getState();
@@ -36,13 +38,13 @@ const SeasonList = React.createClass({
       }
     });
     store.dispatch(fetchSeasons(store));
-  },
+  }
 
-  componentWillUnmount: function() {
+  componentWillUnmount() {
     this.unsubscribe();
-  },
+  }
 
-  selectSeason: function(season) {
+  selectSeason = (season) => {
     const store = this.props.store;
     this.props.navigator.push({
       title: season.displayName,
@@ -52,9 +54,9 @@ const SeasonList = React.createClass({
         store
       },
     });
-  },
+  };
 
-  render: function() {
+  render() {
     StatusBar.setBarStyle('default', true);
     if(!this.props.store.getState().seasonsLoaded) {
       return (
@@ -68,16 +70,16 @@ const SeasonList = React.createClass({
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
         style={styles.listView}/>
     )
-  },
+  }
 
-  renderSeason: function(season) {
+  renderSeason = (season) => {
     return (
       <Text style={styles.listItem}
         onPress={() => this.selectSeason(season)}>
         {season.displayName}
       </Text>
     );
-  }
-});
+  };
+}
 
 export default SeasonList;
