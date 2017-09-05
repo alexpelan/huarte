@@ -1,32 +1,34 @@
-import React from "react";
+import React from 'react';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {
+  Keyboard,
   StatusBar,
-  ListView,
   Text,
   TextInput,
   TouchableWithoutFeedback,
-  View
-} from "react-native";
-import DismissKeyboard from 'dismissKeyboard';
+  View,
+} from 'react-native';
 
-import Question from "./Question";
-import SimpleMessage from "./SimpleMessage";
+import Question from './Question';
 
-import styles from "../styles/styles";
+import styles from '../styles/styles';
 
-import StateHelper from "../util/StateHelper";
+import StateHelper from '../util/StateHelper';
 
 // FIXFIX: a lot of shared logic with final jeopardy bid. like, 90% the same
 class DailyDoubleBid extends React.Component {
   state = {
-    text: ""
+    text: '',
+  };
+
+  onKeyboardToggle = (toggleState) => {
+    this.setState({ isKeyboardOpen: toggleState });
   };
 
   getMaxBid = () => {
     const store = this.props.store;
     const score = StateHelper.getCurrentGame(store).score;
-    let highestBidForGame = StateHelper.getHighestBidForCurrentGame(store);
+    const highestBidForGame = StateHelper.getHighestBidForCurrentGame(store);
     let maxBid;
 
     if (score > highestBidForGame) {
@@ -40,26 +42,24 @@ class DailyDoubleBid extends React.Component {
 
   validateBid = () => {
     const store = this.props.store;
-    let text = this.state.text;
-    let state= store.getState();
-    let score = state.score;
+    const text = this.state.text;
     let bid;
 
     const maxBid = this.getMaxBid();
-    let parsedBid = parseInt(text);
-    if(!isNaN(parsedBid) && parsedBid >= 0){
+    const parsedBid = parseInt(text, 10);
+    if (!isNaN(parsedBid) && parsedBid >= 0) {
       if (parsedBid > maxBid) {
-        this.setState({errorMessage: "You cannot wager more than you have to bid."});
+        this.setState({ errorMessage: 'You cannot wager more than you have to bid.' });
         return;
       }
       bid = text;
     } else {
-      this.setState({errorMessage: "Please enter a positive number."});
+      this.setState({ errorMessage: 'Please enter a positive number.' });
       return;
     }
 
     const categoryName = this.props.categoryName;
-    this.props.clue.value = "$" + bid;
+    this.props.clue.value = `$${bid}`;
     this.props.navigator.push({
       title: this.props.clue.value,
       navigationBarHidden: true,
@@ -68,14 +68,9 @@ class DailyDoubleBid extends React.Component {
         clue: this.props.clue,
         isSkippable: false,
         store,
-        categoryName
-      }
+        categoryName,
+      },
     });
-
-  };
-
-  onKeyboardToggle = (toggleState) => {
-    this.setState({isKeyboardOpen: toggleState});
   };
 
   render() {
@@ -88,7 +83,7 @@ class DailyDoubleBid extends React.Component {
     }
 
     return (
-      <TouchableWithoutFeedback onPress={() => DismissKeyboard()}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.questionView}>
           <Text style={styles.question}>
             What is your bid? You have {maxBid} to wager.
@@ -96,13 +91,16 @@ class DailyDoubleBid extends React.Component {
           <Text>{this.state.errorMessage}</Text>
           <TextInput
             style={styles.textInput}
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={text => this.setState({ text })}
             onSubmitEditing={() => this.validateBid()}
             value={this.state.text}
             keyboardType="numeric"
             autoFocus
           />
-          <KeyboardSpacer style={keyboardSpacerStyle} onToggle={(toggleState) => this.onKeyboardToggle(toggleState)} />
+          <KeyboardSpacer
+            style={keyboardSpacerStyle}
+            onToggle={toggleState => this.onKeyboardToggle(toggleState)}
+          />
         </View>
       </TouchableWithoutFeedback>
     );

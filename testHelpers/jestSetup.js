@@ -1,7 +1,7 @@
 // see https://github.com/facebook/jest/issues/3707
 jest.mock('TextInput', () => {
+  const React = require('react'); // eslint-disable-line global-require
   const RealComponent = require.requireActual('TextInput');
-  const React = require('React');
   class TextInput extends React.Component {
     render() {
       delete this.props.autoFocus;

@@ -1,15 +1,14 @@
-import React from "react";
+import React from 'react';
 import {
-  StyleSheet,
   Text,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 
-import styles from "../styles/styles";
+import styles from '../styles/styles';
 
 class SimpleMessage extends React.Component {
   static defaultProps = {
-    message: "Loading..."
+    message: 'Loading...',
   };
 
   render() {
@@ -23,4 +22,4 @@ class SimpleMessage extends React.Component {
   }
 }
 
-export default SimpleMessage
+export default SimpleMessage;

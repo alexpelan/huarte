@@ -1,70 +1,53 @@
-import React from "react";
+import React from 'react';
 import {
+  Keyboard,
   StatusBar,
-  ListView,
   Text,
   TextInput,
   TouchableWithoutFeedback,
-  View
-} from "react-native";
-import DismissKeyboard from 'dismissKeyboard';
+  View,
+} from 'react-native';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {
   updateScore,
-  nextRound
-} from "../actions/index";
+  nextRound,
+} from '../actions/index';
 
-import MediaLink from "./MediaLink";
-import SimpleMessage from "./SimpleMessage";
+import MediaLink from './MediaLink';
 
-import styles from "../styles/styles";
+import styles from '../styles/styles';
 
-import api from "../util/Api";
-import StateHelper from "../util/StateHelper";
+import api from '../util/Api';
+import StateHelper from '../util/StateHelper';
 
-let levenshtein = require("fast-levenshtein");
-let _ = require("lodash");
+const levenshtein = require('fast-levenshtein');
+const _ = require('lodash');
 
 class Question extends React.Component {
   state = {
-    text: ""
+    text: '',
+  };
+
+  onKeyboardToggle = (toggleState) => {
+    this.setState({ isKeyboardOpen: toggleState });
   };
 
   getDelta = (wasCorrect) => {
-    var numberWithoutDollarSign = parseInt(this.props.clue.value.slice(1));
+    const numberWithoutDollarSign = parseInt(this.props.clue.value.slice(1), 10);
     if (wasCorrect) {
       return numberWithoutDollarSign;
-    } else {
-      return -1 * numberWithoutDollarSign;
     }
-  };
-
-  checkIfAllQuestionsAnswered = () => {
-    var returnValue = true;
-
-    _.each(StateHelper.getCurrentRound(this.props.store).categories, function(category){
-      _.each(category.clues, function(clue){
-        if(!clue.isCompleted) {
-          returnValue = false;
-        }
-      });
-
-    });
-
-    if (returnValue) {
-      store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound));
-    }
-
+    return -1 * numberWithoutDollarSign;
   };
 
   setAnswerStatus = (wasCorrect, wasntQuiteCorrect) => {
     const store = this.props.store;
-    var answeredQuestion = true;
-    this.setState({wasCorrect, wasntQuiteCorrect, answeredQuestion});
-    var delta = this.getDelta(wasCorrect || wasntQuiteCorrect);
+    const answeredQuestion = true;
+    this.setState({ wasCorrect, wasntQuiteCorrect, answeredQuestion });
+    const delta = this.getDelta(wasCorrect || wasntQuiteCorrect);
     store.dispatch(updateScore(delta));
-   
+
     this.checkIfAllQuestionsAnswered();
 
     setTimeout(() => {
@@ -74,8 +57,25 @@ class Question extends React.Component {
     }, 3000);
   };
 
+  checkIfAllQuestionsAnswered = () => {
+    let returnValue = true;
+
+    _.each(StateHelper.getCurrentRound(this.props.store).categories, (category) => {
+      _.each(category.clues, (clue) => {
+        if (!clue.isCompleted) {
+          returnValue = false;
+        }
+      });
+    });
+
+    if (returnValue) {
+      const store = this.props.store;
+      store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound));
+    }
+  };
+
   skipQuestion = () => {
-    this.setState({skippedQuestion: true});
+    this.setState({ skippedQuestion: true });
     this.checkIfAllQuestionsAnswered();
     setTimeout(() => {
       this.returnToCategories();
@@ -87,64 +87,59 @@ class Question extends React.Component {
       this.returnToCategories();
     } else {
       api.disputeQuestion({
-        method: "POST",
+        method: 'POST',
         body: JSON.stringify({
           clue: this.props.clue,
-          userAnswer: this.state.text.toLowerCase()
+          userAnswer: this.state.text.toLowerCase(),
         }),
-        headers: { "Content-Type": "application/json"}
+        headers: { 'Content-Type': 'application/json' },
       }, this.props.store).then(() => true); // fire and forget
-      this.setState({disputedQuestion: true});
+      this.setState({ disputedQuestion: true });
     }
   };
 
   returnToCategories = () => {
-      if (this.props.clue.isDailyDouble) {
-        this.props.navigator.popN(3); // have an extra screen for bidding
-      }
-      else {
-        this.props.navigator.popN(2); // not ideal, but popToRoute is undocumented / doesn't seem to work right
-      }
+    // not ideal, but popToRoute is undocumented / doesn't seem to work right
+    if (this.props.clue.isDailyDouble) {
+      this.props.navigator.popN(3); // have an extra screen for bidding
+    } else {
+      this.props.navigator.popN(2);
+    }
   };
 
   checkAnswer = () => {
-    var text = this.state.text.toLowerCase();
-    var answer = this.props.clue.answer.toLowerCase();
+    const text = this.state.text.toLowerCase();
+    const answer = this.props.clue.answer.toLowerCase();
 
-    var wasCorrect = false;
-    var wasntQuiteCorrect = false;
-    if(text === answer ) {
-      wasCorrect = true; //always down to take an exact match
-    } 
+    let wasCorrect = false;
+    let wasntQuiteCorrect = false;
+    if (text === answer) {
+      wasCorrect = true; // always down to take an exact match
+    }
 
-    var answerTokens = answer.split(" ");
+    const answerTokens = answer.split(' ');
     if (answerTokens.length > 1 && !wasCorrect) {
-      //be super lenient for now - an exact match on one of the words will pass
+      // be super lenient for now - an exact match on one of the words will pass
       _.each(answerTokens, (token) => {
-        if(token === text) {
+        if (token === text) {
           wasCorrect = true;
           wasntQuiteCorrect = true;
         }
       });
-
     }
 
-    //otherwise, do a levenshtein difference based on the length of the combined answers - allow for some mispellings
-    var levDistance = levenshtein.get(text, answer);
+    // otherwise, do a levenshtein difference based on the length of the combined answers 
+    // - allow for some mispellings
+    const levDistance = levenshtein.get(text, answer);
 
-    //we'll allow one typo every...four letters? idk, we can tweak this
-    var allowedErrors = Math.ceil(answer.length / 4);
-    if(levDistance <= allowedErrors && !wasCorrect){
+    // we'll allow one typo every...four letters? idk, we can tweak this
+    const allowedErrors = Math.ceil(answer.length / 4);
+    if (levDistance <= allowedErrors && !wasCorrect) {
       wasCorrect = true;
       wasntQuiteCorrect = true;
     }
 
     this.setAnswerStatus(wasCorrect, wasntQuiteCorrect);
-
-  };
-
-  onKeyboardToggle = (toggleState) => {
-    this.setState({isKeyboardOpen: toggleState});
   };
 
   render() {
@@ -154,29 +149,48 @@ class Question extends React.Component {
     let answerFeedback;
     let keyboardSpacerStyle;
     StatusBar.setBarStyle('light-content', true);
-    if(this.state.answeredQuestion) {
-      var correctText = "Incorrect!";
-      if(this.state.wasCorrect && !this.state.wasntQuiteCorrect) {
-        correctText = "Correct!";
+    if (this.state.answeredQuestion) {
+      let correctText = 'Incorrect!';
+      if (this.state.wasCorrect && !this.state.wasntQuiteCorrect) {
+        correctText = 'Correct!';
       } else if (this.state.wasCorrect && this.state.wasntQuiteCorrect) {
-        correctText = "Close Enough!";
+        correctText = 'Close Enough!';
       }
-        answerFeedback = <Text>You entered {this.state.text}. The correct answer is {this.props.clue.answer}. {correctText}.</Text>
+      answerFeedback = (
+        <Text>
+          You entered {this.state.text}.
+          The correct answer is {this.props.clue.answer}.
+          {correctText}.
+        </Text>
+      );
 
       if (this.state.disputedQuestion) {
-        disputeLinkText = "Thanks for the feedback. Tap to continue.";
+        disputeLinkText = 'Thanks for the feedback. Tap to continue.';
       } else {
-        disputeLinkText = "Report inaccurate grading"
+        disputeLinkText = 'Report inaccurate grading';
       }
 
-      disputeLink = <Text style={[styles.hyperlink, styles.negativeAction]} onPress={() => this.disputeQuestion()}>{disputeLinkText}</Text>
-    }
-    else if (this.state.skippedQuestion) {
-      answerFeedback = <Text>The correct answer was {this.props.clue.answer}.</Text>
+      disputeLink = (
+        <Text
+          style={[styles.hyperlink, styles.negativeAction]}
+          onPress={() => this.disputeQuestion()}
+        >
+          {disputeLinkText}
+        </Text>
+      );
+    } else if (this.state.skippedQuestion) {
+      answerFeedback = <Text>The correct answer was {this.props.clue.answer}.</Text>;
     }
 
     if (this.props.isSkippable && !this.state.answeredQuestion) {
-      skipLink = <Text style={[styles.hyperlink, styles.scoreText]} onPress={() => this.skipQuestion()}>Skip</Text>
+      skipLink = (
+        <Text
+          style={[styles.hyperlink, styles.scoreText]}
+          onPress={() => this.skipQuestion()}
+        >
+          Skip
+        </Text>
+      );
     }
 
     if (!this.state.isKeyboardOpen) {
@@ -184,7 +198,7 @@ class Question extends React.Component {
     }
 
     return (
-      <TouchableWithoutFeedback onPress={() => DismissKeyboard()}>
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.questionView} >
           <Text style={styles.questionHeader}>
             {this.props.categoryName} - {this.props.clue.value}
@@ -192,27 +206,27 @@ class Question extends React.Component {
           <Text style={styles.question}>
             {this.props.clue.question}
           </Text>
-          {this.props.clue.media.map((mediaLink) => {
-            return (
-                <MediaLink media={mediaLink} navigator={this.props.navigator} key={mediaLink.url}>
-                </MediaLink>
-              );
-          })}
+          {this.props.clue.media.map(mediaLink => (
+            <MediaLink media={mediaLink} navigator={this.props.navigator} key={mediaLink.url} />
+          ))}
           <Text style={styles.question}>
-              {answerFeedback}
+            {answerFeedback}
           </Text>
           {disputeLink}
           {skipLink}
           <TextInput
             style={[styles.textInput, styles.questionTextInput]}
-            onChangeText={(text) => this.setState({text})}
+            onChangeText={text => this.setState({ text })}
             onSubmitEditing={() => this.checkAnswer()}
             value={this.state.text}
             autoFocus
             placeholder="What is..."
             placeholderTextColor="white"
           />
-          <KeyboardSpacer style={keyboardSpacerStyle} onToggle={(toggleState) => this.onKeyboardToggle(toggleState)} />
+          <KeyboardSpacer
+            style={keyboardSpacerStyle}
+            onToggle={toggleState => this.onKeyboardToggle(toggleState)}
+          />
         </View>
       </TouchableWithoutFeedback>
     );

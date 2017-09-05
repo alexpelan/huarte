@@ -1,8 +1,8 @@
-import {StyleSheet} from "react-native";
+import { StyleSheet } from 'react-native';
 
 const STYLE_CONSTS = {
-  JEOPARDY_BLUE: "#0000af",
-  ERROR_BACKGROUND: "#ff0033"
+  JEOPARDY_BLUE: '#0000af',
+  ERROR_BACKGROUND: '#ff0033',
 };
 
 const styles = StyleSheet.create({
@@ -14,7 +14,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 8,
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
   },
   listItemDisabled: {
     color: STYLE_CONSTS.JEOPARDY_BLUE,
@@ -27,57 +27,57 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     fontSize: 20,
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   question: {
     paddingTop: 100,
     fontSize: 20,
     color: 'white',
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   textInput: {
-    height: 40, 
-    borderColor: 'white', 
+    height: 40,
+    borderColor: 'white',
     borderWidth: 1,
     color: 'white',
     paddingLeft: 10,
-    paddingRight: 10
+    paddingRight: 10,
   },
   questionTextInput: {
-    marginTop: 20
+    marginTop: 20,
   },
   loadingView: {
     flex: 1,
     backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   paragraphView: {
     paddingLeft: 20,
-    paddingRight: 20
+    paddingRight: 20,
   },
   loadingText: {
     color: 'white',
-    fontSize: 24
+    fontSize: 24,
   },
   scoreText: {
     color: 'white',
     fontSize: 18,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   negativeAction: {
     color: 'red',
-    fontSize: 18
+    fontSize: 18,
   },
   questionView: {
     flex: 1,
     backgroundColor: STYLE_CONSTS.JEOPARDY_BLUE,
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   hyperlink: {
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
   },
   popover: {
     position: 'absolute',
@@ -92,12 +92,12 @@ const styles = StyleSheet.create({
     paddingTop: 10,
     paddingLeft: 10,
     paddingRight: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
   keyboardSpacerHidden: {
     position: 'absolute',
-    bottom: -15
-  }
+    bottom: -15,
+  },
 
 });
 

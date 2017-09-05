@@ -1,14 +1,14 @@
-import React from "react";
+import React from 'react';
 import {
   Text,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 
 import {
-  dismissError
-} from "../actions/index";
+  dismissError,
+} from '../actions/index';
 
-import styles from "../styles/styles";
+import styles from '../styles/styles';
 
 class Banner extends React.Component {
   dismiss = () => {
@@ -20,7 +20,7 @@ class Banner extends React.Component {
       <View style={styles.popove}>
         <Text style={styles.errorPopover}>
           {this.props.errorMessage} &nbsp; &nbsp; &nbsp;
-          <Text style={styles.hyperlink} onPress={() => { this.dismiss()}}>
+          <Text style={styles.hyperlink} onPress={() => { this.dismiss(); }}>
             Dismiss
           </Text>
         </Text>
@@ -29,4 +29,4 @@ class Banner extends React.Component {
   }
 }
 
-export default Banner
+export default Banner;

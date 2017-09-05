@@ -1,92 +1,93 @@
-import React from "react";
+import React from 'react';
 import {
   StatusBar,
-  ListView,
   Text,
-  View
-} from "react-native";
+  View,
+} from 'react-native';
 
-import SimpleMessage from "./SimpleMessage";
+import SimpleMessage from './SimpleMessage';
 
-import styles from "../styles/styles";
+import styles from '../styles/styles';
 
-import Common from "../util/Common";
+import Common from '../util/Common';
 
 const STATISTIC_METADATA = {
   total_winnings: {
-    displayName: "Total Winnings",
+    displayName: 'Total Winnings',
   },
   total_correct: {
-    displayName: "Total Correct",
+    displayName: 'Total Correct',
   },
   total_incorrect: {
-    displayName: "Total Incorrect",
+    displayName: 'Total Incorrect',
   },
   games_completed: {
-    displayName: "Games Completed",
+    displayName: 'Games Completed',
   },
   total_winnings_completed_games: {
-    displayName: "Average Winnings",
-    divisor: "games_completed"
+    displayName: 'Average Winnings',
+    divisor: 'games_completed',
   },
   total_correct_completed_games: {
-    displayName: "Average Correct",
-    divisor: "games_completed"
+    displayName: 'Average Correct',
+    divisor: 'games_completed',
   },
   total_incorrect_completed_games: {
-    displayName: "Average Incorrect",
-    divisor: "games_completed"
-  }
+    displayName: 'Average Incorrect',
+    divisor: 'games_completed',
+  },
 };
 
 class Statistics extends React.Component {
   state = {
     hasLoaded: false,
-    statistics: []
+    statistics: [],
   };
 
   componentDidMount() {
+    /* eslint-disable no-param-reassign */
     Common.getStatistics().then((statistics) => {
-      console.log("done, my statistics are ", statistics)
       statistics.forEach((stat) => {
         if (!stat[1]) {
           stat[1] = 0;
         }
 
         if (STATISTIC_METADATA[stat[0].divisor]) {
-          const divisor = statistics[stats[0].divisor][1];
+          const divisor = statistics[stat[0].divisor][1];
           if (divisor !== 0) {
-            stat[1] = stat[1] / divisor;
+            stat[1] /= divisor;
           }
         }
-
       });
-      console.log("gonna setstate now? ")
       this.setState({
         hasLoaded: true,
-        statistics: statistics
+        statistics,
       });
-    })
+    });
+    /* eslint-enable no-param-reassign */
   }
 
   render() {
     StatusBar.setBarStyle('default', true);
     if (!this.state.hasLoaded) {
       return (
-          <SimpleMessage></SimpleMessage>
+        <SimpleMessage />
       );
     }
 
     return (
       <View style={[styles.loadingView, styles.paragraphView]}>
         <Text style={styles.loadingText}> Statistics </Text>
-        {this.state.statistics.map((statistic) => {
-          return (
-            <Text style={styles.scoreText} key={statistic[0]}> {STATISTIC_METADATA[statistic[0]].displayName}: {[statistic[1]]}</Text>
-            );
-        })}
+        {this.state.statistics.map(statistic => (
+          <Text
+            style={styles.scoreText}
+            key={statistic[0]}
+          >
+            {STATISTIC_METADATA[statistic[0]].displayName}: {[statistic[1]]}
+          </Text>
+        ))}
       </View>
-      )
+    );
   }
 }
 

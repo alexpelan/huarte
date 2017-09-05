@@ -1,39 +1,42 @@
-import React from "react";
+import React from 'react';
 import {
   StatusBar,
   ListView,
-  Text
-} from "react-native";
+  Text,
+} from 'react-native';
 
-import GameList from "./GameList";
-import SimpleMessage from "./SimpleMessage";
+import GameList from './GameList';
+import SimpleMessage from './SimpleMessage';
 
 import {
-  fetchSeasons
-} from "../actions/index";
+  fetchSeasons,
+} from '../actions/index';
 
-import StateHelper from "../util/StateHelper";
-import styles from "../styles/styles";
+import StateHelper from '../util/StateHelper';
+import styles from '../styles/styles';
 
 class SeasonList extends React.Component {
   constructor(props) {
     super(props);
-    var dataSource = new ListView.DataSource({
-        rowHasChanged: (row1, row2) => row1 !== row2
+    const dataSource = new ListView.DataSource({
+      rowHasChanged: (row1, row2) => row1 !== row2,
     });
 
     this.state = {
-      dataSource: dataSource.cloneWithRows([])
+      dataSource: dataSource.cloneWithRows([]),
     };
   }
 
   componentDidMount() {
     const store = this.props.store;
     this.unsubscribe = store.subscribe(() => {
-      var state = store.getState();
+      const state = store.getState();
       if (state.seasonsLoaded) {
+        const dataSource = this.state.dataSource.cloneWithRows(
+          StateHelper.transformObjectToListDataSource(state.seasons),
+        );
         this.setState({
-          dataSource: this.state.dataSource.cloneWithRows(StateHelper.transformObjectToListDataSource(state.seasons))
+          dataSource,
         });
       }
     });
@@ -51,35 +54,36 @@ class SeasonList extends React.Component {
       component: GameList,
       passProps: {
         season,
-        store
+        store,
       },
     });
   };
 
+  renderSeason = season => (
+    <Text
+      style={styles.listItem}
+      onPress={() => this.selectSeason(season)}
+    >
+      {season.displayName}
+    </Text>
+  );
+
   render() {
     StatusBar.setBarStyle('default', true);
-    if(!this.props.store.getState().seasonsLoaded) {
+    if (!this.props.store.getState().seasonsLoaded) {
       return (
-          <SimpleMessage></SimpleMessage>
+        <SimpleMessage />
       );
     }
     return (
       <ListView
         dataSource={this.state.dataSource}
-        renderRow={(season, sectionID) => this.renderSeason(season)}
+        renderRow={season => this.renderSeason(season)}
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
-        style={styles.listView}/>
-    )
-  }
-
-  renderSeason = (season) => {
-    return (
-      <Text style={styles.listItem}
-        onPress={() => this.selectSeason(season)}>
-        {season.displayName}
-      </Text>
+        style={styles.listView}
+      />
     );
-  };
+  }
 }
 
 export default SeasonList;
