@@ -1,7 +1,7 @@
 import { createStore, applyMiddleware } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 
-import huarteApp from '../app/reducers/huarteApp';
+import { huarteApp } from '../app/reducers/huarteApp';
 
 class Factory {
   static createNewStore() {

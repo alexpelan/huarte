@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "pretest": "yarn run lint",
+    "pretest": "npm run lint",
     "lint": "eslint app __tests__ testHelpers index.ios.js",
     "test": "jest",
     "test_coverage": "jest --coverage"

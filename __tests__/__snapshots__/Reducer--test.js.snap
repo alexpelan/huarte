@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`reducer tests 1`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 2`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 3`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 4`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 5`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 6`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 7`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 8`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 9`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 10`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 11`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 12`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;
+
+exports[`reducer tests 13`] = `
+Object {
+  "currentGameId": undefined,
+  "error": Object {
+    "errorText": "",
+    "isError": false,
+  },
+  "games": Object {},
+  "seasons": Object {},
+  "seasonsLoaded": false,
+  "seasonsLoadedTime": undefined,
+}
+`;

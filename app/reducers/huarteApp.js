@@ -121,4 +121,7 @@ function huarteApp(state = defaultState, action) {
   }
 }
 
-export default huarteApp;
+export {
+  defaultState,
+  huarteApp,
+};
