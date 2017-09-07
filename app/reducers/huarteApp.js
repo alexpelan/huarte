@@ -21,15 +21,17 @@ function huarteApp(state = defaultState, action) {
       return newState;
     case 'RECEIVE_GAME':
       newState = Object.assign({}, state);
-      newState.games[action.gameId].jeopardy = action.game.jeopardy;
-      newState.games[action.gameId].double_jeopardy = action.game.double_jeopardy;
-      newState.games[action.gameId].final_jeopardy = action.game.final_jeopardy;
-      newState.games[action.gameId].currentRound = 'jeopardy';
-      newState.games[action.gameId].score = 0;
-      newState.games[action.gameId].numberCorrect = 0;
-      newState.games[action.gameId].numberIncorrect = 0;
-      newState.games[action.gameId].loaded = true;
-      newState.games[action.gameId].timeLoaded = action.timeLoaded;
+      newState.games[action.gameId] = {
+        jeopardy: action.game.jeopardy,
+        double_jeopardy: action.game.double_jeopardy,
+        final_jeopardy: action.game.final_jeopardy,
+        currentRound: 'jeopardy',
+        score: 0,
+        numberCorrect: 0,
+        numberIncorrect: 0,
+        loaded: true,
+        timeLoaded: action.timeLoaded,
+      };
       return newState;
     case 'SELECT_GAME':
       newState = Object.assign({}, state);
@@ -85,8 +87,8 @@ function huarteApp(state = defaultState, action) {
         wasCorrect = true;
       }
 
+      // FIXFIX: this probably belongs outside of the reducer? along with wasCorrect check
       Common.saveStatistics(wasCorrect, action.delta);
-
       const currentScore = state.games[state.currentGameId].score;
       newState.games[state.currentGameId].score = currentScore + action.delta;
 

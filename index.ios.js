@@ -16,7 +16,7 @@ import { Client } from 'bugsnag-react-native';
 import Banner from './app/components/Banner';
 import HuarteMainMenu from './app/components/HuarteMainMenu';
 
-import huarteApp from './app/reducers/huarteApp';
+import { huarteApp } from './app/reducers/huarteApp';
 
 import styles from './app/styles/styles';
 
