@@ -6,7 +6,7 @@ import Factory from '../testHelpers/Factory';
 const game = Factory.game();
 const gameList = Factory.gameList();
 const seasonList = Factory.seasonList();
-const timeLoaded = new Date(1989, 6, 25);
+const timeLoaded = new Date(Date.UTC(1989, 6, 25));
 
 test('reducer test - REQUEST_GAME', () => {
   const initialState = Object.assign({}, defaultState);
