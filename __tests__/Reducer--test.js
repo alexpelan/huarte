@@ -1,5 +1,4 @@
 import 'react-native';
-// Note: test renderer must be required after react-native.
 import { defaultState, huarteApp } from '../app/reducers/huarteApp';
 import Factory from '../testHelpers/Factory';
 

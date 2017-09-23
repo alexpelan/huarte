@@ -1,0 +1,1176 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`creates a BID_FINAL_JEOPARDY action 1`] = `
+Object {
+  "bid": 2000,
+  "type": "BID_FINAL_JEOPARDY",
+}
+`;
+
+exports[`creates a GLOBAL_DISMISS_ERROR action 1`] = `
+Object {
+  "type": "GLOBAL_DISMISS_ERROR",
+}
+`;
+
+exports[`creates a GLOBAL_SET_ERROR action 1`] = `
+Object {
+  "error": "Network error",
+  "type": "GLOBAL_SET_ERROR",
+}
+`;
+
+exports[`creates a NEXT_ROUND action 1`] = `
+Object {
+  "nextRoundName": "double_jeopardy",
+  "type": "NEXT_ROUND",
+}
+`;
+
+exports[`creates a NEXT_ROUND action 2`] = `
+Object {
+  "nextRoundName": "final_jeopardy",
+  "type": "NEXT_ROUND",
+}
+`;
+
+exports[`creates a NOOP action 1`] = `
+Object {
+  "type": "NOOP",
+}
+`;
+
+exports[`creates a RECEIVE_GAME action 1`] = `
+Object {
+  "game": Object {
+    "_id": "58bc7c304a0eb9358ead01e3",
+    "air_date": "Tuesday, February 28, 2017",
+    "displayName": "#7477, aired 2017-02-28",
+    "double_jeopardy": Object {
+      "categories": Array [
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "Portugal",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Left of Spain",
+              "value": "$400",
+            },
+            Object {
+              "answer": "Chile",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Left of Argentina",
+              "value": "$800",
+            },
+          ],
+          "name": "ON YOUR LEFT!",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "Dr. Seuss",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "In 1986 he celebrated his 82nd birthday with the publication of \\"You're Only Old Once!\\"",
+              "value": "$400",
+            },
+            Object {
+              "answer": "Alaska",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "In this 1988 bestseller, James Michener told the story of the 49th state",
+              "value": "$800",
+            },
+            Object {
+              "answer": "John Irving",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "In 1981 he checked into the bestseller list with \\"The Hotel New Hampshire\\"",
+              "value": "$1200",
+            },
+            Object {
+              "answer": "Larry McMurtry",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "His 1987 novel \\"Texasville\\" reintroduced the characters of \\"The Last Picture Show\\", all 30 years older",
+              "value": "$1600",
+            },
+            Object {
+              "answer": "The Mammoth Hunters",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "The top fiction book of 1985 was Jean Auel's novel about these Ice Age \\"Hunters\\"",
+              "value": "$2000",
+            },
+          ],
+          "name": "1980s BESTSELLERS",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "Hans Christian Andersen",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_DJ_16.jpg",
+                },
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_DJ_16a.jpg",
+                },
+              ],
+              "question": "A statue of him in Central Park shows him reading from \\"The Ugly Duckling\\"",
+              "value": "$400",
+            },
+            Object {
+              "answer": "Hans Gruber",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "This \\"Die Hard\\" character made AFI's list of the 100 greatest movie heroes & villains of all time",
+              "value": "$800",
+            },
+            Object {
+              "answer": "Hans Geiger",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_DJ_25.jpg",
+                },
+              ],
+              "question": "We're counting on you to know that he gave his name to the device seen here",
+              "value": "$1200",
+            },
+            Object {
+              "answer": "Hans Zimmer",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "He's composed music for more than 100 films, including \\"The Dark Knight\\" & \\"Interstellar\\"",
+              "value": "$1600",
+            },
+            Object {
+              "answer": "the Meistersinger",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_DJ_23.jpg",
+                },
+              ],
+              "question": "Hans Sachs was this type of crooner of Nuremberg, later a Wagner title character",
+              "value": "$2000",
+            },
+          ],
+          "name": "A SHOW OF HANS",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "Born in the U.S.A.",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "A close-up of Springsteen's denim-clad backside in front of Old Glory",
+              "value": "$400",
+            },
+            Object {
+              "answer": "Hotel California",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "The pink Beverly Hills Hotel, shot at sunset",
+              "value": "$800",
+            },
+            Object {
+              "answer": "Nevermind",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "A naked baby underwater reaches towards a dollar bill on a string",
+              "value": "$1200",
+            },
+            Object {
+              "answer": "Dark Side of the Moon",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "On a black background, light goes through a prism & comes out a rainbow",
+              "value": "$1600",
+            },
+            Object {
+              "answer": "Aladdin Sane",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "David Bowie sports a makeup lightning bolt across his face",
+              "value": "$2000",
+            },
+          ],
+          "name": "ALBUM COVERS",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "Jerusalem",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "In 66 A.D. victory by Jewish forces over a Roman army at Beth-Horon led to a brief liberation of this capital city",
+              "value": "$400",
+            },
+            Object {
+              "answer": "Julius Caesar",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "This commander's victory over Pompey in 48 B.C. at Pharsalus took him to the pinnacle of power",
+              "value": "$800",
+            },
+            Object {
+              "answer": "Sparta",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "7,000 Thebans at the Battle of Leuctra in 371 B.C. broke the power this Greek city had enjoyed for a generation",
+              "value": "$1200",
+            },
+            Object {
+              "answer": "Hannibal",
+              "isDailyDouble": true,
+              "media": Array [],
+              "question": "Defeat at the 207 B.C. Battle of the Metaurus River ended this man's efforts to conquer Italy",
+              "value": "$1600",
+            },
+            Object {
+              "answer": "Corfu (or Corcyra)",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_DJ_18a.jpg",
+                },
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_DJ_18.jpg",
+                },
+              ],
+              "question": "It was Cor vs. Cor when this most northerly of the Ionian islands took on Corinth in ancient Greece's first naval battle",
+              "value": "$2000",
+            },
+          ],
+          "name": "ANCIENT BATTLES",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "a bachelorette party",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "A stagette party in Toronto is called this south of the border",
+              "value": "$400",
+            },
+            Object {
+              "answer": "a hoodie",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "If it's cold in Calgary, put on your bunny hug, one of these items that are also popular Stateside",
+              "value": "$800",
+            },
+            Object {
+              "answer": "a napkin",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "When dining on poutine, keep handy une serviette, this",
+              "value": "$1200",
+            },
+            Object {
+              "answer": "a hoser",
+              "isDailyDouble": true,
+              "media": Array [],
+              "question": "Originally a derogatory term for Depression-era gasoline thieves, today it means any foolish or uncivilized person",
+              "value": "$1600",
+            },
+            Object {
+              "answer": "a sofa",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Got a Chesterfield inside that Regina mansion? It's one of these, not a cigarette",
+              "value": "$2000",
+            },
+          ],
+          "name": "TALK LIKE A CANADIAN",
+        },
+      ],
+      "highestDollarAmount": 2000,
+    },
+    "final_jeopardy": Object {
+      "categories": Array [
+        Object {
+          "answer": "What did you give up for Lent?",
+          "name": "RELIGION",
+          "question": "Famous Catholics who've publicly answered this question include Susan Boyle (sweets) & Paul Ryan (beer)",
+        },
+      ],
+    },
+    "id": "5539",
+    "jeopardy": Object {
+      "categories": Array [
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "David and Goliath (or the Philistines and the Israelites)",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Today part of Israel, the Valley of Elah is where these 2 fought as recounted in the first book of Samuel",
+              "value": "$200",
+            },
+            Object {
+              "answer": "Yosemite",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Lincoln signed the bill protecting this Calif. valley in 1864 & Benjamin Harrison signed the bill making it a natl. park in 1890",
+              "value": "$400",
+            },
+            Object {
+              "answer": "the Red River",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "The vast wheat fields of Canada's Manitoba province are found in the valley of this \\"colorful\\" river \\"of the North\\"",
+              "value": "$600",
+            },
+            Object {
+              "answer": "Jackson Hole",
+              "isDailyDouble": true,
+              "media": Array [],
+              "question": "Once a national monument, this valley in Wyoming became part of Grand Teton National Park in 1950",
+              "value": "$800",
+            },
+          ],
+          "name": "VALLEYS",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "coyote",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "2000:\\"____ Ugly\\"",
+              "value": "$200",
+            },
+            Object {
+              "answer": "horse",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "2007: \\"The Water ____: Legend of the Deep\\"",
+              "value": "$400",
+            },
+            Object {
+              "answer": "Tiger Lily",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "1966: \\"What's Up, ____ Lily?\\"",
+              "value": "$600",
+            },
+            Object {
+              "answer": "bear",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "A 2003 animated film: \\"Brother ____\\"",
+              "value": "$800",
+            },
+            Object {
+              "answer": "whale",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "2002:\\"____ Rider\\"",
+              "value": "$1000",
+            },
+          ],
+          "name": "BEASTLY MOVIES",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "executive producer",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "EP stands for this lofty position on a film or TV show",
+              "value": "$200",
+            },
+            Object {
+              "answer": "master of fine arts",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "MFA is this graduate degree",
+              "value": "$400",
+            },
+            Object {
+              "answer": "cruise control",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "The car automatically adjusts its speed with ACC, the adaptive type of this",
+              "value": "$600",
+            },
+            Object {
+              "answer": "court of appeals",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "The federal circuit has one of these intermediate bodies, C.O.A. for short",
+              "value": "$800",
+            },
+            Object {
+              "answer": "glycemic index",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "G.I., this index, is the measure of how fast & how much a food raises blood sugar levels",
+              "value": "$1000",
+            },
+          ],
+          "name": "ABBREV.",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "quaint",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Oddly charming(6)",
+              "value": "$200",
+            },
+            Object {
+              "answer": "qualms (or queasy)",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Those uneasy feelings(6)",
+              "value": "$400",
+            },
+            Object {
+              "answer": "quahog",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Edible clam type(6)",
+              "value": "$600",
+            },
+            Object {
+              "answer": "a quagmire",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "A real quandary or a real bog(8)",
+              "value": "$800",
+            },
+            Object {
+              "answer": "Quetzalcoatl",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Serpent Toltec god(12)",
+              "value": "$1000",
+            },
+          ],
+          "name": "CROSSWORD CLUES \\"Q\\"",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "R2-D2 and C-3P0",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "These 2 robots from a galaxy far, far away first appeared in a 1977 hit movie",
+              "value": "$200",
+            },
+            Object {
+              "answer": "Android",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Many computer tablets use this operating system created by Google & named for a humanoid robot",
+              "value": "$400",
+            },
+            Object {
+              "answer": "da Vinci",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_J_14.jpg",
+                },
+              ],
+              "question": "A design for a self-propelled robot vehicle was drawn up by this man around 1478; built in 2004, it worked",
+              "value": "$600",
+            },
+            Object {
+              "answer": "Spirit",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "Like its pal Opportunity, this robotic rover, launched into space June 10, 2003, has roved for miles on Mars",
+              "value": "$800",
+            },
+            Object {
+              "answer": "(Isaac) Asimov",
+              "isDailyDouble": false,
+              "media": Array [],
+              "question": "In \\"I, Robot\\", a sci-fi collection by this author, a robot become self-aware & begins to feel emotions",
+              "value": "$1000",
+            },
+          ],
+          "name": "ROBOTS",
+        },
+        Object {
+          "clues": Array [
+            Object {
+              "answer": "the common",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_J_09.jpg",
+                },
+              ],
+              "question": "(Sarah of the Clue Crew reports from Old Sturbridge Village, Massachusetts.)  A bustling place in the 18th century, used as everything from a parade ground to a town dump, by the early 1800s, the center of the typical New England village was becoming we think of as the peaceful manicured green, or as they call it in Boston, this",
+              "value": "$200",
+            },
+            Object {
+              "answer": "grist",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_J_10.jpg",
+                },
+              ],
+              "question": "(Sarah of the Clue Crew reports from Old Sturbridge Village, Massachusetts.)  The miller made his living by keeping 1/16th of what he milled, as village residents would bring grain to be turned into flour; this word \\"to the mill\\", you might say",
+              "value": "$400",
+            },
+            Object {
+              "answer": "flintlock",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_J_11.jpg",
+                },
+              ],
+              "question": "(Jimmy of the Clue Crew reports from Old Sturbridge Village, Massachusetts.)  1830s villagers, wanting personal protection, had the same main option as in Revolutionary War times--this type of gun named for the type of stone that sparks its firing mechanism",
+              "value": "$600",
+            },
+            Object {
+              "answer": "Henry Wadsworth Longfellow",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_J_12.jpg",
+                },
+              ],
+              "question": "(Sarah of the Clue Crew reports from Old Sturbridge Village, Massachusetts.)  During the same era recreated at Old Sturbridge Village, this poet honored the honest sweat of the village blacksmith & wrote that children loved to see the flaming forge",
+              "value": "$800",
+            },
+            Object {
+              "answer": "Congregationalist",
+              "isDailyDouble": false,
+              "media": Array [
+                Object {
+                  "type": "image",
+                  "url": "http://www.j-archive.com/media/2017-02-28_J_25.jpg",
+                },
+              ],
+              "question": "(Sarah of the Clue Crew reports from Old Sturbridge Village, Massachusetts.)  At Old Sturbridge Village, the meeting house is thought of as belonging to this denomination, a mouthful of a name the descendants of the Puritans adopted because it represented the local group of worshippers",
+              "value": "$1000",
+            },
+          ],
+          "name": "OLD STURBRIDGE VILLAGE",
+        },
+      ],
+      "highestDollarAmount": 1000,
+    },
+    "season": "33",
+    "show_number": "Show #7477",
+  },
+  "gameId": "5401",
+  "timeLoaded": 2015-06-14T22:12:05.275Z,
+  "type": "RECEIVE_GAME",
+}
+`;
+
+exports[`creates a RECEIVE_GAME_LIST action 1`] = `
+Object {
+  "games": Object {
+    "5403": Object {
+      "displayName": "#7357, aired 2016-09-13",
+      "loaded": false,
+    },
+    "5404": Object {
+      "displayName": "#7356, aired 2016-09-12",
+      "loaded": false,
+    },
+    "5405": Object {
+      "displayName": "#7358, aired 2016-09-14",
+      "loaded": false,
+    },
+    "5406": Object {
+      "displayName": "#7359, aired 2016-09-15",
+      "loaded": false,
+    },
+    "5407": Object {
+      "displayName": "#7360, aired 2016-09-16",
+      "loaded": false,
+    },
+    "5408": Object {
+      "displayName": "#7362, aired 2016-09-20",
+      "loaded": false,
+    },
+    "5409": Object {
+      "displayName": "#7361, aired 2016-09-19",
+      "loaded": false,
+    },
+    "5410": Object {
+      "displayName": "#7363, aired 2016-09-21",
+      "loaded": false,
+    },
+    "5411": Object {
+      "displayName": "#7364, aired 2016-09-22",
+      "loaded": false,
+    },
+    "5412": Object {
+      "displayName": "#7365, aired 2016-09-23",
+      "loaded": false,
+    },
+    "5413": Object {
+      "displayName": "#7366, aired 2016-09-26",
+      "loaded": false,
+    },
+    "5415": Object {
+      "displayName": "#7367, aired 2016-09-27",
+      "loaded": false,
+    },
+    "5418": Object {
+      "displayName": "#7368, aired 2016-09-28",
+      "loaded": false,
+    },
+    "5419": Object {
+      "displayName": "#7369, aired 2016-09-29",
+      "loaded": false,
+    },
+    "5421": Object {
+      "displayName": "#7370, aired 2016-09-30",
+      "loaded": false,
+    },
+    "5422": Object {
+      "displayName": "#7371, aired 2016-10-03",
+      "loaded": false,
+    },
+    "5423": Object {
+      "displayName": "#7372, aired 2016-10-04",
+      "loaded": false,
+    },
+    "5424": Object {
+      "displayName": "#7373, aired 2016-10-05",
+      "loaded": false,
+    },
+    "5426": Object {
+      "displayName": "#7374, aired 2016-10-06",
+      "loaded": false,
+    },
+    "5427": Object {
+      "displayName": "#7375, aired 2016-10-07",
+      "loaded": false,
+    },
+    "5428": Object {
+      "displayName": "#7376, aired 2016-10-10",
+      "loaded": false,
+    },
+    "5429": Object {
+      "displayName": "#7377, aired 2016-10-11",
+      "loaded": false,
+    },
+    "5430": Object {
+      "displayName": "#7378, aired 2016-10-12",
+      "loaded": false,
+    },
+    "5431": Object {
+      "displayName": "#7379, aired 2016-10-13",
+      "loaded": false,
+    },
+    "5432": Object {
+      "displayName": "#7380, aired 2016-10-14",
+      "loaded": false,
+    },
+    "5433": Object {
+      "displayName": "#7382, aired 2016-10-18",
+      "loaded": false,
+    },
+    "5437": Object {
+      "displayName": "#7381, aired 2016-10-17",
+      "loaded": false,
+    },
+    "5438": Object {
+      "displayName": "#7383, aired 2016-10-19",
+      "loaded": false,
+    },
+    "5439": Object {
+      "displayName": "#7384, aired 2016-10-20",
+      "loaded": false,
+    },
+    "5440": Object {
+      "displayName": "#7385, aired 2016-10-21",
+      "loaded": false,
+    },
+    "5441": Object {
+      "displayName": "#7387, aired 2016-10-25",
+      "loaded": false,
+    },
+    "5442": Object {
+      "displayName": "#7386, aired 2016-10-24",
+      "loaded": false,
+    },
+    "5443": Object {
+      "displayName": "#7392, aired 2016-11-01",
+      "loaded": false,
+    },
+    "5444": Object {
+      "displayName": "#7388, aired 2016-10-26",
+      "loaded": false,
+    },
+    "5445": Object {
+      "displayName": "#7389, aired 2016-10-27",
+      "loaded": false,
+    },
+    "5446": Object {
+      "displayName": "#7390, aired 2016-10-28",
+      "loaded": false,
+    },
+    "5447": Object {
+      "displayName": "#7391, aired 2016-10-31",
+      "loaded": false,
+    },
+    "5448": Object {
+      "displayName": "#7393, aired 2016-11-02",
+      "loaded": false,
+    },
+    "5449": Object {
+      "displayName": "#7397, aired 2016-11-08",
+      "loaded": false,
+    },
+    "5451": Object {
+      "displayName": "#7394, aired 2016-11-03",
+      "loaded": false,
+    },
+    "5452": Object {
+      "displayName": "#7395, aired 2016-11-04",
+      "loaded": false,
+    },
+    "5453": Object {
+      "displayName": "#7396, aired 2016-11-07",
+      "loaded": false,
+    },
+    "5454": Object {
+      "displayName": "#7398, aired 2016-11-09",
+      "loaded": false,
+    },
+    "5455": Object {
+      "displayName": "#7399, aired 2016-11-10",
+      "loaded": false,
+    },
+    "5456": Object {
+      "displayName": "#7400, aired 2016-11-11",
+      "loaded": false,
+    },
+    "5457": Object {
+      "displayName": "#7401, aired 2016-11-14",
+      "loaded": false,
+    },
+    "5458": Object {
+      "displayName": "#7402, aired 2016-11-15",
+      "loaded": false,
+    },
+    "5459": Object {
+      "displayName": "#7403, aired 2016-11-16",
+      "loaded": false,
+    },
+    "5460": Object {
+      "displayName": "#7404, aired 2016-11-17",
+      "loaded": false,
+    },
+    "5461": Object {
+      "displayName": "#7405, aired 2016-11-18",
+      "loaded": false,
+    },
+    "5462": Object {
+      "displayName": "#7406, aired 2016-11-21",
+      "loaded": false,
+    },
+    "5463": Object {
+      "displayName": "#7407, aired 2016-11-22",
+      "loaded": false,
+    },
+    "5465": Object {
+      "displayName": "#7408, aired 2016-11-23",
+      "loaded": false,
+    },
+    "5466": Object {
+      "displayName": "#7409, aired 2016-11-24",
+      "loaded": false,
+    },
+    "5467": Object {
+      "displayName": "#7410, aired 2016-11-25",
+      "loaded": false,
+    },
+    "5468": Object {
+      "displayName": "#7412, aired 2016-11-29",
+      "loaded": false,
+    },
+    "5469": Object {
+      "displayName": "#7417, aired 2016-12-06",
+      "loaded": false,
+    },
+    "5470": Object {
+      "displayName": "#7422, aired 2016-12-13",
+      "loaded": false,
+    },
+    "5471": Object {
+      "displayName": "#7423, aired 2016-12-14",
+      "loaded": false,
+    },
+    "5472": Object {
+      "displayName": "#7424, aired 2016-12-15",
+      "loaded": false,
+    },
+    "5473": Object {
+      "displayName": "#7425, aired 2016-12-16",
+      "loaded": false,
+    },
+    "5474": Object {
+      "displayName": "#7426, aired 2016-12-19",
+      "loaded": false,
+    },
+    "5475": Object {
+      "displayName": "#7427, aired 2016-12-20",
+      "loaded": false,
+    },
+    "5476": Object {
+      "displayName": "#7428, aired 2016-12-21",
+      "loaded": false,
+    },
+    "5477": Object {
+      "displayName": "#7429, aired 2016-12-22",
+      "loaded": false,
+    },
+    "5478": Object {
+      "displayName": "#7411, aired 2016-11-28",
+      "loaded": false,
+    },
+    "5479": Object {
+      "displayName": "#7413, aired 2016-11-30",
+      "loaded": false,
+    },
+    "5480": Object {
+      "displayName": "#7414, aired 2016-12-01",
+      "loaded": false,
+    },
+    "5481": Object {
+      "displayName": "#7415, aired 2016-12-02",
+      "loaded": false,
+    },
+    "5482": Object {
+      "displayName": "#7416, aired 2016-12-05",
+      "loaded": false,
+    },
+    "5483": Object {
+      "displayName": "#7418, aired 2016-12-07",
+      "loaded": false,
+    },
+    "5484": Object {
+      "displayName": "#7419, aired 2016-12-08",
+      "loaded": false,
+    },
+    "5485": Object {
+      "displayName": "#7420, aired 2016-12-09",
+      "loaded": false,
+    },
+    "5486": Object {
+      "displayName": "#7421, aired 2016-12-12",
+      "loaded": false,
+    },
+    "5487": Object {
+      "displayName": "#7430, aired 2016-12-23",
+      "loaded": false,
+    },
+    "5488": Object {
+      "displayName": "#7431, aired 2016-12-26",
+      "loaded": false,
+    },
+    "5489": Object {
+      "displayName": "#7432, aired 2016-12-27",
+      "loaded": false,
+    },
+    "5490": Object {
+      "displayName": "#7433, aired 2016-12-28",
+      "loaded": false,
+    },
+    "5491": Object {
+      "displayName": "#7434, aired 2016-12-29",
+      "loaded": false,
+    },
+    "5492": Object {
+      "displayName": "#7435, aired 2016-12-30",
+      "loaded": false,
+    },
+    "5493": Object {
+      "displayName": "#7436, aired 2017-01-02",
+      "loaded": false,
+    },
+    "5494": Object {
+      "displayName": "#7437, aired 2017-01-03",
+      "loaded": false,
+    },
+    "5495": Object {
+      "displayName": "#7438, aired 2017-01-04",
+      "loaded": false,
+    },
+    "5496": Object {
+      "displayName": "#7439, aired 2017-01-05",
+      "loaded": false,
+    },
+    "5497": Object {
+      "displayName": "#7440, aired 2017-01-06",
+      "loaded": false,
+    },
+    "5498": Object {
+      "displayName": "#7441, aired 2017-01-09",
+      "loaded": false,
+    },
+    "5499": Object {
+      "displayName": "#7442, aired 2017-01-10",
+      "loaded": false,
+    },
+    "5500": Object {
+      "displayName": "#7443, aired 2017-01-11",
+      "loaded": false,
+    },
+    "5501": Object {
+      "displayName": "#7444, aired 2017-01-12",
+      "loaded": false,
+    },
+    "5503": Object {
+      "displayName": "#7445, aired 2017-01-13",
+      "loaded": false,
+    },
+    "5504": Object {
+      "displayName": "#7446, aired 2017-01-16",
+      "loaded": false,
+    },
+    "5505": Object {
+      "displayName": "#7447, aired 2017-01-17",
+      "loaded": false,
+    },
+    "5506": Object {
+      "displayName": "#7448, aired 2017-01-18",
+      "loaded": false,
+    },
+    "5507": Object {
+      "displayName": "#7449, aired 2017-01-19",
+      "loaded": false,
+    },
+    "5508": Object {
+      "displayName": "#7450, aired 2017-01-20",
+      "loaded": false,
+    },
+    "5509": Object {
+      "displayName": "#7451, aired 2017-01-23",
+      "loaded": false,
+    },
+    "5510": Object {
+      "displayName": "#7452, aired 2017-01-24",
+      "loaded": false,
+    },
+    "5511": Object {
+      "displayName": "#7453, aired 2017-01-25",
+      "loaded": false,
+    },
+    "5512": Object {
+      "displayName": "#7457, aired 2017-01-31",
+      "loaded": false,
+    },
+    "5513": Object {
+      "displayName": "#7456, aired 2017-01-30",
+      "loaded": false,
+    },
+    "5514": Object {
+      "displayName": "#7458, aired 2017-02-01",
+      "loaded": false,
+    },
+    "5515": Object {
+      "displayName": "#7459, aired 2017-02-02",
+      "loaded": false,
+    },
+    "5516": Object {
+      "displayName": "#7460, aired 2017-02-03",
+      "loaded": false,
+    },
+    "5517": Object {
+      "displayName": "#7462, aired 2017-02-07",
+      "loaded": false,
+    },
+    "5518": Object {
+      "displayName": "#7461, aired 2017-02-06",
+      "loaded": false,
+    },
+    "5519": Object {
+      "displayName": "#7463, aired 2017-02-08",
+      "loaded": false,
+    },
+    "5520": Object {
+      "displayName": "#7464, aired 2017-02-09",
+      "loaded": false,
+    },
+    "5521": Object {
+      "displayName": "#7465, aired 2017-02-10",
+      "loaded": false,
+    },
+    "5522": Object {
+      "displayName": "#7467, aired 2017-02-14",
+      "loaded": false,
+    },
+    "5523": Object {
+      "displayName": "#7466, aired 2017-02-13",
+      "loaded": false,
+    },
+    "5524": Object {
+      "displayName": "#7468, aired 2017-02-15",
+      "loaded": false,
+    },
+    "5526": Object {
+      "displayName": "#7469, aired 2017-02-16",
+      "loaded": false,
+    },
+    "5527": Object {
+      "displayName": "#7470, aired 2017-02-17",
+      "loaded": false,
+    },
+    "5529": Object {
+      "displayName": "#7471, aired 2017-02-20",
+      "loaded": false,
+    },
+    "5530": Object {
+      "displayName": "#7472, aired 2017-02-21",
+      "loaded": false,
+    },
+    "5531": Object {
+      "displayName": "#7473, aired 2017-02-22",
+      "loaded": false,
+    },
+    "5532": Object {
+      "displayName": "#7474, aired 2017-02-23",
+      "loaded": false,
+    },
+    "5533": Object {
+      "displayName": "#7475, aired 2017-02-24",
+      "loaded": false,
+    },
+    "5534": Object {
+      "displayName": "#7454, aired 2017-01-26",
+      "loaded": false,
+    },
+    "5535": Object {
+      "displayName": "#7455, aired 2017-01-27",
+      "loaded": false,
+    },
+    "5539": Object {
+      "displayName": "#7477, aired 2017-02-28",
+      "loaded": false,
+    },
+  },
+  "seasonId": "33",
+  "timeLoaded": 2015-06-14T22:12:05.275Z,
+  "type": "RECEIVE_GAME_LIST",
+}
+`;
+
+exports[`creates a RECEIVE_SEASONS action 1`] = `
+Object {
+  "seasons": Array [
+    Object {
+      "_id": "58bc7c304a0eb9358ead01c4",
+      "displayName": "Season 29",
+      "games": Array [],
+      "gamesLoaded": false,
+      "id": "29",
+      "seasonId": "29",
+      "sortNumber": 4,
+    },
+    Object {
+      "_id": "58bc7c304a0eb9358ead01c3",
+      "displayName": "Season 30",
+      "games": Array [],
+      "gamesLoaded": false,
+      "id": "30",
+      "seasonId": "30",
+      "sortNumber": 3,
+    },
+    Object {
+      "_id": "58bc7c304a0eb9358ead01c2",
+      "displayName": "Season 31",
+      "games": Array [],
+      "gamesLoaded": false,
+      "id": "31",
+      "seasonId": "31",
+      "sortNumber": 2,
+    },
+    Object {
+      "_id": "58bc7c304a0eb9358ead01c1",
+      "displayName": "Season 32",
+      "games": Array [],
+      "gamesLoaded": false,
+      "id": "32",
+      "seasonId": "32",
+      "sortNumber": 1,
+    },
+    Object {
+      "_id": "58bc7c304a0eb9358ead01c0",
+      "displayName": "Season 33",
+      "games": Array [],
+      "gamesLoaded": false,
+      "id": "33",
+      "seasonId": "33",
+      "sortNumber": 0,
+    },
+  ],
+  "timeLoaded": 2015-06-14T22:12:05.275Z,
+  "type": "RECEIVE_SEASONS",
+}
+`;
+
+exports[`creates a REQUEST_GAME action 1`] = `
+Object {
+  "gameId": "5401",
+  "type": "REQUEST_GAME",
+}
+`;
+
+exports[`creates a REQUEST_GAME_LIST action 1`] = `
+Object {
+  "type": "REQUEST_GAME_LIST",
+}
+`;
+
+exports[`creates a REQUEST_SEASONS action  1`] = `
+Object {
+  "type": "REQUEST_SEASONS",
+}
+`;
+
+exports[`creates a SELECT_GAME action 1`] = `
+Object {
+  "gameId": "5539",
+  "type": "SELECT_GAME",
+}
+`;
+
+exports[`creates a SELECT_QUESTION action 1`] = `
+Object {
+  "categoryIndex": 0,
+  "clueIndex": 0,
+  "round": "jeopardy",
+  "type": "SELECT_QUESTION",
+}
+`;
+
+exports[`creates an UPDATE_SCORE action 1`] = `
+Object {
+  "delta": -200,
+  "type": "UPDATE_SCORE",
+}
+`;
