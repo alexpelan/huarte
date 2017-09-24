@@ -2,7 +2,7 @@
 import Common from '../util/Common';
 
 const defaultState = {
-  seasons: {},
+  seasons: [],
   games: {},
   currentGameId: undefined,
   seasonsLoaded: false,

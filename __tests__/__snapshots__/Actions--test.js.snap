@@ -1174,3 +1174,61 @@ Object {
   "type": "UPDATE_SCORE",
 }
 `;
+
+exports[`fetchGame uses a thunk to request then receive an individual game 1`] = `
+Array [
+  Object {
+    "type": "REQUEST_GAME_LIST",
+  },
+  Object {
+    "error": "[object Object]",
+    "type": "GLOBAL_SET_ERROR",
+  },
+  Object {
+    "type": "REQUEST_SEASONS",
+  },
+  Object {
+    "error": "[object Object]",
+    "type": "GLOBAL_SET_ERROR",
+  },
+  Object {
+    "gameId": "5539",
+    "type": "REQUEST_GAME",
+  },
+  Object {
+    "error": "[object Object]",
+    "type": "GLOBAL_SET_ERROR",
+  },
+]
+`;
+
+exports[`fetchGameList uses a thunk to request then receive the game list 1`] = `
+Array [
+  Object {
+    "type": "REQUEST_GAME_LIST",
+  },
+  Object {
+    "error": "[object Object]",
+    "type": "GLOBAL_SET_ERROR",
+  },
+]
+`;
+
+exports[`fetchSeasons uses a thunk to request then receive the seasons list 1`] = `
+Array [
+  Object {
+    "type": "REQUEST_GAME_LIST",
+  },
+  Object {
+    "error": "[object Object]",
+    "type": "GLOBAL_SET_ERROR",
+  },
+  Object {
+    "type": "REQUEST_SEASONS",
+  },
+  Object {
+    "error": "[object Object]",
+    "type": "GLOBAL_SET_ERROR",
+  },
+]
+`;

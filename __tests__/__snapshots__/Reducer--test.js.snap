@@ -908,7 +908,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -1286,7 +1286,7 @@ Object {
       "displayName": "#7477, aired 2017-02-28",
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -1664,7 +1664,7 @@ Object {
       "displayName": "#7477, aired 2017-02-28",
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -2577,7 +2577,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -3129,7 +3129,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -4274,7 +4274,7 @@ Object {
     "isError": false,
   },
   "games": Object {},
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -4826,7 +4826,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -5378,7 +5378,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -5930,7 +5930,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -6843,7 +6843,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }
@@ -7756,7 +7756,7 @@ Object {
       "timeLoaded": 1989-07-25T00:00:00.000Z,
     },
   },
-  "seasons": Object {},
+  "seasons": Array [],
   "seasonsLoaded": false,
   "seasonsLoadedTime": undefined,
 }

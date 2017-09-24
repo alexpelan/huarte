@@ -34,12 +34,14 @@
     "eslint-plugin-react": "^7.3.0",
     "jest": "20.0.4",
     "mockdate": "^2.0.2",
-    "react-test-renderer": "16.0.0-alpha.12"
+    "react-test-renderer": "16.0.0-alpha.12",
+    "redux-mock-store": "^1.3.0"
   },
   "jest": {
     "preset": "react-native",
     "setupFiles": [
-      "./testHelpers/jestSetup.js"
+      "./testHelpers/jestSetup.js",
+      "./testHelpers/mockGlobalFetch.js"
     ]
   }
 }

@@ -1,7 +1,8 @@
 const StateHelper = {
 
   isSeasonLoaded(store, seasonId) {
-    const seasonResult = store.getState().seasons.find(season => season.seasonId === seasonId);
+    const seasonResult = store.getState()
+      .seasons.find(season => season.seasonId === seasonId) || {};
     return seasonResult.gamesLoaded;
   },
 

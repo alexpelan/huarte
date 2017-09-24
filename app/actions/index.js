@@ -166,7 +166,8 @@ function fetchSeasons(store) {
 }
 
 function fetchGame(store, gameId) {
-  if (store.getState().games[gameId].loaded &&
+  if (store.getState().games[gameId] &&
+    store.getState().games[gameId].loaded &&
     StateHelper.isCacheValid(
       store.getState().games[gameId].timeLoaded,
       CONSTS.MILLISECONDS_IN_DAY)
