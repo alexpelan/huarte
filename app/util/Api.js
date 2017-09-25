@@ -4,7 +4,7 @@ import {
   setError,
 } from '../actions/index';
 
-const SECRET = 'DEFINITELY_NOT_USING_THIS_IN_PRODUCTION';
+const SECRET = CONSTS.SECRET;
 
 const internalAPI = {
   callAPI(url, store, fetchOptions = {}) {

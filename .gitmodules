@@ -1,0 +1,3 @@
+[submodule "huarte-protected"]
+	path = huarte-protected
+	url = https://github.com/alexpelan/huarte-protected.git
