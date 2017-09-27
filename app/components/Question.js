@@ -18,10 +18,10 @@ import MediaLink from './MediaLink';
 
 import styles from '../styles/styles';
 
+import AnswerValidator from '../util/AnswerValidator';
 import api from '../util/Api';
 import StateHelper from '../util/StateHelper';
 
-const levenshtein = require('fast-levenshtein');
 const _ = require('lodash');
 
 class Question extends React.Component {
@@ -49,7 +49,6 @@ class Question extends React.Component {
     store.dispatch(updateScore(delta));
 
     this.checkIfAllQuestionsAnswered();
-
     setTimeout(() => {
       if (!this.state.disputedQuestion) {
         this.returnToCategories();
@@ -108,37 +107,10 @@ class Question extends React.Component {
   };
 
   checkAnswer = () => {
-    const text = this.state.text.toLowerCase();
-    const answer = this.props.clue.answer.toLowerCase();
-
-    let wasCorrect = false;
-    let wasntQuiteCorrect = false;
-    if (text === answer) {
-      wasCorrect = true; // always down to take an exact match
-    }
-
-    const answerTokens = answer.split(' ');
-    if (answerTokens.length > 1 && !wasCorrect) {
-      // be super lenient for now - an exact match on one of the words will pass
-      _.each(answerTokens, (token) => {
-        if (token === text) {
-          wasCorrect = true;
-          wasntQuiteCorrect = true;
-        }
-      });
-    }
-
-    // otherwise, do a levenshtein difference based on the length of the combined answers 
-    // - allow for some mispellings
-    const levDistance = levenshtein.get(text, answer);
-
-    // we'll allow one typo every...four letters? idk, we can tweak this
-    const allowedErrors = Math.ceil(answer.length / 4);
-    if (levDistance <= allowedErrors && !wasCorrect) {
-      wasCorrect = true;
-      wasntQuiteCorrect = true;
-    }
-
+    const {
+      wasCorrect,
+      wasntQuiteCorrect,
+    } = AnswerValidator.checkAnswer(this.state.text, this.props.clue);
     this.setAnswerStatus(wasCorrect, wasntQuiteCorrect);
   };
 
