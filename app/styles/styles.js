@@ -43,6 +43,7 @@ const styles = StyleSheet.create({
     color: 'white',
     paddingLeft: 10,
     paddingRight: 10,
+    width: '100%',
   },
   questionTextInput: {
     marginTop: 20,

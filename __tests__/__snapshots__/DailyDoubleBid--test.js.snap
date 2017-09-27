@@ -63,6 +63,7 @@ exports[`renders correctly 1`] = `
         "height": 40,
         "paddingLeft": 10,
         "paddingRight": 10,
+        "width": "100%",
       }
     }
     value=""
