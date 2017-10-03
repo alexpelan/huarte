@@ -32,7 +32,7 @@ class FinalJeopardyBid extends React.Component {
   validateBid = () => {
     const store = this.props.store;
     const text = this.state.text;
-    const score = StateHelper.getCurrentGame().score;
+    const score = StateHelper.getCurrentGame(store).score;
     const state = store.getState();
     let bid;
     let maxBid;

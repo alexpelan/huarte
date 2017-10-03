@@ -69,7 +69,7 @@ class Question extends React.Component {
 
     if (returnValue) {
       const store = this.props.store;
-      store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound));
+      store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound, store));
     }
   };
 

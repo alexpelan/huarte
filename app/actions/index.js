@@ -83,14 +83,14 @@ function updateScore(delta) {
   };
 }
 
-function nextRound(currentRound) {
+function nextRound(currentRound, store) {
   let nextRoundName;
   if (currentRound === 'jeopardy') {
     nextRoundName = 'double_jeopardy';
   } else if (currentRound === 'double_jeopardy') {
     nextRoundName = 'final_jeopardy';
   } else if (currentRound === 'final_jeopardy') {
-    Common.saveSingleGameStatistics(StateHelper.getCurrentGame());
+    Common.saveSingleGameStatistics(StateHelper.getCurrentGame(store));
   }
 
   return {
