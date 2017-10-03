@@ -102,7 +102,7 @@ function huarteApp(state = defaultState, action) {
       return newState;
     case 'NEXT_ROUND':
       newState = Object.assign({}, state);
-      newState.games[state.currentGameId].currentRound = action.nextRound;
+      newState.games[state.currentGameId].currentRound = action.nextRoundName;
       return newState;
     case 'BID_FINAL_JEOPARDY':
       newState = Object.assign({}, state);

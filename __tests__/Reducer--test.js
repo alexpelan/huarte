@@ -177,7 +177,7 @@ test('reducer test - NEXT_ROUND', () => {
 
   const action = {
     type: 'NEXT_ROUND',
-    nextRound: 'double_jeopardy',
+    nextRoundName: 'double_jeopardy',
   };
 
   expect(huarteApp(state, action)).toMatchSnapshot();
@@ -204,7 +204,7 @@ test('reducer test - BID_FINAL_JEOPARDY', () => {
   // might as well, to make it more realistic
   const nextRoundAction = {
     type: 'NEXT_ROUND',
-    nextRound: 'final_jeopardy',
+    nextRoundName: 'final_jeopardy',
   };
   state = huarteApp(state, nextRoundAction);
 

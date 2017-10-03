@@ -122,11 +122,11 @@ class Question extends React.Component {
     let keyboardSpacerStyle;
     StatusBar.setBarStyle('light-content', true);
     if (this.state.answeredQuestion) {
-      let correctText = 'Incorrect!';
+      let correctText = ' Incorrect!';
       if (this.state.wasCorrect && !this.state.wasntQuiteCorrect) {
-        correctText = 'Correct!';
+        correctText = ' Correct!';
       } else if (this.state.wasCorrect && this.state.wasntQuiteCorrect) {
-        correctText = 'Close Enough!';
+        correctText = ' Close Enough!';
       }
       answerFeedback = (
         <Text>
