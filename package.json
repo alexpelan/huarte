@@ -9,7 +9,8 @@
     "test": "jest",
     "just_test": "jest",
     "test_coverage": "jest --coverage",
-    "dev": "react-native run-ios"
+    "dev": "react-native run-ios",
+    "loc": "cloc app __tests__ index.ios.js testHelpers"
   },
   "dependencies": {
     "bugsnag-react-native": "^2.2.4",
