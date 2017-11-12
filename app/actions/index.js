@@ -179,7 +179,7 @@ function fetchGame(store, gameId) {
     // first dispatch that we are requesting
     dispatch(requestGame(gameId));
 
-    // return a promise 
+    // return a promise
     return api.fetchGame(gameId, store)
       .then((json) => {
         dispatch(receiveGame(json, gameId));

@@ -6,7 +6,7 @@ import {
 import MediaWebView from './MediaWebView';
 import styles from '../styles/styles';
 
-// Should this be truly polymorphic? 
+// Should this be truly polymorphic?
 class MediaLink extends React.Component {
   linkText = () => {
     if (this.props.media.type === 'audio') {
