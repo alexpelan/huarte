@@ -29,6 +29,13 @@ const testData = [
     wasCorrect: true,
     wasntQuiteCorrect: true,
   },
+  // one-letter answer - doesn't allow mispellings (#1)
+  {
+    enteredText: 'G',
+    clue: { answer: 'R' },
+    wasCorrect: false,
+    wasntQuiteCorrect: false,
+  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {

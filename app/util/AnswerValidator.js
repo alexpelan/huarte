@@ -22,15 +22,17 @@ class AnswerValidator {
       });
     }
 
-    // otherwise, do a levenshtein difference based on the length of the combined answers 
+    // if the answer is long enough, do a levenshtein difference betwen entered and actual
     // - allow for some mispellings
-    const levDistance = levenshtein.get(text, answer);
+    if (answer.length > 2) {
+      const levDistance = levenshtein.get(text, answer);
 
-    // we'll allow one typo every...four letters? idk, we can tweak this
-    const allowedErrors = Math.ceil(answer.length / 4);
-    if (levDistance <= allowedErrors && !wasCorrect) {
-      wasCorrect = true;
-      wasntQuiteCorrect = true;
+      // we'll allow one typo every...four letters? idk, we can tweak this
+      const allowedErrors = Math.ceil(answer.length / 4);
+      if (levDistance <= allowedErrors && !wasCorrect) {
+        wasCorrect = true;
+        wasntQuiteCorrect = true;
+      }
     }
 
     return {
