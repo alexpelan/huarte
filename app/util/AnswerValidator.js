@@ -2,10 +2,9 @@ const levenshtein = require('fast-levenshtein');
 
 
 class AnswerValidator {
-
   static sanitizeText(text) {
     const lowerCaseText = text.toLowerCase();
-    const textWithoutPunctuation = lowerCaseText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+    const textWithoutPunctuation = lowerCaseText.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
     const result = textWithoutPunctuation;
     return result;
   }

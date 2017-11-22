@@ -48,7 +48,7 @@ const testData = [
     enteredText: 'E.R.',
     clue: { answer: 'ER' },
     wasCorrect: true,
-    wasntQuiteCorrect: false,    
+    wasntQuiteCorrect: false,
   },
 ];
 
@@ -58,7 +58,6 @@ test('marks correct answers correct and incorrect answers incorrect, and differe
       wasCorrect,
       wasntQuiteCorrect,
     } = AnswerValidator.checkAnswer(test.enteredText, test.clue);
-    console.log(test, " is test ", wasCorrect, wasntQuiteCorrect)
     expect(wasCorrect).toEqual(test.wasCorrect);
     expect(wasntQuiteCorrect).toEqual(test.wasntQuiteCorrect);
   });
