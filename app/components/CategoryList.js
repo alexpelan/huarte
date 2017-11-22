@@ -64,6 +64,7 @@ class CategoryList extends React.Component {
         component: FinalJeopardyBid,
         passProps: {
           category,
+          store,
         },
       });
     } else {

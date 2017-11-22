@@ -57,17 +57,17 @@ class Question extends React.Component {
   };
 
   checkIfAllQuestionsAnswered = () => {
-    let returnValue = true;
+    let allQuestionsAnswered = true;
 
     _.each(StateHelper.getCurrentRound(this.props.store).categories, (category) => {
       _.each(category.clues, (clue) => {
         if (!clue.isCompleted) {
-          returnValue = false;
+          allQuestionsAnswered = false;
         }
       });
     });
 
-    if (returnValue) {
+    if (allQuestionsAnswered) {
       const store = this.props.store;
       store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound, store));
     }
@@ -99,8 +99,9 @@ class Question extends React.Component {
 
   returnToCategories = () => {
     // not ideal, but popToRoute is undocumented / doesn't seem to work right
-    if (this.props.clue.isDailyDouble) {
-      this.props.navigator.popN(3); // have an extra screen for bidding
+    if (this.props.clue.isDailyDouble || this.props.isFinalJeopardy) {
+      // have an extra screen for bidding, or it's end of game (fj)
+      this.props.navigator.popN(3);
     } else {
       this.props.navigator.popN(2);
     }
@@ -167,6 +168,11 @@ class Question extends React.Component {
 
     if (!this.state.isKeyboardOpen) {
       keyboardSpacerStyle = styles.keyboardSpacerHidden;
+    }
+
+    // gross, but until backend fix just null check here
+    if (!this.props.clue.media) {
+      this.props.clue.media = [];
     }
 
     return (

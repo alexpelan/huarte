@@ -33,7 +33,6 @@ class FinalJeopardyBid extends React.Component {
     const store = this.props.store;
     const text = this.state.text;
     const score = StateHelper.getCurrentGame(store).score;
-    const state = store.getState();
     let bid;
     let maxBid;
 
@@ -56,7 +55,7 @@ class FinalJeopardyBid extends React.Component {
     }
 
     store.dispatch(bidFinalJeopardy(bid));
-    const finalJeopardyClue = state.final_jeopardy.categories[0];
+    const finalJeopardyClue = StateHelper.getCurrentRound(store).categories[0];
     const categoryName = this.props.category.name;
     this.props.navigator.push({
       title: 'Final Jeopardy',
@@ -67,6 +66,7 @@ class FinalJeopardyBid extends React.Component {
         isSkippable: false,
         store,
         categoryName,
+        isFinalJeopardy: true,
       },
     });
   };
