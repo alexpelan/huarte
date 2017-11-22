@@ -36,6 +36,20 @@ const testData = [
     wasCorrect: false,
     wasntQuiteCorrect: false,
   },
+  // strip punctuation from both question and answer (#2)
+  {
+    enteredText: 'ER',
+    clue: { answer: 'E.R.' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
+  // #2, continued
+  {
+    enteredText: 'E.R.',
+    clue: { answer: 'ER' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,    
+  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {
@@ -44,6 +58,7 @@ test('marks correct answers correct and incorrect answers incorrect, and differe
       wasCorrect,
       wasntQuiteCorrect,
     } = AnswerValidator.checkAnswer(test.enteredText, test.clue);
+    console.log(test, " is test ", wasCorrect, wasntQuiteCorrect)
     expect(wasCorrect).toEqual(test.wasCorrect);
     expect(wasntQuiteCorrect).toEqual(test.wasntQuiteCorrect);
   });

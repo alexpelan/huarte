@@ -1,9 +1,19 @@
 const levenshtein = require('fast-levenshtein');
 
+
 class AnswerValidator {
+
+  static sanitizeText(text) {
+    const lowerCaseText = text.toLowerCase();
+    const textWithoutPunctuation = lowerCaseText.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g,"");
+    const result = textWithoutPunctuation;
+    return result;
+  }
+
   static checkAnswer(enteredText, clue) {
-    const text = enteredText.toLowerCase();
-    const answer = clue.answer.toLowerCase();
+    const text = AnswerValidator.sanitizeText(enteredText);
+    const answer = AnswerValidator.sanitizeText(clue.answer);
+
 
     let wasCorrect = false;
     let wasntQuiteCorrect = false;
