@@ -50,6 +50,20 @@ const testData = [
     wasCorrect: true,
     wasntQuiteCorrect: false,
   },
+  // remove accents from both input and anything stored (#8)
+  {
+    enteredText: 'acai',
+    clue: { answer: 'açaí' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
+  // #8 - other way around
+  {
+    enteredText: 'açaí',
+    clue: { answer: 'acai' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {

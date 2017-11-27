@@ -1,11 +1,12 @@
 const levenshtein = require('fast-levenshtein');
-
+const removeAccents = require('remove-accents');
 
 class AnswerValidator {
   static sanitizeText(text) {
     const lowerCaseText = text.toLowerCase();
-    const textWithoutPunctuation = lowerCaseText.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
-    const result = textWithoutPunctuation;
+    const lowerCaseTextWithoutPunctuation = lowerCaseText.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
+    const lowerCaseTextWithoutPunctuationOrAccents = removeAccents(lowerCaseTextWithoutPunctuation);
+    const result = lowerCaseTextWithoutPunctuationOrAccents;
     return result;
   }
 
