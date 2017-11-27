@@ -8,6 +8,7 @@ exports[`renders correctly 1`] = `
       "items": 4,
     }
   }
+  renderFooter={[Function]}
   renderRow={[Function]}
   renderScrollComponent={[Function]}
   style={
@@ -97,6 +98,124 @@ exports[`renders correctly 1`] = `
       }
     >
       $800
+    </Text>
+  </View>
+</RCTScrollView>
+`;
+
+exports[`renders correctly with category comments (#5) 1`] = `
+<RCTScrollView
+  automaticallyAdjustContentInsets={false}
+  dataSource={
+    ListViewDataSource {
+      "items": 4,
+    }
+  }
+  renderFooter={[Function]}
+  renderRow={[Function]}
+  renderScrollComponent={[Function]}
+  style={
+    Object {
+      "backgroundColor": "#0000af",
+      "paddingTop": 70,
+    }
+  }
+>
+  <View>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $200
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $400
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $600
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      onPress={[Function]}
+      style={
+        Array [
+          Object {
+            "color": "white",
+            "fontSize": 20,
+            "marginBottom": 8,
+            "textAlign": "center",
+          },
+          undefined,
+        ]
+      }
+    >
+      $800
+    </Text>
+    <Text
+      accessible={true}
+      allowFontScaling={true}
+      disabled={false}
+      ellipsizeMode="tail"
+      style={
+        Object {
+          "color": "white",
+          "fontSize": 18,
+          "textAlign": "center",
+        }
+      }
+    >
+      Some helpful text since the clues might make no sense out of context.
     </Text>
   </View>
 </RCTScrollView>

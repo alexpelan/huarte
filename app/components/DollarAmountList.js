@@ -77,6 +77,17 @@ class DollarAmountList extends React.Component {
     </Text>
   );
 
+  renderFooter = () => {
+    if (this.props.category.categoryComments) {
+      return (
+        <Text style={styles.scoreText}>
+          {this.props.category.categoryComments}
+        </Text>
+      );
+    }
+    return null;
+  };
+
   render() {
     StatusBar.setBarStyle('default', true);
     return (
@@ -84,6 +95,7 @@ class DollarAmountList extends React.Component {
         dataSource={this.state.dataSource}
         renderRow={(clue, sectionId, clueIndex) => this.renderClue(clue, clueIndex)}
         automaticallyAdjustContentInsets={false} // ????? https://github.com/facebook/react-native/issues/721
+        renderFooter={() => this.renderFooter()}
         style={styles.listView}
       />
     );

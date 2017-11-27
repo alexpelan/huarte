@@ -15,3 +15,15 @@ test('renders correctly', () => {
   ).toJSON();
   expect(tree).toMatchSnapshot();
 });
+
+
+test('renders correctly with category comments (#5)', () => {
+  const store = Factory.createNewStore();
+  const game = Recipes.loadSingleGame(store);
+  game.jeopardy.categories[0].categoryComments = 'Some helpful text since the clues might make no sense out of context.';
+
+  const tree = renderer.create(
+    <DollarAmountList store={store} category={game.jeopardy.categories[0]} categoryIndex={0} />,
+  ).toJSON();
+  expect(tree).toMatchSnapshot();
+});
