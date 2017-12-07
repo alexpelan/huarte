@@ -1,23 +1,12 @@
 const levenshtein = require('fast-levenshtein');
 const removeAccents = require('remove-accents');
-const { wordsToNumbers } = require('words-to-numbers');
-
-
-const removePunctuation = function (text) {
-  return text.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
-};
-
-const convertNumericWordsToNumbers = function (text) {
-  return wordsToNumbers(text);
-};
 
 class AnswerValidator {
   static sanitizeText(text) {
-    let result;
-    result = text.toLowerCase();
-    result = removePunctuation(result);
-    result = removeAccents(result);
-    result = convertNumericWordsToNumbers(result);
+    const lowerCaseText = text.toLowerCase();
+    const lowerCaseTextWithoutPunctuation = lowerCaseText.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
+    const lowerCaseTextWithoutPunctuationOrAccents = removeAccents(lowerCaseTextWithoutPunctuation);
+    const result = lowerCaseTextWithoutPunctuationOrAccents;
     return result;
   }
 

@@ -64,20 +64,6 @@ const testData = [
     wasCorrect: true,
     wasntQuiteCorrect: false,
   },
-  // convert any words like 'nine' to their equivalent numbers (#)
-  {
-    enteredText: 'district Nine',
-    clue: { answer: 'district 9' },
-    wasCorrect: true,
-    wasntQuiteCorrect: false,
-  },
-  // #9, other way around
-  {
-    enteredText: 'District 9',
-    clue: { answer: 'district nine' },
-    wasCorrect: true,
-    wasntQuiteCorrect: false,
-  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {
