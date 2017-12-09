@@ -77,6 +77,32 @@ const testData = [
     wasCorrect: true,
     wasntQuiteCorrect: false,
   },
+  // #9 handling and answers
+  {
+    enteredText: 'Spain and Algeria',
+    clue: { answer: 'Spain and Andorra' },
+    wasCorrect: false,
+    wasntQuiteCorrect: false,
+  },
+  {
+    enteredText: 'Spain and Andorra',
+    clue: { answer: 'Spain and Andorra' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
+  {
+    enteredText: 'Andorra and Spain',
+    clue: { answer: 'Spain and Andorra' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
+  // picks up levensthein match even if in wrong order
+  {
+    enteredText: 'Andora and Spain',
+    clue: { answer: 'Spain and Andorra' },
+    wasCorrect: true,
+    wasntQuiteCorrect: true,
+  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {

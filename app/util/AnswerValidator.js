@@ -1,7 +1,8 @@
 const levenshtein = require('fast-levenshtein');
 const removeAccents = require('remove-accents');
 
-const OR = 'or';
+const AND = ' and ';
+const OR = ' or ';
 
 class AnswerValidator {
   static sanitizeText(text) {
@@ -41,14 +42,43 @@ class AnswerValidator {
     };
   }
 
+  static checkAndAnswer(enteredText, answer) {
+    let wasCorrect = true;
+    let wasntQuiteCorrect = false;
+
+    const enteredTextTokens = enteredText.split(AND).map(token => token.trim());
+    const answerTokens = answer.split(AND).map(token => token.trim());
+
+    answerTokens.forEach((answerToken) => {
+      const enteredTextContainsExactMatch = enteredTextTokens.some(
+        enteredTextToken => enteredTextToken === answerToken,
+      );
+
+      const enteredTextContainsLevenshteinMatch = enteredTextTokens.some(
+        enteredTextToken => AnswerValidator.isLevenshteinMatch(enteredTextToken, answerToken),
+      );
+
+      if (!enteredTextContainsExactMatch && !enteredTextContainsLevenshteinMatch) {
+        wasCorrect = false;
+      } else if (!enteredTextContainsExactMatch && enteredTextContainsLevenshteinMatch) {
+        wasntQuiteCorrect = true;
+      }
+    });
+
+    return {
+      wasCorrect,
+      wasntQuiteCorrect,
+    };
+  }
+
   static isLevenshteinMatch(text, answer) {
     // if the answer is long enough, do a levenshtein difference betwen entered and actual
     // - allow for some mispellings
     if (answer.length > 2) {
       const levDistance = levenshtein.get(text, answer);
 
-      // we'll allow one typo every...four letters? idk, we can tweak this
-      const allowedErrors = Math.ceil(answer.length / 4);
+      // we'll allow one typo every...6 letters? idk, we can tweak this
+      const allowedErrors = Math.ceil(answer.length / 6);
       if (levDistance <= allowedErrors) {
         return true;
       }
@@ -64,6 +94,28 @@ class AnswerValidator {
     let wasntQuiteCorrect = false;
     if (text === answer) {
       wasCorrect = true; // always down to take an exact match
+      return {
+        wasCorrect,
+        wasntQuiteCorrect,
+      };
+    }
+
+    const isLevenshteinMatch = AnswerValidator.isLevenshteinMatch(text, answer);
+    if (isLevenshteinMatch) {
+      return {
+        wasCorrect: true,
+        wasntQuiteCorrect: true,
+      };
+    }
+
+    const hasAnAnd = answer.includes(AND);
+    if (hasAnAnd) {
+      return AnswerValidator.checkAndAnswer(text, answer);
+    }
+
+    const hasAnOr = answer.includes(OR);
+    if (hasAnOr) {
+      return AnswerValidator.checkOrAnswer(text, answer);
     }
 
     const answerTokens = answer.split(' ');
@@ -75,20 +127,6 @@ class AnswerValidator {
           wasntQuiteCorrect = true;
         }
       });
-    }
-
-    const hasAnOr = answerTokens.some(answerToken => answerToken === OR);
-    if (hasAnOr) {
-      // I think there's an object destructuring way to do this but i couldn't figure it out
-      const result = AnswerValidator.checkOrAnswer(text, answer);
-      wasCorrect = result.wasCorrect;
-      wasntQuiteCorrect = result.wasntQuiteCorrect;
-    }
-
-    const isLevenshteinMatch = AnswerValidator.isLevenshteinMatch(text, answer);
-    if (isLevenshteinMatch && !wasCorrect) {
-      wasCorrect = true;
-      wasntQuiteCorrect = true;
     }
 
     return {
