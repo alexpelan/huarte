@@ -64,6 +64,19 @@ const testData = [
     wasCorrect: true,
     wasntQuiteCorrect: false,
   },
+  // #4 - accept either answer for or
+  {
+    enteredText: 'the deep end',
+    clue: { answer: 'the deep side (or the deep end)' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
+  {
+    enteredText: 'the deep side',
+    clue: { answer: 'the deep side (or the deep end)' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {
