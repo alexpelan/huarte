@@ -67,7 +67,7 @@ class Question extends React.Component {
       });
     });
 
-    if (allQuestionsAnswered) {
+    if (allQuestionsAnswered && !this.props.isFinalJeopardy) {
       const store = this.props.store;
       store.dispatch(nextRound(StateHelper.getCurrentGame(store).currentRound, store));
     }
