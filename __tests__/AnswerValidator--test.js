@@ -103,6 +103,13 @@ const testData = [
     wasCorrect: true,
     wasntQuiteCorrect: true,
   },
+  // #10 articles optional
+  {
+    enteredText: 'burning bush',
+    clue: { answer: 'the burning bush' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {

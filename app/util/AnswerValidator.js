@@ -3,14 +3,32 @@ const removeAccents = require('remove-accents');
 
 const AND = ' and ';
 const OR = ' or ';
+const ARTICLES = ['the ', 'a ', 'an '];
 
 class AnswerValidator {
+  static removeArticlesFromFront(text) {
+    let articleLessString = text;
+    ARTICLES.forEach((article) => {
+      if (text.startsWith(article)) {
+        articleLessString = text.slice(article.length);
+      }
+    });
+    return articleLessString;
+  }
+
   static sanitizeText(text) {
     const lowerCaseText = text.toLowerCase();
     const lowerCaseTextWithoutPunctuation = lowerCaseText.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
     const lowerCaseTextWithoutPunctuationOrAccents = removeAccents(lowerCaseTextWithoutPunctuation);
-    const result = lowerCaseTextWithoutPunctuationOrAccents;
+    const result = AnswerValidator.removeArticlesFromFront(
+      lowerCaseTextWithoutPunctuationOrAccents,
+    );
     return result;
+  }
+
+  static sanitizeToken(token) {
+    const tokenWithoutArticles = AnswerValidator.removeArticlesFromFront(token);
+    return tokenWithoutArticles.trim();
   }
 
   static checkOrAnswer(enteredText, answer) {
@@ -19,7 +37,7 @@ class AnswerValidator {
     let i;
 
     // split on or and check against each half (or third, etc...)
-    const answerTokens = answer.split(OR).map(token => token.trim());
+    const answerTokens = answer.split(OR).map(token => AnswerValidator.sanitizeToken(token));
 
     // what, an actual for loop in 2017? want it to be break;able....
     for (i = 0; i < answerTokens.length; i += 1) {
@@ -46,8 +64,10 @@ class AnswerValidator {
     let wasCorrect = true;
     let wasntQuiteCorrect = false;
 
-    const enteredTextTokens = enteredText.split(AND).map(token => token.trim());
-    const answerTokens = answer.split(AND).map(token => token.trim());
+    const enteredTextTokens = enteredText.split(AND).map(token => (
+      AnswerValidator.sanitizeToken(token)
+    ));
+    const answerTokens = answer.split(AND).map(token => AnswerValidator.sanitizeToken(token));
 
     answerTokens.forEach((answerToken) => {
       const enteredTextContainsExactMatch = enteredTextTokens.some(
