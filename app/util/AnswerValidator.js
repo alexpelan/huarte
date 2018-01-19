@@ -17,7 +17,8 @@ class AnswerValidator {
   }
 
   static sanitizeText(text) {
-    const lowerCaseText = text.toLowerCase();
+    const trimmedText = text.trim();
+    const lowerCaseText = trimmedText.toLowerCase();
     const lowerCaseTextWithoutPunctuation = lowerCaseText.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '');
     const lowerCaseTextWithoutPunctuationOrAccents = removeAccents(lowerCaseTextWithoutPunctuation);
     const result = AnswerValidator.removeArticlesFromFront(

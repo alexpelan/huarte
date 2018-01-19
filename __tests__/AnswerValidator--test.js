@@ -110,6 +110,19 @@ const testData = [
     wasCorrect: true,
     wasntQuiteCorrect: false,
   },
+  // trim spaces - shocked we didn't find this one yet!
+  {
+    enteredText: 'Kennedy ',
+    clue: { answer: 'Kennedy' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
+  {
+    enteredText: ' Kennedy',
+    clue: { answer: 'Kennedy' },
+    wasCorrect: true,
+    wasntQuiteCorrect: false,
+  },
 ];
 
 test('marks correct answers correct and incorrect answers incorrect, and differentiates between exact matches and inexact matches', () => {
