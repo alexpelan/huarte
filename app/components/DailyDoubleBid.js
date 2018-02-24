@@ -1,15 +1,14 @@
 import React from 'react';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {
-  Button,
   Keyboard,
   StatusBar,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
+import InputWithButton from './InputWithButton';
 import Question from './Question';
 
 import styles from '../styles/styles';
@@ -90,23 +89,11 @@ class DailyDoubleBid extends React.Component {
             What is your bid? You have {maxBid} to wager.
           </Text>
           <Text style={[styles.question]}>{this.state.errorMessage}</Text>
-          <View style={[styles.flexRow]}>
-            <TextInput
-              style={[styles.textInput, styles.textInputWithButton]}
-              onChangeText={text => this.setState({ text })}
-              onSubmitEditing={() => this.validateBid()}
-              value={this.state.text}
-              keyboardType="numeric"
-              autoFocus
-            />
-            <Button
-              color="white"
-              style={[styles.buttonWithTextInput, styles.button]}
-              onPress={() => this.validateBid()}
-              title="Submit"
-              accessibilityLabel="Submit your bid"
-            />
-          </View>
+          <InputWithButton
+            onSubmit={() => this.validateBid()}
+            onChangeText={text => this.setState({ text })}
+            text={this.state.text}
+          />
           <KeyboardSpacer
             style={[keyboardSpacerStyle]}
             onToggle={toggleState => this.onKeyboardToggle(toggleState)}

@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders correctly 1`] = `
+<View
+  style={
+    Array [
+      Object {
+        "flexDirection": "row",
+      },
+    ]
+  }
+>
+  <TextInput
+    autoFocus={true}
+    keyboardType="numeric"
+    onChangeText={[Function]}
+    onSubmitEditing={[Function]}
+    style={
+      Array [
+        Object {
+          "borderColor": "white",
+          "borderWidth": 1,
+          "color": "white",
+          "height": 40,
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "width": "100%",
+        },
+        Object {
+          "width": "80%",
+        },
+      ]
+    }
+    value="Some sample text"
+  />
+  <View
+    accessibilityComponentType="button"
+    accessibilityLabel="Submit your bid"
+    accessibilityTraits={
+      Array [
+        "button",
+      ]
+    }
+    accessible={true}
+    collapsable={undefined}
+    hitSlop={undefined}
+    isTVSelectable={true}
+    nativeID={undefined}
+    onLayout={undefined}
+    onResponderGrant={[Function]}
+    onResponderMove={[Function]}
+    onResponderRelease={[Function]}
+    onResponderTerminate={[Function]}
+    onResponderTerminationRequest={[Function]}
+    onStartShouldSetResponder={[Function]}
+    style={
+      Object {
+        "opacity": 1,
+      }
+    }
+    testID={undefined}
+    tvParallaxProperties={undefined}
+  >
+    <View
+      style={
+        Array [
+          Object {},
+        ]
+      }
+    >
+      <Text
+        accessible={true}
+        allowFontScaling={true}
+        disabled={false}
+        ellipsizeMode="tail"
+        style={
+          Array [
+            Object {
+              "color": "#0C42FD",
+              "fontSize": 18,
+              "padding": 8,
+              "textAlign": "center",
+            },
+            Object {
+              "color": "white",
+            },
+          ]
+        }
+      >
+        Submit
+      </Text>
+    </View>
+  </View>
+</View>
+`;

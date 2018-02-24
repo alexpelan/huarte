@@ -65,15 +65,20 @@ exports[`renders correctly 1`] = `
       onChangeText={[Function]}
       onSubmitEditing={[Function]}
       style={
-        Object {
-          "borderColor": "white",
-          "borderWidth": 1,
-          "color": "white",
-          "height": 40,
-          "paddingLeft": 10,
-          "paddingRight": 10,
-          "width": "100%",
-        }
+        Array [
+          Object {
+            "borderColor": "white",
+            "borderWidth": 1,
+            "color": "white",
+            "height": 40,
+            "paddingLeft": 10,
+            "paddingRight": 10,
+            "width": "100%",
+          },
+          Object {
+            "width": "80%",
+          },
+        ]
       }
       value=""
     />

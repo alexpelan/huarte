@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-  Button,
   Keyboard,
   StatusBar,
   Text,
-  TextInput,
   TouchableWithoutFeedback,
   View,
 } from 'react-native';
@@ -15,6 +13,7 @@ import {
   bidFinalJeopardy,
 } from '../actions/index';
 
+import InputWithButton from './InputWithButton';
 import Question from './Question';
 
 import styles from '../styles/styles';
@@ -88,23 +87,11 @@ class FinalJeopardyBid extends React.Component {
             What is your bid? You have {score} to wager.
           </Text>
           <Text>{this.state.errorMessage}</Text>
-          <View style={[styles.flexRow]}>
-            <TextInput
-              style={styles.textInput}
-              onChangeText={text => this.setState({ text })}
-              onSubmitEditing={() => this.validateBid()}
-              value={this.state.text}
-              keyboardType="numeric"
-              autoFocus
-            />
-            <Button
-              color="white"
-              style={[styles.buttonWithTextInput, styles.button]}
-              onPress={() => this.validateBid()}
-              title="Submit"
-              accessibilityLabel="Submit your bid"
-            />
-          </View>
+          <InputWithButton
+            onSubmit={() => this.validateBid()}
+            onChangeText={text => this.setState({ text })}
+            text={this.state.text}
+          />
           <KeyboardSpacer
             style={keyboardSpacerStyle}
             onToggle={toggleState => this.onKeyboardToggle(toggleState)}
