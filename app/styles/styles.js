@@ -45,6 +45,15 @@ const styles = StyleSheet.create({
     paddingRight: 10,
     width: '100%',
   },
+  textInputWithButton: {
+    width: '80%',
+  },
+  buttonWithTextinput: {
+    width: '20%',
+  },
+  button: {
+    color: 'white',
+  },
   questionTextInput: {
     marginTop: 20,
   },
@@ -99,7 +108,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     bottom: -15,
   },
-
+  flexRow: {
+    flexDirection: 'row',
+  },
 });
 
 export default styles;

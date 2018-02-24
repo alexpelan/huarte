@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+  Button,
   Keyboard,
   StatusBar,
   Text,
@@ -87,14 +88,23 @@ class FinalJeopardyBid extends React.Component {
             What is your bid? You have {score} to wager.
           </Text>
           <Text>{this.state.errorMessage}</Text>
-          <TextInput
-            style={styles.textInput}
-            onChangeText={text => this.setState({ text })}
-            onSubmitEditing={() => this.validateBid()}
-            value={this.state.text}
-            keyboardType="numeric"
-            autoFocus
-          />
+          <View style={[styles.flexRow]}>
+            <TextInput
+              style={styles.textInput}
+              onChangeText={text => this.setState({ text })}
+              onSubmitEditing={() => this.validateBid()}
+              value={this.state.text}
+              keyboardType="numeric"
+              autoFocus
+            />
+            <Button
+              color="white"
+              style={[styles.buttonWithTextInput, styles.button]}
+              onPress={() => this.validateBid()}
+              title="Submit"
+              accessibilityLabel="Submit your bid"
+            />
+          </View>
           <KeyboardSpacer
             style={keyboardSpacerStyle}
             onToggle={toggleState => this.onKeyboardToggle(toggleState)}
