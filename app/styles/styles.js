@@ -6,6 +6,13 @@ const STYLE_CONSTS = {
 };
 
 const styles = StyleSheet.create({
+  bid: {
+    paddingTop: 100,
+    fontSize: 20,
+    color: 'white',
+    paddingLeft: 20,
+    paddingRight: 20,
+  },
   container: {
     flex: 1,
     backgroundColor: 'white',
@@ -30,7 +37,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   question: {
-    paddingTop: 100,
+    paddingTop: "5%",
     fontSize: 20,
     color: 'white',
     paddingLeft: 20,

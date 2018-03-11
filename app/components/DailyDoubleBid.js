@@ -85,10 +85,10 @@ class DailyDoubleBid extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.questionView}>
-          <Text style={[styles.question]}>
+          <Text style={[styles.bid]}>
             What is your bid? You have {maxBid} to wager.
           </Text>
-          <Text style={[styles.question]}>{this.state.errorMessage}</Text>
+          <Text style={[styles.bid]}>{this.state.errorMessage}</Text>
           <InputWithButton
             onSubmit={() => this.validateBid()}
             onChangeText={text => this.setState({ text })}

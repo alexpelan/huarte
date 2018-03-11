@@ -83,7 +83,7 @@ class FinalJeopardyBid extends React.Component {
     return (
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.questionView}>
-          <Text style={styles.question}>
+          <Text style={styles.bid}>
             What is your bid? You have {score} to wager.
           </Text>
           <Text>{this.state.errorMessage}</Text>
