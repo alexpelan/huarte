@@ -54,7 +54,7 @@ exports[`renders correctly 1`] = `
         "fontSize": 20,
         "paddingLeft": 20,
         "paddingRight": 20,
-        "paddingTop": 100,
+        "paddingTop": "5%",
       }
     }
   >
@@ -71,7 +71,7 @@ exports[`renders correctly 1`] = `
         "fontSize": 20,
         "paddingLeft": 20,
         "paddingRight": 20,
-        "paddingTop": 100,
+        "paddingTop": "5%",
       }
     }
   />

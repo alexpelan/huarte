@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   question: {
-    paddingTop: "5%",
+    paddingTop: '5%',
     fontSize: 20,
     color: 'white',
     paddingLeft: 20,
